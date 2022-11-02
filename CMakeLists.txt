@@ -1,6 +1,25 @@
-cmake_minimum_required(VERSION 3.20.2)
+cmake_minimum_required(VERSION 3.23)
+
 project(ece_city_3h C)
 
-set(CMAKE_C_STANDARD 99)
+# Generate compile_commands.json
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-add_executable(ece_city_3h main.c test.c test.h)
+# Dependencies
+find_package(raylib 4.2.0 QUIET) # QUIET or REQUIRED
+if (NOT raylib_FOUND) # If there's none, fetch and build raylib
+    include(FetchContent)
+    FetchContent_Declare(
+            raylib
+            URL https://github.com/raysan5/raylib/archive/refs/tags/4.0.0.tar.gz
+    )
+    FetchContent_GetProperties(raylib)
+    if (NOT raylib_POPULATED) # Have we downloaded raylib yet?
+        set(FETCHCONTENT_QUIET NO)
+        FetchContent_Populate(raylib)
+        set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE) # don't build the supplied examples
+        add_subdirectory(${raylib_SOURCE_DIR} ${raylib_BINARY_DIR})
+    endif()
+endif()
+
+add_executable(ece_city_3h main.c)
