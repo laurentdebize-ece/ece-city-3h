@@ -14,18 +14,23 @@ int main() {
     // Initialisation
     const int screenWidth = 1100;
     const int screenHeight = 800;
-    city c = chargement();
-    c.plateau[0][0] = 1;
-    c.plateau[10][0] = 2;
+    InitWindow(screenWidth, screenHeight, "raylib [core] example - 2d camera mouse zoom");
+    city c = initialisation();
+
+    for(int i = 0 ; i<30 ;i ++){
+        c.plateau[10][i] = 1;
+    }
+
+    c.plateau[0][0] = 2;
     c.plateau[20][0] = 3;
     c.plateau[30][0] = 4;
-    c.plateau[40][0] = 5;
-    c.plateau[40][0] = 6;
-    c.plateau[40][0] = 7;
-    c.plateau[40][0] = 8;
-    c.plateau[40][0] = 9;
+    c.plateau[20][20] = 5;
+    c.plateau[20][10] = 6;
+    c.plateau[30][20] = 7;
+    c.plateau[30][10] = 8;
+    c.plateau[0][30] = 9;
 
-    InitWindow(screenWidth, screenHeight, "raylib [core] example - 2d camera mouse zoom");
+
     SetTargetFPS(60);
     //game loop
     while (!WindowShouldClose())        // Detect window close button or ESC key
@@ -47,7 +52,7 @@ int main() {
         for (int i = 0; i < colones; i++) {
             for (int j = 0; j < ligne; j++) {
                 if (c.plateau[i][j] != 0) {
-                    DrawTexture(c.tableau_element[c.plateau[i][j]].texture,i*espacement,j*espacement, WHITE);
+                    DrawTexture(c.tableau_element[c.plateau[i][j]].texture,i*espacement+ 20,j*espacement+ 20, WHITE);
 
 
                 }
