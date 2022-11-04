@@ -24,7 +24,7 @@ endif()
 
 # Our Project
 
-add_executable(${PROJECT_NAME} main.c "structure et macros/STRUCTURE.h" "structure et macros/macros.h")
+add_executable(${PROJECT_NAME} main.c "structure et macros/STRUCTURE.h" "structure et macros/macros.h" "fonction/chargement.h" fonction/char.c fonction/char.h)
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)
 
