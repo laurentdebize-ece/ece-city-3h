@@ -1,11 +1,14 @@
 //
-// Created by zelie on 25/10/2022.
+// Created by leque on 03/11/2022.
 //
 
-#ifndef ECE_CITY_3H_TEST_H
-#define ECE_CITY_3H_TEST_H
+#ifndef ECE_CITY_3H_CHARGEMENT_H
+#define ECE_CITY_3H_CHARGEMENT_H
 #include "../structure et macros/STRUCTURE.h"
 #include <stdio.h>
 #include <stdlib.h>
 element chargement_element(char *fileName);
-#endif //ECE_CITY_3H_TEST_H
+city chargement_total_element();
+city chargement_base(city c);
+city initialisation();
+#endif //ECE_CITY_3H_CHARGEMENT_H

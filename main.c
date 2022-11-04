@@ -8,7 +8,7 @@
 
 #include "structure et macros/STRUCTURE.h"
 #include <stdio.h>
-#include "fonction/char.h"
+#include "fonction/chargement.h"
 
 int main() {
     // Initialisation
