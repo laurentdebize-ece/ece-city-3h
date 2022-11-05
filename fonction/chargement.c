@@ -2,7 +2,7 @@
 // Created by leque on 03/11/2022.
 //
 
-#include "chargement.h"
+#include "../structure et macros/include.h"
 element chargement_element(char *nomFichier){
     FILE *ifs = fopen(nomFichier, "r");
     if (!ifs) {
@@ -42,13 +42,13 @@ city chargement_total_element(){
     c.tableau_element[1]=chargement_element("../FILE/element/route");
     c.tableau_element[1].texture = LoadTexture("../image/route.png");
 
-    ///////////////////////terrain vague/////////////////////////////
-    c.tableau_element[2]=chargement_element("../FILE/element/terrain vague");
-    c.tableau_element[2].texture = LoadTexture("../image/terrain_vague.png");
-
     ///////////////////////ruine/////////////////////////////
-    c.tableau_element[3]=chargement_element("../FILE/element/ruine");
-    c.tableau_element[3].texture = LoadTexture("../image/ruin.png");
+    c.tableau_element[2]=chargement_element("../FILE/element/ruine");
+    c.tableau_element[2].texture = LoadTexture("../image/ruin.png");
+
+    ///////////////////////terrain vague/////////////////////////////
+    c.tableau_element[3]=chargement_element("../FILE/element/terrain vague");
+    c.tableau_element[3].texture = LoadTexture("../image/terrain_vague.png");
 
     ///////////////////////cabane-en-bois/////////////////////////////
     c.tableau_element[4]=chargement_element("../FILE/element/cabane");
@@ -100,10 +100,18 @@ city initialisation(){
     c = chargement_total_element();
     for (int i = 0; i < colones; i++) {
         for (int j = 0; j < ligne; j++) {
-            c.plateau[i][j] = 0;
+            c.plateau[i][j].numero = 0;
+            c.plateau[i][j].temps = 0;
         }
     }
     c.joueur1.element_choisie = NULL;
     c = chargement_base(c);
+
+    c.tableau_texture[0] = LoadTexture("../image/horloge.png");
+    c.tableau_texture[1] = LoadTexture("../image/monnaie.png");
+    c.tableau_texture[2] = LoadTexture("../image/habitant.png");
+    c.tableau_texture[3] = LoadTexture("../image/electriciter.png");
+    c.tableau_texture[4] = LoadTexture("../image/eau.png");
+
     return c;
 }
