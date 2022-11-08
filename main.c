@@ -10,17 +10,7 @@ int main() {
     Vector2 ballPosition = { -100.0f, -100.0f };
     int x = 0;
     int y = 0;
-    city c = initialisation();
 
-    for (int i = 0; i < colones; i++) {
-        for (int j = 0; j < ligne; j++) {
-            c.plateau[i][j] = 0;
-        }
-    }
-    c.plateau[10][10] = 1;
-    c.tableau_element[1].color = RED;
-    c.tableau_element[1].espacement_x = 3;
-    c.tableau_element[1].espacement_y = 3;
     InitWindow(screenWidth, screenHeight, "raylib [core] example - 2d camera mouse zoom");
     city c = initialisation();
 
@@ -60,6 +50,9 @@ int main() {
     {
         afficherToolBoxe(Toolboxes);
         aggrandirRectangle(x, y, Toolboxes);
+        evolution(c.plateau);
+        calcul(&c);
+        affichage(c);
 
 
             x = GetMouseX();
@@ -123,16 +116,8 @@ int main() {
 
 
 
-        for (int i = 20; i < (ligne+1)*espacement+20; i+=espacement) {
-            DrawLine(i, 20, i, colones*espacement+20, BLUE);
-        }
-        double time1 =GetTime();
-        char time[15] = {0};
-        sprintf(time, "%.2lf", GetTime());
-        DrawText(time, 10, 10, 10, BLUE);
-        evolution(c.plateau);
-        calcul(&c);
-        affichage(c);
+
+
 
     }
     UnloadTexture(c.tableau_element[1].texture );
