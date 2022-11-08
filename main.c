@@ -1,12 +1,7 @@
 
 
-#include <stdio.h>
-#include "raylib.h"
-#include "rlgl.h"
-#include "affichage.h"
-#include "raymath.h"
-#include "structure et macros/macros.h"
-#include "structure et macros/STRUCTURE.h"
+#include "structure et macros/include.h"
+
 
 int main() {
     // Initialisation
@@ -15,7 +10,7 @@ int main() {
     Vector2 ballPosition = { -100.0f, -100.0f };
     int x = 0;
     int y = 0;
-    struct ece_city c;
+    city c = initialisation();
 
     for (int i = 0; i < colones; i++) {
         for (int j = 0; j < ligne; j++) {
@@ -27,6 +22,30 @@ int main() {
     c.tableau_element[1].espacement_x = 3;
     c.tableau_element[1].espacement_y = 3;
     InitWindow(screenWidth, screenHeight, "raylib [core] example - 2d camera mouse zoom");
+    city c = initialisation();
+
+    for(int i = 0 ; i<30 ;i ++){
+        c.plateau[10][i].numero = 1;
+    }
+
+    c.plateau[0][0].numero = 2;
+
+    c.plateau[20][0].numero = 3;
+    c.plateau[20][0].temps = 15;
+
+    c.plateau[30][0].numero = 4;
+    c.plateau[30][0].temps = 15;
+
+    c.plateau[20][20].numero = 5;
+    c.plateau[20][20].temps = 15;
+
+    c.plateau[20][10].numero = 6;
+    c.plateau[20][10].temps = 15;
+
+    c.plateau[30][20].numero = 7;
+    c.plateau[30][10].numero = 8;
+    c.plateau[0][30].numero = 9;
+
     Color background = WHITE;
     Color Toolboxes = BLACK;
     Color rond = BLANK;
@@ -111,33 +130,12 @@ int main() {
         char time[15] = {0};
         sprintf(time, "%.2lf", GetTime());
         DrawText(time, 10, 10, 10, BLUE);
+        evolution(c.plateau);
+        calcul(&c);
+        affichage(c);
 
-        for (int i = 20; i < (colones+1)*espacement+20; i+=espacement) {
-            DrawLine(20, i, ligne*espacement+20, i, BLUE );
-        }
-        for (int i = 0; i < colones; i++) {
-            for (int j = 0; j < ligne; j++) {
-               if (c.plateau[i][j]!=0){
-                   for(int x = 0 ; x < c.tableau_element[c.plateau[i][j]].espacement_x; x++){
-                       for(int y = 0 ; y < c.tableau_element[c.plateau[i][j]].espacement_y; y++){
-                           DrawRectangle((i+x)*espacement+20,(j+y)*espacement+20, espacement, espacement, c.tableau_element[c.plateau[i][j]].color);
-                       }
-                   }
-
-               }
-            }
-        }
-
-
-
-        //sprintf_s(time,"%d",c.ece_flouz);
-        //DrawText(, 1100/2, 100, 10, BLUE);
-
-
-
-
-        EndDrawing();
     }
+    UnloadTexture(c.tableau_element[1].texture );
     CloseWindow();
     return 0;
 }
