@@ -261,3 +261,24 @@ void afficherNiveau0(Color Toolboxes){
     DrawRectangleLines(1100 / 2 +100+ 90, 400, 80, 80, Toolboxes);
     DrawText("eau", 1100 / 2 +100+ 90 + 5, 400, 20, Toolboxes);
 }
+
+
+void affichageCercleAchat(Color noir, Color blanc){
+    DrawText("Voulez-vous acheter? ", 1100 / 2 + 95, 520, 20, noir);
+
+    DrawCircle(1100 / 2 + 140, 580, 40, noir);
+    DrawText("OUI ", 1100 / 2 + 120, 570, 20, blanc);
+
+    DrawCircle(1100 / 2 + 240, 580, 40, noir);
+    DrawText("NON ", 1100 / 2 + 220, 570, 20, blanc);
+}
+
+void achat(city* c,Color noir, Color blanc){
+    affichageCercleAchat(noir, blanc);
+
+    if ((GetMouseX() - (1100 / 2 + 140)) * (GetMouseX() - (1100 / 2 + 140)) + (GetMouseY() - 580) * (GetMouseY() - 580) < 40 * 40 && IsMouseButtonPressed(1)){
+        if (c->tableau_element[c->joueur1.element_choisie].prix <= c->ece_flouz) {
+            c->ece_flouz = c->ece_flouz - c->tableau_element[c->joueur1.element_choisie].prix;
+        }
+    }
+}

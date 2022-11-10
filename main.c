@@ -1,6 +1,7 @@
 
 
 #include "structure et macros/include.h"
+#include "test.h"
 
 
 int main() {
@@ -42,6 +43,8 @@ int main() {
     Color rond1 = BLANK;
     Color rond2 = BLANK;
     Color rond3 = BLANK;
+    Color noir=BLANK;
+    Color blanc=BLANK;
     //Color rond1 = NULL;
 
     SetTargetFPS(60);
@@ -53,17 +56,23 @@ int main() {
         evolution(c.plateau);
         calcul(&c);
         affichage(c);
+        achat(&c,noir, blanc);
 
 
-            x = GetMouseX();
+
+        x = GetMouseX();
             y = GetMouseY();
             if (clickNiveauUn(x,y) == 1) {
                 Toolboxes = WHITE;
+                noir = BLANK;
+                blanc = BLANK;
                 afficherNiveau1(Toolboxes);
                 //background = YELLOW;
             }
             if (clickNiveauDeux(x,y) == 1){
                 Toolboxes = WHITE;
+                noir = BLANK;
+                blanc = BLANK;
                 afficherNiveau2(Toolboxes);
                 //background = BLUE;
             }
@@ -77,37 +86,66 @@ int main() {
                 rond1 = BLANK;
                 rond2 = BLANK;
                 rond3 = BLANK;
+                noir = BLANK;
+                blanc = BLANK;
             }
             if (clickCaseMaison(x,y)==1){
                 rond = RED;
+                blanc = WHITE;
+                noir = BLACK;
                 //rond1 = RED;
                 ballPosition = GetMousePosition();
                 DrawCircleV(ballPosition, 40, rond);
+                c.joueur1.element_choisie = 3;
             }
             if (clickCaseRoute(x,y)==1){
                 rond1 = BLUE;
+                blanc = WHITE;
+                noir = BLACK;
                 ballPosition = GetMousePosition();
                 DrawCircleV(ballPosition, 40, rond1);
+                c.joueur1.element_choisie = 1;
+
 
             }
             if (clickCaseElec(x,y)==1){
                 rond2 = GREEN;
+                blanc = WHITE;
+                noir = BLACK;
                 ballPosition = GetMousePosition();
                 DrawCircleV(ballPosition, 40, rond2);
+                c.joueur1.element_choisie = 8;
 
             }
             if (clickCaseEau(x,y)==1){
                 rond3 = YELLOW;
+                blanc = WHITE;
+                noir = BLACK;
                 ballPosition = GetMousePosition();
                 DrawCircleV(ballPosition, 40, rond3);
+                c.joueur1.element_choisie = 9;
 
+            }
+
+            // si il refuse finalement l'achat
+            if((GetMouseX() - (1100 / 2 + 240)) * (GetMouseX() - (1100 / 2 + 240)) + (GetMouseY() - 580) * (GetMouseY() - 580) < 40 * 40 && IsMouseButtonDown(1)){
+            DrawText("Achat  ", 1100 / 2 + 95, 500, 20, noir);
+            noir = BLANK;
+            blanc= BLANK;
+            }
+
+
+            if (c.tableau_element[c.joueur1.element_choisie].prix > c.ece_flouz){
+                DrawText("Vous ne pouvez pas acheter, ", 1100 / 2 + 95, 500, 20, noir);
+                DrawText("par manque de moyens.", 1100 / 2 + 95, 520, 20, noir);
+                noir = BLANK;
+                blanc = BLANK;
             }
 
 
         BeginDrawing();
         ClearBackground(background);
         ballPosition = GetMousePosition();
-        DrawCircleV(ballPosition, 40, rond);
         DrawCircleV(ballPosition, 40, rond1);
         DrawCircleV(ballPosition, 40, rond2);
         DrawCircleV(ballPosition, 40, rond3);
