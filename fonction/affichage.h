@@ -11,6 +11,7 @@ void afficherToolBoxe(Color Toolboxes);
 
 void aggrandirRectangle( int x, int y,Color Toolboxes);
 
+void achat(city* c,Color noir, Color blanc);
 
 int clickNiveauDeux(int x, int y);
 int clickNiveauUn(int x, int y);

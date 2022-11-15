@@ -1,7 +1,3 @@
-//
-// Created by leque on 01/11/2022.
-//
-
 #ifndef ECE_CITY_3H_STRUCTURE_H
 #define ECE_CITY_3H_STRUCTURE_H
 #include "raylib.h"

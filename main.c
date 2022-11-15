@@ -1,7 +1,4 @@
-
-
 #include "structure et macros/include.h"
-#include "test.h"
 
 
 int main() {
@@ -15,27 +12,10 @@ int main() {
     InitWindow(screenWidth, screenHeight, "raylib [core] example - 2d camera mouse zoom");
     city c = initialisation();
 
-    for(int i = 0 ; i<30 ;i ++){
-        c.plateau[10][i].numero = 1;
-    }
 
-    c.plateau[0][0].numero = 2;
-
-    c.plateau[20][0].numero = 3;
-    c.plateau[20][0].temps = 15;
-
-    c.plateau[30][0].numero = 4;
-    c.plateau[30][0].temps = 15;
 
     c.plateau[20][20].numero = 5;
     c.plateau[20][20].temps = 15;
-
-    c.plateau[20][10].numero = 6;
-    c.plateau[20][10].temps = 15;
-
-    c.plateau[30][20].numero = 7;
-    c.plateau[30][10].numero = 8;
-    c.plateau[0][30].numero = 9;
 
     Color background = WHITE;
     Color Toolboxes = BLACK;
@@ -53,7 +33,7 @@ int main() {
     {
         afficherToolBoxe(Toolboxes);
         aggrandirRectangle(x, y, Toolboxes);
-        evolution(c.plateau);
+        evolution(c.plateau, &c);
         calcul(&c);
         affichage(c);
         achat(&c,noir, blanc);
@@ -129,7 +109,6 @@ int main() {
 
             // si il refuse finalement l'achat
             if((GetMouseX() - (1100 / 2 + 240)) * (GetMouseX() - (1100 / 2 + 240)) + (GetMouseY() - 580) * (GetMouseY() - 580) < 40 * 40 && IsMouseButtonDown(1)){
-            DrawText("Achat  ", 1100 / 2 + 95, 500, 20, noir);
             noir = BLANK;
             blanc= BLANK;
             }

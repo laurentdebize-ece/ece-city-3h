@@ -1,7 +1,3 @@
-//
-// Created by leque on 04/11/2022.
-//
-
 #include "../structure et macros/include.h"
 
 void affichage(city c) {
@@ -275,10 +271,12 @@ void affichageCercleAchat(Color noir, Color blanc){
 
 void achat(city* c,Color noir, Color blanc){
     affichageCercleAchat(noir, blanc);
-
+    // si il clique sur oui
     if ((GetMouseX() - (1100 / 2 + 140)) * (GetMouseX() - (1100 / 2 + 140)) + (GetMouseY() - 580) * (GetMouseY() - 580) < 40 * 40 && IsMouseButtonPressed(1)){
+        // qu'il a assez d'argent
         if (c->tableau_element[c->joueur1.element_choisie].prix <= c->ece_flouz) {
             c->ece_flouz = c->ece_flouz - c->tableau_element[c->joueur1.element_choisie].prix;
+            // s'il achete une centrale elec
         }
     }
 }
