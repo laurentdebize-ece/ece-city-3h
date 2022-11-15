@@ -33,9 +33,14 @@ element chargement_element(char *nomFichier){
 }
 city chargement_total_element(){
     city c;
+    int x=0;
+    int y=0;
+    x=GetMouseX();
+    y=GetMouseY();
 
     ///////////////////////pas element/////////////////////////////
     c.tableau_element[0]=chargement_element("../FILE/element/rien");
+
 
 
     ///////////////////////route/////////////////////////////
@@ -73,6 +78,14 @@ city chargement_total_element(){
      ///////////////////////chateau d'eau/////////////////////////////
     c.tableau_element[9]=chargement_element("../FILE/element/chateau d'eau");
     c.tableau_element[9].texture = LoadTexture("../image/chateau-deau.png");
+
+    //////////////////////eau///////////////////////////////
+    //c.tableau_element[10]=
+    //c.tableau_element[10].texture= DrawRectangleLines(x,y,15,15,BLUE);
+
+    ////////////////////elec////////////////////////////////
+    //c.tableau_element[10]=
+    //c.tableau_element[11].texture= DrawRectangleLines(x,y,15,15,YELLOW);
 
     return  c;
 }
