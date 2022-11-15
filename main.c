@@ -52,6 +52,9 @@ int main() {
     Color couleurMaison = BLANK;
     Color couleurMaison1 = WHITE;
 
+    Color noir=BLANK;
+    Color blanc=BLANK;
+    //Color rond1 = NULL;
 
     SetTargetFPS(60);
     //game loop
