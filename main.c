@@ -1,15 +1,15 @@
 
-
 #include <stdio.h>
 #include "raylib.h"
 #include "rlgl.h"
+#include "menu.h"
 #include "raymath.h"
 #include "structure et macros/macros.h"
 #include "structure et macros/STRUCTURE.h"
 
 int main() {
     // Initialisation
-    const int screenWidth = 1100;
+  /* const int screenWidth = 1100;
     const int screenHeight = 800;
     struct ece_city c;
 
@@ -58,4 +58,7 @@ int main() {
     }
     CloseWindow();
     return 0;
+*/
+  menu();
+
 }

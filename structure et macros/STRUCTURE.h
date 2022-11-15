@@ -25,5 +25,6 @@ struct ece_city{///ajouter compteur temps
     int nb_habitant;
     int nb_electricite;
     int nb_eau;
+    bool mode;
 }city;
 #endif //ECE_CITY_3H_STRUCTURE_H
