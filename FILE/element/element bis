@@ -1,4 +1,4 @@
-Color color couleur a l'affichage
+int prix (-1 si pas achetable)
 int nb_habitants nombre d'habitant dans la structure
 int espacement_x la place qu'elle prend en x
 int espacement_y le place qu'elle prend en y

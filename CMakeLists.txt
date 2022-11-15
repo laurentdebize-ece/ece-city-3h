@@ -1,5 +1,4 @@
-cmake_minimum_required(VERSION 3.20.2)
-
+cmake_minimum_required(VERSION 3.23)
 
 project(ece_city_3h C)
 
@@ -25,7 +24,7 @@ endif()
 
 # Our Project
 
-add_executable(${PROJECT_NAME} main.c menu.c menu.h "structure et macros/STRUCTURE.h" "structure et macros/macros.h")
+add_executable(${PROJECT_NAME} main.c "structure et macros/STRUCTURE.h" "structure et macros/macros.h")
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)
 
@@ -41,4 +40,3 @@ if (APPLE)
     target_link_libraries(${PROJECT_NAME} "-framework Cocoa")
     target_link_libraries(${PROJECT_NAME} "-framework OpenGL")
 endif()
-
