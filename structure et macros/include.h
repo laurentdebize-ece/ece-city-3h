@@ -20,5 +20,6 @@
 #include "../fonction/affichage.h"
 #include "../fonction/evolution.h"
 #include "../fonction/calcul.h"
+#include "../fonction/3d.h"
 
 #endif //ECE_CITY_3H_INCLUDE_H

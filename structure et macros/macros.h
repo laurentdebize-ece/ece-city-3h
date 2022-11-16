@@ -10,5 +10,10 @@
 #define espacement 15
 #define positionFenetre 100
 #define nombreElement 10
-#define nombreTexture 5
+#define nombreTexture 6
+
+
+#define maison_x 24
+#define maison_z 22
+
 #endif //ECE_CITY_3H_MACROS_H

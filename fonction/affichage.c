@@ -334,3 +334,158 @@ cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *couleur
     }
 
 }
+
+void affichage3d(city c, Camera3D camera, city *c_adresse) {
+
+    if (c.etage == 1) {
+        int x = (800 - GetMouseX()) / 11.4;
+        int y = -(92 - GetMouseY()) / 11.4;
+        camera.position = (Vector3) {0, 150, 0};
+        camera.target = (Vector3) {-0.1f, 10, 0};
+        if (x >= 0 && x <= 35 && y >= 0 && y <= 45) {
+            c.plateau[y][x].numero = 1;
+            if (IsMouseButtonDown(1)) {
+                c_adresse->plateau[y][x].numero = 1;
+                c_adresse->etage = 0;
+            }
+        }
+    }
+    BeginDrawing();
+
+    ClearBackground(SKYBLUE);
+    BeginMode3D(camera);
+    DrawGrid(46, 2);
+    for (int i = -colones - 1; i <= colones + 1; i += 2) {
+        for (int j = -ligne - 1; j <= ligne + 1; j += 2) {
+            DrawModel(c.tableau_element[0].model, (Vector3) {i, -0.1, j}, 1, WHITE);
+        }
+    }
+
+    int i2 = 0;
+    int j2 = 0;
+    for (int i = 0; i <= (colones-1 ) * 2; i += 2) {
+        i2 = (i) / 2;
+        for (int j = 0; j <= (ligne-1 ) * 2; j += 2) {
+            j2 = (j) / 2;
+            if (c.plateau[i2][j2].numero != 0) {
+                if (c.plateau[i2][j2].numero == 1) {
+                    affichage_route(c, i, j, i2, j2);
+                } else {
+                    if (c.plateau[i2][j2].numero == 9) {
+                        DrawModel(c.tableau_element[c.plateau[i2][j2].numero].model,
+                                  (Vector3) {(float) 6 + (float) i +
+                                             c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
+                                             c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
+                                             (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z},
+                                  c.tableau_element[c.plateau[i2][j2].numero].scale, WHITE);
+                    }
+                    DrawModel(c.tableau_element[c.plateau[i2][j2].numero].model,
+                              (Vector3) {(float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
+                                         c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
+                                         (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z},
+                              c.tableau_element[c.plateau[i2][j2].numero].scale, WHITE);
+                }
+            }
+        }
+    }
+
+    EndMode3D();
+    DrawTexture(c.tableau_texture[0], 60, 20, WHITE);
+    DrawTexture(c.tableau_texture[1], 260, 20, WHITE);
+    DrawTexture(c.tableau_texture[2], 460, 20, WHITE);
+    DrawTexture(c.tableau_texture[3], 660, 20, WHITE);
+    DrawTexture(c.tableau_texture[4], 860, 20, WHITE);
+    DrawTexture(c.tableau_texture[5], 1060, 5, WHITE);
+
+    char texte[15] = {0};
+    sprintf(texte, "%.2lf", GetTime());
+    DrawText(texte, 100, 25, 20, BLUE);
+    sprintf(texte, "%d", c.ece_flouz);
+    DrawText(texte, 300, 25, 20, BLUE);
+    sprintf(texte, "%d", c.nb_habitant);
+    DrawText(texte, 500, 25, 20, BLUE);
+    sprintf(texte, "%d", c.nb_electricite);
+    DrawText(texte, 700, 25, 20, BLUE);
+    sprintf(texte, "%d", c.nb_eau);
+    DrawText(texte, 900, 25, 20, BLUE);
+
+    EndDrawing();
+}
+
+void affichage_route(city c, int i, int j, int i2, int j2) {
+    int compteur = 0;
+    if (c.plateau[i2 + 1][j2].numero == 1) {
+        compteur++;
+    }
+    if (c.plateau[i2 - 1][j2].numero == 1) {
+        compteur++;
+    }
+    if (c.plateau[i2][j2 + 1].numero == 1) {
+        compteur++;
+    }
+    if (c.plateau[i2][j2 - 1].numero == 1) {
+        compteur++;
+    }
+    if (compteur >= 3) {
+        DrawModel(c.model_route[0],
+                  (Vector3) {-2.55f + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
+                             c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
+                             -2 + (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z},
+                  c.tableau_element[c.plateau[i2][j2].numero].scale, WHITE);
+    } else if (c.plateau[i2 + 1][j2].numero == 1 && c.plateau[i2][j2 + 1].numero == 1) {
+        DrawModelEx(c.model_route[1],
+                    (Vector3) {-0.48f + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
+                               c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
+                               -2.0f + (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z},
+                    (Vector3) {0, 0, 0},
+                    0,
+                    (Vector3) {0.25f, 0.25f, 0.25f},
+                    WHITE);
+    } else if (c.plateau[i2 + 1][j2].numero == 1 && c.plateau[i2][j2 - 1].numero == 1) {
+        DrawModelEx(c.model_route[1],
+                    (Vector3) {-2.5f + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
+                               c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
+                               -4.1f + (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z},
+                    (Vector3) {0, 1, 0},
+                    90,
+                    (Vector3) {0.25f, 0.25f, 0.25f},
+                    WHITE);
+    } else if (c.plateau[i2 - 1][j2].numero == 1 && c.plateau[i2][j2 - 1].numero == 1) {
+        DrawModelEx(c.model_route[1],
+                    (Vector3) {-4.62f + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
+                               c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
+                               -2.0f + (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z},
+                    (Vector3) {0, 1, 0},
+                    180,
+                    (Vector3) {0.25f, 0.25f, 0.25f},
+                    WHITE);
+
+    } else if (c.plateau[i2 - 1][j2].numero == 1 && c.plateau[i2][j2 + 1].numero == 1) {
+        DrawModelEx(c.model_route[1],
+                    (Vector3) {-2.58f + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
+                               c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
+                               +0.1f + (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z},
+                    (Vector3) {0, 1, 0},
+                    -90,
+                    (Vector3) {0.25f, 0.25f, 0.25f},
+                    WHITE);
+
+    } else if (c.plateau[i2 + 1][j2].numero == 1 || c.plateau[i2 - 1][j2].numero == 1) {
+        DrawModel(c.tableau_element[c.plateau[i2][j2].numero].model,
+                  (Vector3) {(float) -2 + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
+                             c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
+                             -2 + (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z},
+                  c.tableau_element[c.plateau[i2][j2].numero].scale, WHITE);
+    } else {
+        DrawModelEx(c.tableau_element[c.plateau[i2][j2].numero].model,
+                    (Vector3) {-2.55f + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
+                               c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
+                               -2.55f + (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z},
+                    (Vector3) {0, 1, 0},
+                    90,
+                    (Vector3) {c.tableau_element[c.plateau[i2][j2].numero].scale,
+                               c.tableau_element[c.plateau[i2][j2].numero].scale,
+                               c.tableau_element[c.plateau[i2][j2].numero].scale},
+                    WHITE);
+    }
+}
