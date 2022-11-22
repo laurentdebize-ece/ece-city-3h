@@ -92,35 +92,12 @@ int main() {
 
 
     const int screenWidth = 1200;
-    const int screenHeight = 700;
+    const int screenHeight =700;
 
 
-    InitWindow(screenWidth, screenHeight, "raylib [core] example - 3d camera free");
+    InitWindow(screenWidth, screenHeight, "ECE CITY");
 
     city c = initialisation();
-
-    for(int i = 0 ; i<colones;i ++){
-        c.plateau[i][15].numero = 1;
-    }
-
-    c.plateau[0][0].numero = 2;
-
-    c.plateau[20][0].numero = 3;
-    c.plateau[20][0].temps = 15;
-
-    c.plateau[30][0].numero = 4;
-    c.plateau[30][0].temps = 15;
-
-    c.plateau[20][20].numero = 5;
-    c.plateau[20][20].temps = 15;
-
-    c.plateau[20][10].numero = 6;
-    c.plateau[20][10].temps = 15;
-
-    c.plateau[30][20].numero = 7;
-    c.plateau[30][10].numero = 8;
-    c.plateau[0][30].numero = 9;
-
 
     // Define the camera to look into our 3d world
     Camera3D camera = {0};
@@ -143,12 +120,15 @@ int main() {
     while (!WindowShouldClose())        // Detect window close button or ESC key
     {
         if (GetMouseX() > 1060 && GetMouseX() < 1360 && GetMouseY() > 20 && GetMouseY() < 100) {
-            if (IsMouseButtonDown(1)) {
-                c.etage=1;
+            if (IsMouseButtonPressed(1)) {
+                if (c.joueur1.element_choisie == 0){
+                    afficherToolBoxe3d(c,camera,&c);
+                }
+                else{
+                    c.joueur1.element_choisie = 0;
+                }
+
             }
-        }
-        if (IsKeyDown('Z')){
-            c.etage=1;
         }
         evolution(c.plateau,&c);
         calcul(&c);

@@ -99,7 +99,6 @@ city chargement_total_element(){
     c.tableau_element[8]=chargement_element("../FILE/element/centrale");
     c.tableau_element[8].texture = LoadTexture("../image/centrale-electrique.png");
     c.tableau_element[8].model = LoadModel("../model3d/centrale.glb");
-    c.tableau_element[8].model.transform = MatrixScale(2, 4, 1);
 
      ///////////////////////chateau d'eau/////////////////////////////
     c.tableau_element[9]=chargement_element("../FILE/element/chateau d'eau");
@@ -145,7 +144,7 @@ city initialisation(){
             c.plateau[i][j].temps = 0;
         }
     }
-    c.joueur1.element_choisie = NULL;
+    c.joueur1.element_choisie = 0;
     c = chargement_base(c);
 
     c.tableau_texture[0] = LoadTexture("../image/horloge.png");
@@ -154,6 +153,8 @@ city initialisation(){
     c.tableau_texture[3] = LoadTexture("../image/electriciter.png");
     c.tableau_texture[4] = LoadTexture("../image/eau.png");
     c.tableau_texture[5] = LoadTexture("../image/+.png");
+    c.tableau_texture[6] = LoadTexture("../image/poubelle fermer.png");
+    c.tableau_texture[7] = LoadTexture("../image/poubelle ouvert.png");
     for (int i =0;i< 10 ;i++){
         c.v[i].model = LoadModel("../model3d/voiture.glb");
     }
