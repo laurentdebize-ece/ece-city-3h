@@ -94,7 +94,6 @@ int main() {
     const int screenWidth = 1200;
     const int screenHeight = 700;
 
-
     InitWindow(screenWidth, screenHeight, "raylib [core] example - 3d camera free");
 
     city c = initialisation();
@@ -139,6 +138,9 @@ int main() {
     SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
+    Color noir = BLANK;
+    Color blanc = BLANK;
+
     // Main game loop
     while (!WindowShouldClose())        // Detect window close button or ESC key
     {
@@ -152,6 +154,7 @@ int main() {
         }
         evolution(c.plateau,&c);
         calcul(&c);
+        achat(&c, noir, blanc);
         UpdateCamera(&camera);
         if(camera.position.y <0){
             camera.position.y =0;

@@ -229,9 +229,8 @@ void afficherEmplacementMaison(Color rond, Color rond1, Color rond2, Color rond3
     DrawRectangleLines(x, y, espacement * 2, espacement * 2, rond3);
 }
 
-void
-cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *couleurMaison1, Color *couleurMaison, Color *rond,
-                  Color *rond1, Color *rond2, Color *rond3) {
+void cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *couleurMaison1, Color *couleurMaison, Color *rond,
+                  Color *rond1, Color *rond2, Color *rond3, Color noir, Color blanc) {
     x = GetMouseX();
     y = GetMouseY();
 
@@ -267,6 +266,8 @@ cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *couleur
         int j = 0;
         *couleurMaison = WHITE;
         *rond = BLACK;
+        blanc = WHITE;
+        noir = BLACK;
         DrawRectangleLines(x, y, espacement * 3, espacement * 3, *rond);
         c->plateau[i][j].numero = 0;
         DrawTexture(c->tableau_element[c->plateau[i][j].numero].texture, x, y, *couleurMaison);
@@ -278,6 +279,8 @@ cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *couleur
         int j = 0;
         *rond1 = RED;
         *couleurMaison = WHITE;
+        blanc = WHITE;
+        noir = BLACK;
         DrawRectangleLines(x, y, espacement * 1, espacement * 1, *rond1);
         c->plateau[i][j].numero = 0;
         DrawTexture(c->tableau_element[c->plateau[i][j].numero].texture, x, y, *couleurMaison);
@@ -290,6 +293,8 @@ cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *couleur
         int j = 0;
         *couleurMaison = WHITE;
         *rond2 = DARKBROWN;
+        blanc = WHITE;
+        noir = BLACK;
         DrawRectangleLines(x, y, espacement * 2, espacement * 2, *rond2);
         c->plateau[i][j].numero = 0;
         DrawTexture(c->tableau_element[c->plateau[i][j].numero].texture, x, y, *couleurMaison);
@@ -303,15 +308,30 @@ cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *couleur
         int j = 0;
         *couleurMaison = WHITE;
         *rond3 = DARKBLUE;
+        blanc = WHITE;
+        noir = BLACK;
         DrawRectangleLines(x, y, espacement * 2, espacement * 2, *rond3);
         c->plateau[i][j].numero = 0;
         DrawTexture(c->tableau_element[c->plateau[i][j].numero].texture, x, y, *couleurMaison);
         c->joueur1.element_choisie = 9;
 
         a = 1;
-
-
     }
+
+    if((GetMouseX() - (1100 / 2 + 240)) * (GetMouseX() - (1100 / 2 + 240)) + (GetMouseY() - 580) * (GetMouseY() - 580) < 40 * 40 && IsMouseButtonDown(1)){
+        DrawText("Achat  ", 1100 / 2 + 95, 500, 20, noir);
+        noir = BLANK;
+        blanc= BLANK;
+    }
+
+
+    if (c->tableau_element[c->joueur1.element_choisie].prix > c->ece_flouz){
+        DrawText("Vous ne pouvez pas acheter, ", 1100 / 2 + 95, 500, 20, noir);
+        DrawText("par manque de moyens.", 1100 / 2 + 95, 520, 20, noir);
+        noir = BLANK;
+        blanc = BLANK;
+    }
+
     if (clickPlateau(x, y) == 1 && c->joueur1.element_choisie != -1) {
 
         *rond = BLANK;
@@ -487,5 +507,26 @@ void affichage_route(city c, int i, int j, int i2, int j2) {
                                c.tableau_element[c.plateau[i2][j2].numero].scale,
                                c.tableau_element[c.plateau[i2][j2].numero].scale},
                     WHITE);
+    }
+}
+
+
+void affichageCercleAchat(Color noir, Color blanc){
+    DrawText("Voulez-vous acheter? ", 1100 / 2 + 95, 520, 20, noir);
+
+    DrawCircle(1100 / 2 + 140, 580, 40, noir);
+    DrawText("OUI ", 1100 / 2 + 120, 570, 20, blanc);
+
+    DrawCircle(1100 / 2 + 240, 580, 40, noir);
+    DrawText("NON ", 1100 / 2 + 220, 570, 20, blanc);
+}
+
+void achat(city* c,Color noir, Color blanc){
+    affichageCercleAchat(noir, blanc);
+
+    if ((GetMouseX() - (1100 / 2 + 140)) * (GetMouseX() - (1100 / 2 + 140)) + (GetMouseY() - 580) * (GetMouseY() - 580) < 40 * 40 && IsMouseButtonPressed(1)){
+        if (c->tableau_element[c->joueur1.element_choisie].prix <= c->ece_flouz) {
+            c->ece_flouz = c->ece_flouz - c->tableau_element[c->joueur1.element_choisie].prix;
+        }
     }
 }
