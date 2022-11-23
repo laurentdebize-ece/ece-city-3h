@@ -98,7 +98,7 @@ int main() {
     InitWindow(screenWidth, screenHeight, "ECE CITY");
 
     city c = initialisation();
-
+    lire_sauvegarde(&c);
     // Define the camera to look into our 3d world
     Camera3D camera = {0};
     camera.position = (Vector3) {30.0f, 30.0f, 30.0f}; // Camera position
@@ -142,6 +142,7 @@ int main() {
 
         affichage3d(c,camera,&c);
     }
+    sauvegarde(c);
     for (int i = 0; i < 10; i++) {
         UnloadTexture(c.tableau_element[i].texture);
         UnloadModel(c.tableau_element[i].model);

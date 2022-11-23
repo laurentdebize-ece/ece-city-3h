@@ -573,7 +573,8 @@ void affichage3d(city c, Camera3D camera, city *c_adresse) {
 
 
     char texte[15] = {0};
-    sprintf(texte, "%.2lf", GetTime());
+    double temps = GetTime() - c.temps;
+    sprintf(texte, "%.2lf",temps);
     DrawText(texte, 100, 25, 20, BLUE);
     sprintf(texte, "%d", c.ece_flouz);
     DrawText(texte, 300, 25, 20, BLUE);

@@ -158,6 +158,7 @@ city initialisation(){
     for (int i =0;i< 10 ;i++){
         c.v[i].model = LoadModel("../model3d/voiture.glb");
     }
+    c.temps = GetTime();
 
 
     return c;
