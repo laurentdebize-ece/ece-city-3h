@@ -10,7 +10,7 @@
 #define espacement 15
 #define positionFenetre 100
 #define nombreElement 10
-#define nombreTexture 6
+#define nombreTexture 8
 
 
 #define maison_x 24

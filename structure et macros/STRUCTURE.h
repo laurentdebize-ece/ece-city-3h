@@ -37,6 +37,7 @@ typedef struct ece_city{///ajouter compteur temps
     Model model_route[3];
     voiture v[10];
     joueur joueur1;
+    double temps;
     int etage;//tool boxe =1
     int ece_flouz;
     int nb_habitant;
