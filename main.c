@@ -1,3 +1,5 @@
+#include "structure et macros/include.h"
+
 
 
 #include <stdio.h>
@@ -12,24 +14,51 @@
     // Initialisation
     const int screenWidth = 1100;
     const int screenHeight = 800;
-    Vector2 ballPosition = { -100.0f, -100.0f };
+
     int x = 0;
     int y = 0;
+    int a=0;
 
     InitWindow(screenWidth, screenHeight, "raylib [core] example - 2d camera mouse zoom");
     city c = initialisation();
 
+    for(int i = 0 ; i<30 ;i ++){
+        c.plateau[10][i].numero = 1;
+    }
 
+    c.plateau[0][0].numero = 2;
+
+    c.plateau[20][0].numero = 3;
+    c.plateau[20][0].temps = 15;
+
+    c.plateau[30][0].numero = 4;
+    c.plateau[30][0].temps = 15;
 
     c.plateau[20][20].numero = 5;
     c.plateau[20][20].temps = 15;
 
+    c.plateau[20][10].numero = 6;
+    c.plateau[20][10].temps = 15;
+
+    c.plateau[30][20].numero = 7;
+    c.plateau[30][10].numero = 8;
+    c.plateau[0][30].numero = 9;
+
+
+    for (int i = 0; i < colones; i++) {
+        for (int j = 0; j < ligne; j++) {
+            c.plateau[i][j].numero = 0;
+        }
+    }
     Color background = WHITE;
     Color Toolboxes = BLACK;
     Color rond = BLANK;
     Color rond1 = BLANK;
     Color rond2 = BLANK;
     Color rond3 = BLANK;
+    Color couleurMaison = BLANK;
+    Color couleurMaison1 = WHITE;
+
     Color noir=BLANK;
     Color blanc=BLANK;
     //Color rond1 = NULL;
@@ -38,117 +67,107 @@
     //game loop
     while (!WindowShouldClose())        // Detect window close button or ESC key
     {
-        afficherToolBoxe(Toolboxes);
-        aggrandirRectangle(x, y, Toolboxes);
-        evolution(c.plateau, &c);
+
+
         calcul(&c);
-        affichage(c);
-        achat(&c,noir, blanc);
+        evolution(c.plateau,&c);
 
 
 
-        x = GetMouseX();
-            y = GetMouseY();
-            if (clickNiveauUn(x,y) == 1) {
-                Toolboxes = WHITE;
-                noir = BLANK;
-                blanc = BLANK;
-                afficherNiveau1(Toolboxes);
-                //background = YELLOW;
-            }
-            if (clickNiveauDeux(x,y) == 1){
-                Toolboxes = WHITE;
-                noir = BLANK;
-                blanc = BLANK;
-                afficherNiveau2(Toolboxes);
-                //background = BLUE;
-            }
+        afficherSurLaSouris(c,couleurMaison,x,y);
+        affichage(c, x, y,couleurMaison);
 
-            if (clickNiveauZero(x,y) == 1){
-                Toolboxes=BLACK;
-                afficherNiveau0(Toolboxes);
-            }
-            if (clickNiveauBack(x,y)==1){
-                rond = BLANK;
-                rond1 = BLANK;
-                rond2 = BLANK;
-                rond3 = BLANK;
-                noir = BLANK;
-                blanc = BLANK;
-            }
-            if (clickCaseMaison(x,y)==1){
-                rond = RED;
-                blanc = WHITE;
-                noir = BLACK;
-                //rond1 = RED;
-                ballPosition = GetMousePosition();
-                DrawCircleV(ballPosition, 40, rond);
-                c.joueur1.element_choisie = 3;
-            }
-            if (clickCaseRoute(x,y)==1){
-                rond1 = BLUE;
-                blanc = WHITE;
-                noir = BLACK;
-                ballPosition = GetMousePosition();
-                DrawCircleV(ballPosition, 40, rond1);
-                c.joueur1.element_choisie = 1;
+        afficherToolBoxe(c,Toolboxes, couleurMaison1);
+        aggrandirRectangle(x, y, Toolboxes);
+        afficherEmplacementMaison(rond,rond1,rond2,rond3,x,y);
+        cliqueMenuGeneral(&c,x, y,a, &Toolboxes, &couleurMaison1,&couleurMaison, &rond, &rond1, &rond2, &rond3);
 
 
-            }
-            if (clickCaseElec(x,y)==1){
-                rond2 = GREEN;
-                blanc = WHITE;
-                noir = BLACK;
-                ballPosition = GetMousePosition();
-                DrawCircleV(ballPosition, 40, rond2);
-                c.joueur1.element_choisie = 8;
-
-            }
-            if (clickCaseEau(x,y)==1){
-                rond3 = YELLOW;
-                blanc = WHITE;
-                noir = BLACK;
-                ballPosition = GetMousePosition();
-                DrawCircleV(ballPosition, 40, rond3);
-                c.joueur1.element_choisie = 9;
-
-            }
-
-            // si il refuse finalement l'achat
-            if((GetMouseX() - (1100 / 2 + 240)) * (GetMouseX() - (1100 / 2 + 240)) + (GetMouseY() - 580) * (GetMouseY() - 580) < 40 * 40 && IsMouseButtonDown(1)){
-            noir = BLANK;
-            blanc= BLANK;
-            }
-
-
-            if (c.tableau_element[c.joueur1.element_choisie].prix > c.ece_flouz){
-                DrawText("Vous ne pouvez pas acheter, ", 1100 / 2 + 95, 500, 20, noir);
-                DrawText("par manque de moyens.", 1100 / 2 + 95, 520, 20, noir);
-                noir = BLANK;
-                blanc = BLANK;
-            }
-
-
-        BeginDrawing();
         ClearBackground(background);
-        ballPosition = GetMousePosition();
-        DrawCircleV(ballPosition, 40, rond1);
-        DrawCircleV(ballPosition, 40, rond2);
-        DrawCircleV(ballPosition, 40, rond3);
-        //DrawCircleV(ballPosition, 1, rond1);
-
-
-
-
-
-
-
     }
-    UnloadTexture(c.tableau_element[1].texture );
+    for(int i = 0;i<10;i++){
+     UnloadTexture(c.tableau_element[i].texture );
+    }
+
     CloseWindow();
     return 0;
-}*/
-int main(){
+}
+
+///////////////////////////////////////////////////////////////3D///////////////////////////////////////////////////////
+*/
+
+
+int main() {
+
+
+    const int screenWidth = 1200;
+    const int screenHeight =700;
+
+
+    InitWindow(screenWidth, screenHeight, "ECE CITY");
+
+    city c = initialisation();
+    //lire_sauvegarde(&c);
+    // Define the camera to look into our 3d world
+    Camera3D camera = {0};
+    camera.position = (Vector3) {30.0f, 30.0f, 30.0f}; // Camera position
+    camera.target = (Vector3) {0.0f, 0.0f, 0.0f};      // Camera looking at point
+    camera.up = (Vector3) {0.0f, 1.0f, 0.0f};          // Camera up vector (rotation towards target)
+    camera.fovy = 45.0f;                                // Camera field-of-view Y
+    camera.projection = CAMERA_PERSPECTIVE;                   // Camera mode type
+
+    Vector3 cubePosition = {1, 0, 1};
+
+    //Material* tileMaterial = LoadMaterials("../model3d/WoodHouse.mtl", &compt);
+
+    SetCameraMode(camera, CAMERA_FREE); // Set a free camera mode
+
+    SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
+    //--------------------------------------------------------------------------------------
+
+    Color noir = BLANK;
+    Color blanc = BLANK;
+
+    // Main game loop
+    while (!WindowShouldClose())        // Detect window close button or ESC key
+    {
+        if (GetMouseX() > 1060 && GetMouseX() < 1360 && GetMouseY() > 20 && GetMouseY() < 100) {
+            if (IsMouseButtonPressed(1)) {
+                if (c.joueur1.element_choisie == 0){
+                    afficherToolBoxe3d(c,camera,&c);
+                }
+                else{
+                    c.joueur1.element_choisie = 0;
+                }
+
+            }
+        }
+        evolution(c.plateau,&c);
+        calcul(&c);
+        achat(&c, noir, blanc);
+        UpdateCamera(&camera);
+        if(camera.position.y <0){
+            camera.position.y =0;
+        }
+
+
+
+
+        affichage3d(c,camera,&c);
+    }
+    sauvegarde(c);
+    for (int i = 0; i < 10; i++) {
+        UnloadTexture(c.tableau_element[i].texture);
+        UnloadModel(c.tableau_element[i].model);
+    }
+    for (int i = 0; i < nombreTexture; i++) {
+        UnloadTexture(c.tableau_texture[i]);
+    }
+    UnloadModel(c.model_route[0]);
+    UnloadModel(c.model_route[1]);
+    CloseWindow();
+}
+/*int main(){
     const int screenWidth = 1200;
     const int screenHeight = 700;
     int a=0;
@@ -199,4 +218,4 @@ int main(){
     //--------------------------------------------------------------------------------------
 
     return 0;
-}
+}*/

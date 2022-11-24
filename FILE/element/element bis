@@ -2,3 +2,7 @@ int prix (-1 si pas achetable)
 int nb_habitants nombre d'habitant dans la structure
 int espacement_x la place qu'elle prend en x
 int espacement_y le place qu'elle prend en y
+float deplacement en x affichage 3d
+float deplacement en y affichage 3d
+float deplacement en z affichage 3d
+float scale affichage 3d

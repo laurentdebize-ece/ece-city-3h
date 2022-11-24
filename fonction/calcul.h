@@ -1,6 +1,3 @@
-//
-// Created by leque on 05/11/2022.
-//
 
 #include "../structure et macros/STRUCTURE.h"
 

@@ -8,6 +8,13 @@ typedef struct case_element {
 }c_element;
 typedef struct element{
     Texture2D texture;///remplacer par image plus tard
+
+    Model model;
+    float decalage_x;
+    float decalage_y;
+    float decalage_z;
+    float scale;
+
     int nb_habitants;// 0 si pas habitant
     int prix;// -1 si pas achetable
     int espacement_x;
@@ -18,17 +25,81 @@ typedef struct joueur {
     int element_choisie;
 }joueur;
 
-
+typedef struct voiture {
+    int x;
+    int y;
+    Model model;
+}voiture;
 typedef struct ece_city{///ajouter compteur temps
     c_element plateau[colones][ligne];//45 colonnes sur 35 lignes
     element tableau_element[nombreElement];
     Texture2D tableau_texture[nombreTexture];
+    Model model_route[3];
+    voiture v[10];
     joueur joueur1;
-    int etage;
+    double temps;
+    int etage;//tool boxe =1
     int ece_flouz;
     int nb_habitant;
     int nb_electricite;
     int nb_eau;
     bool mode;
 }city;
+
+
+
+
+
+/////////////////////    BFS    /////////////////////////////////
+
+typedef int typage;
+typedef struct _cellule* Cellule;
+typedef struct _file* File;
+
+
+
+struct _cellule {
+    typage element;
+    struct _cellule *suivant;
+};
+
+struct _file {
+    int longueur;
+    Cellule tete;
+    Cellule queue;
+};
+
+/* Structure d'un arc*/
+struct Arc
+{
+    int sommet; // numero de sommet d'un arc adjacent au sommet initial
+    int valeur;
+    struct Arc* arc_suivant;
+};
+
+/* Alias de pointeur sur un Arc */
+typedef struct Arc* pArc;
+
+/* Structure d'un sommet*/
+struct Sommet
+{
+    struct Arc* arc;
+    int valeur;
+    char couleur;
+    int pred;
+};
+
+/* Alias de pointeur sur un Sommet */
+typedef struct Sommet* pSommet;
+
+/* Alias d'un Graphe */
+typedef struct Graphe
+{
+    int taille;
+    int orientation;
+    int ordre;
+    pSommet* pSommet;
+} Graphe;
+
+
 #endif //ECE_CITY_3H_STRUCTURE_H
