@@ -85,6 +85,9 @@ struct Sommet
 {
     struct Arc* arc;
     int valeur;
+    int x;
+    int y;
+
     char couleur;
     int pred;
 };

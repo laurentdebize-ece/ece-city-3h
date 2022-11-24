@@ -129,13 +129,12 @@ int main() {
                 }
                 else{
                     c.joueur1.element_choisie = 0;
+                    creer_graphe(c);
                 }
-
             }
         }
         evolution(c.plateau,&c);
         calcul(&c);
-        achat(&c, noir, blanc);
         UpdateCamera(&camera);
         if(camera.position.y <0){
             camera.position.y =0;

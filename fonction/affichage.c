@@ -230,8 +230,9 @@ void afficherEmplacementMaison(Color rond, Color rond1, Color rond2, Color rond3
     DrawRectangleLines(x, y, espacement * 2, espacement * 2, rond3);
 }
 
-void cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *couleurMaison1, Color *couleurMaison, Color *rond,
-                  Color *rond1, Color *rond2, Color *rond3, Color noir, Color blanc) {
+void cliqueMenuGeneral(city *c, int x, int y, int a, Color *Toolboxes, Color *couleurMaison1, Color *couleurMaison,
+                       Color *rond,
+                       Color *rond1, Color *rond2, Color *rond3, Color noir, Color blanc) {
     x = GetMouseX();
     y = GetMouseY();
 
@@ -319,14 +320,15 @@ void cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *co
         a = 1;
     }
 
-    if((GetMouseX() - (1100 / 2 + 240)) * (GetMouseX() - (1100 / 2 + 240)) + (GetMouseY() - 580) * (GetMouseY() - 580) < 40 * 40 && IsMouseButtonDown(1)){
+    if ((GetMouseX() - (1100 / 2 + 240)) * (GetMouseX() - (1100 / 2 + 240)) +
+        (GetMouseY() - 580) * (GetMouseY() - 580) < 40 * 40 && IsMouseButtonDown(1)) {
         DrawText("Achat  ", 1100 / 2 + 95, 500, 20, noir);
         noir = BLANK;
-        blanc= BLANK;
+        blanc = BLANK;
     }
 
 
-    if (c->tableau_element[c->joueur1.element_choisie].prix > c->ece_flouz){
+    if (c->tableau_element[c->joueur1.element_choisie].prix > c->ece_flouz) {
         DrawText("Vous ne pouvez pas acheter, ", 1100 / 2 + 95, 500, 20, noir);
         DrawText("par manque de moyens.", 1100 / 2 + 95, 520, 20, noir);
         noir = BLANK;
@@ -456,7 +458,7 @@ void poser_element(city *c, Camera3D camera, city *c_adresse) {
     collision = GetRayCollisionBox(ray, (BoundingBox) {(Vector3) {-45, 0, -35}, (Vector3) {45, 0, 35}});
     int x = collision.point.x / 2 + 23;
     int z = collision.point.z / 2 + 18;
-    if(0 <= x && x <=45 && 0<=z && z<=33) {
+    if (0 <= x && x <= 45 && 0 <= z && z <= 33) {
         if (c->joueur1.element_choisie != 0) {
             c->plateau[x][z].numero = c->joueur1.element_choisie;
             if (IsMouseButtonPressed(1)) {
@@ -501,6 +503,7 @@ void poser_element(city *c, Camera3D camera, city *c_adresse) {
                     }
                 }
                 c_adresse->plateau[x][z].numero = c->joueur1.element_choisie;
+                achat(c_adresse);
             }
         }
     }
@@ -527,7 +530,7 @@ void affichage3d(city c, Camera3D camera, city *c_adresse) {
         i2 = (i) / 2;
         for (int j = 0; j <= (ligne - 1) * 2; j += 2) {
             j2 = (j) / 2;
-            if (c.plateau[i2][j2].numero >0) {
+            if (c.plateau[i2][j2].numero > 0) {
                 if (c.plateau[i2][j2].numero == 1) {
                     affichage_route(c, i, j, i2, j2);
                 } else {
@@ -579,14 +582,12 @@ void affichage3d(city c, Camera3D camera, city *c_adresse) {
     DrawTexture(c.tableau_texture[2], 460, 20, WHITE);
     DrawTexture(c.tableau_texture[3], 660, 20, WHITE);
     DrawTexture(c.tableau_texture[4], 860, 20, WHITE);
-    if (c.joueur1.element_choisie == 0){
+    if (c.joueur1.element_choisie == 0) {
         DrawTexture(c.tableau_texture[5], 1060, 5, WHITE);
-    }
-    else{
+    } else {
         if (GetMouseX() > 1060 && GetMouseX() < 1360 && GetMouseY() > 20 && GetMouseY() < 100) {
             DrawTexture(c.tableau_texture[7], 1060, 5, WHITE);
-        }
-        else{
+        } else {
             DrawTexture(c.tableau_texture[6], 1060, 5, WHITE);
         }
     }
@@ -594,7 +595,7 @@ void affichage3d(city c, Camera3D camera, city *c_adresse) {
 
     char texte[15] = {0};
     double temps = GetTime() - c.temps;
-    sprintf(texte, "%.2lf",temps);
+    sprintf(texte, "%.2lf", temps);
     DrawText(texte, 100, 25, 20, BLUE);
     sprintf(texte, "%d", c.ece_flouz);
     DrawText(texte, 300, 25, 20, BLUE);
@@ -686,23 +687,8 @@ void affichage_route(city c, int i, int j, int i2, int j2) {
     }
 }
 
-
-void affichageCercleAchat(Color noir, Color blanc){
-    DrawText("Voulez-vous acheter? ", 1100 / 2 + 95, 520, 20, noir);
-
-    DrawCircle(1100 / 2 + 140, 580, 40, noir);
-    DrawText("OUI ", 1100 / 2 + 120, 570, 20, blanc);
-
-    DrawCircle(1100 / 2 + 240, 580, 40, noir);
-    DrawText("NON ", 1100 / 2 + 220, 570, 20, blanc);
-}
-
-void achat(city* c,Color noir, Color blanc){
-    affichageCercleAchat(noir, blanc);
-
-    if ((GetMouseX() - (1100 / 2 + 140)) * (GetMouseX() - (1100 / 2 + 140)) + (GetMouseY() - 580) * (GetMouseY() - 580) < 40 * 40 && IsMouseButtonPressed(1)){
-        if (c->tableau_element[c->joueur1.element_choisie].prix <= c->ece_flouz) {
-            c->ece_flouz = c->ece_flouz - c->tableau_element[c->joueur1.element_choisie].prix;
-        }
+void achat(city *c) {
+    if (c->tableau_element[c->joueur1.element_choisie].prix <= c->ece_flouz) {
+        c->ece_flouz = c->ece_flouz - c->tableau_element[c->joueur1.element_choisie].prix;
     }
 }
