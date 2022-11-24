@@ -1,7 +1,7 @@
 #include "structure et macros/include.h"
 
-/*
-int main() {
+
+/*int main() {
     // Initialisation
     const int screenWidth = 1100;
     const int screenHeight = 800;
@@ -71,7 +71,7 @@ int main() {
         afficherToolBoxe(c,Toolboxes, couleurMaison1);
         aggrandirRectangle(x, y, Toolboxes);
         afficherEmplacementMaison(rond,rond1,rond2,rond3,x,y);
-        cliqueMenuGeneral(&c,x, y,a, &Toolboxes, &couleurMaison1,&couleurMaison, &rond, &rond1, &rond2, &rond3);
+        cliqueMenuGeneral(&c,x, y,a, &Toolboxes, &couleurMaison1,&couleurMaison, &rond, &rond1, &rond2, &rond3, noir, blanc);
 
 
         ClearBackground(background);
@@ -83,11 +83,11 @@ int main() {
     CloseWindow();
     return 0;
 }
-
-///////////////////////////////////////////////////////////////3D///////////////////////////////////////////////////////
 */
+///////////////////////////////////////////////////////////////3D///////////////////////////////////////////////////////
 
 
+/*
 int main() {
 
 
@@ -172,4 +172,10 @@ int main() {
     UnloadModel(c.model_route[0]);
     UnloadModel(c.model_route[1]);
     CloseWindow();
+}
+*/
+int main(){
+    maison m;
+    int var,var1;
+    relierMaisonChateau(m,var,var1);
 }

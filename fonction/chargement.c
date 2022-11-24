@@ -60,6 +60,8 @@ city chargement_total_element(){
     c.model_route[0] = LoadModel("../model3d/route4.glb");
     c.model_route[1] = LoadModel("../model3d/route2.glb");
 
+
+
     ///////////////////////ruine/////////////////////////////
     c.tableau_element[2] = chargement_element("../FILE/element/ruine");
     c.tableau_element[2].texture = LoadTexture("../image/ruin.png");

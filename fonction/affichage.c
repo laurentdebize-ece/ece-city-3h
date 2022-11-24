@@ -1,8 +1,7 @@
-//
-// Created by leque on 04/11/2022.
-//
+
 
 #include "../structure et macros/include.h"
+
 
 void affichage(city c, int x, int y, Color couleurMaison) {
     BeginDrawing();
@@ -229,9 +228,8 @@ void afficherEmplacementMaison(Color rond, Color rond1, Color rond2, Color rond3
     DrawRectangleLines(x, y, espacement * 2, espacement * 2, rond3);
 }
 
-void
-cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *couleurMaison1, Color *couleurMaison, Color *rond,
-                  Color *rond1, Color *rond2, Color *rond3) {
+void cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *couleurMaison1, Color *couleurMaison, Color *rond,
+                  Color *rond1, Color *rond2, Color *rond3, Color noir, Color blanc) {
     x = GetMouseX();
     y = GetMouseY();
 
@@ -239,11 +237,15 @@ cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *couleur
 
         *Toolboxes = BLANK;
         *couleurMaison1 = BLANK;
+        noir = BLANK;
+        blanc = BLANK;
     }
     if (clickNiveauDeux(x, y) == 1) {
 
         *Toolboxes = BLANK;
         *couleurMaison1 = BLANK;
+        noir = BLANK;
+        blanc = BLANK;
 
     }
 
@@ -251,6 +253,7 @@ cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *couleur
 
         *Toolboxes = BLACK;
         *couleurMaison1 = WHITE;
+
 
     }
 
@@ -260,6 +263,8 @@ cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *couleur
         *rond1 = BLANK;
         *rond2 = BLANK;
         *rond3 = BLANK;
+        blanc = WHITE;
+        noir = BLACK;
 
     }
     if (clickCaseMaison(x, y) == 1) {
@@ -267,6 +272,8 @@ cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *couleur
         int j = 0;
         *couleurMaison = WHITE;
         *rond = BLACK;
+        blanc = WHITE;
+        noir = BLACK;
         DrawRectangleLines(x, y, espacement * 3, espacement * 3, *rond);
         c->plateau[i][j].numero = 0;
         DrawTexture(c->tableau_element[c->plateau[i][j].numero].texture, x, y, *couleurMaison);
@@ -278,6 +285,8 @@ cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *couleur
         int j = 0;
         *rond1 = RED;
         *couleurMaison = WHITE;
+        blanc = WHITE;
+        noir = BLACK;
         DrawRectangleLines(x, y, espacement * 1, espacement * 1, *rond1);
         c->plateau[i][j].numero = 0;
         DrawTexture(c->tableau_element[c->plateau[i][j].numero].texture, x, y, *couleurMaison);
@@ -290,6 +299,8 @@ cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *couleur
         int j = 0;
         *couleurMaison = WHITE;
         *rond2 = DARKBROWN;
+        blanc = WHITE;
+        noir = BLACK;
         DrawRectangleLines(x, y, espacement * 2, espacement * 2, *rond2);
         c->plateau[i][j].numero = 0;
         DrawTexture(c->tableau_element[c->plateau[i][j].numero].texture, x, y, *couleurMaison);
@@ -303,6 +314,8 @@ cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *couleur
         int j = 0;
         *couleurMaison = WHITE;
         *rond3 = DARKBLUE;
+        blanc = WHITE;
+        noir = BLACK;
         DrawRectangleLines(x, y, espacement * 2, espacement * 2, *rond3);
         c->plateau[i][j].numero = 0;
         DrawTexture(c->tableau_element[c->plateau[i][j].numero].texture, x, y, *couleurMaison);
@@ -318,6 +331,8 @@ cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *couleur
         *rond1 = BLANK;
         *rond2 = BLANK;
         *rond3 = BLANK;
+        blanc = WHITE;
+        noir = BLACK;
 
         int j = (-100 + x) / 15;
         int i = (-100 + y) / 15;
@@ -332,6 +347,18 @@ cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *couleur
         c->joueur1.element_choisie = -1;
         *couleurMaison = BLANK;
     }
+    if((GetMouseX() - (1100 / 2 + 240)) * (GetMouseX() - (1100 / 2 + 240)) + (GetMouseY() - 580) * (GetMouseY() - 580) < 40 * 40 && IsMouseButtonDown(1)){
+        noir = BLANK;
+        blanc= BLANK;
+    }
+
+
+    /*if (c.tableau_element[c.joueur1.element_choisie].prix > c.ece_flouz){
+        DrawText("Vous ne pouvez pas acheter, ", 1100 / 2 + 95, 500, 20, noir);
+        DrawText("par manque de moyens.", 1100 / 2 + 95, 520, 20, noir);
+        noir = BLANK;
+        blanc = BLANK;
+    }*/
 
 }
 
@@ -369,7 +396,8 @@ void affichage3d(city c, Camera3D camera, city *c_adresse) {
             j2 = (j) / 2;
             if (c.plateau[i2][j2].numero != 0) {
                 if (c.plateau[i2][j2].numero == 1) {
-                    affichage_route(c, i, j, i2, j2);
+                    //affichage_route(c, i, j, i2, j2);
+                    affichageNiveauMoinsUn(c,i,j,i2,j2);
                 } else {
                     if (c.plateau[i2][j2].numero == 9) {
                         DrawModel(c.tableau_element[c.plateau[i2][j2].numero].model,
@@ -487,5 +515,43 @@ void affichage_route(city c, int i, int j, int i2, int j2) {
                                c.tableau_element[c.plateau[i2][j2].numero].scale,
                                c.tableau_element[c.plateau[i2][j2].numero].scale},
                     WHITE);
+    }
+}
+
+void affichageNiveauMoinsUn(city c,int i,int j,int i2,int j2) {
+    Vector3 cubePosition = (Vector3) {-2.55f + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
+                                      c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
+                                      -2 + (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z };
+    DrawCube(cubePosition, 2.0f, 0.5f, 1.8f, YELLOW);
+}
+
+
+void relierMaisonChateau(maison m,chateauEau eau,int var,int var1){
+    var =3;
+    var1 =5;
+    //initialiser mon tableau
+
+    int ch[5]= {1,2,3,4,5};
+    int ch1[5]= {5,6,7,8,9};
+
+    for(int i=0;i<5;i++) {
+        ch[i] = var + i;
+        //printf("%d",ch[i]);
+    }
+    for(int i=0;i<5;i++) {
+        ch1[i] = var1 + i;
+        //printf("%d",ch1[i]);
+    }
+    int chemin=0;
+    if (ch[0] < ch1[0]){
+        if (){
+            ch[0] = chemin;
+            printf("oui");
+        }
+
+    }
+    else {
+        ch1[0] = chemin;
+        printf("non");
     }
 }

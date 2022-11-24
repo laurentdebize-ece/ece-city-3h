@@ -41,7 +41,25 @@ typedef struct ece_city{///ajouter compteur temps
     int ece_flouz;
     int nb_habitant;
     int nb_electricite;
-    int nb_eau;
+    int nb_eau ;
     bool mode;
 }city;
+
+
+
+typedef struct distance{
+    int distance;
+    int chateauEau;
+    struct distance* suivant;
+};
+typedef struct maison{
+    struct distance * distance;
+    int nb_habitants;
+    int  position_x;
+    int  position_y;
+}maison;
+typedef struct ChateauEau{
+    int capacite;
+    struct maison * habitation;
+}chateauEau;
 #endif //ECE_CITY_3H_STRUCTURE_H
