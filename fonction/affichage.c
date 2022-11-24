@@ -714,7 +714,7 @@ void affichageNiveauMoinsUn(city c,int i,int j,int i2,int j2) {
     DrawCube(cubePosition, 2.0f, 0.5f, 1.8f, YELLOW);
 }
 
-
+/*
 void relierMaisonChateau(maison m,chateauEau eau,int var,int var1){
     var =3;
     var1 =5;
@@ -744,3 +744,4 @@ void relierMaisonChateau(maison m,chateauEau eau,int var,int var1){
         printf("non");
     }
 }
+*/

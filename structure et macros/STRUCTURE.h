@@ -109,7 +109,7 @@ typedef struct distance{
     int distance;
     int chateauEau;
     struct distance* suivant;
-};
+}distance;
 typedef struct maison{
     struct distance * distance;
     int nb_habitants;
