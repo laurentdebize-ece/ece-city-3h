@@ -37,13 +37,71 @@ typedef struct ece_city{///ajouter compteur temps
     Model model_route[3];
     voiture v[10];
     joueur joueur1;
+    double temps;
     int etage;//tool boxe =1
     int ece_flouz;
     int nb_habitant;
     int nb_electricite;
-    int nb_eau ;
+    int nb_eau;
     bool mode;
 }city;
+
+
+
+
+
+/////////////////////    BFS    /////////////////////////////////
+
+typedef int typage;
+typedef struct _cellule* Cellule;
+typedef struct _file* File;
+
+
+
+struct _cellule {
+    typage element;
+    struct _cellule *suivant;
+};
+
+struct _file {
+    int longueur;
+    Cellule tete;
+    Cellule queue;
+};
+
+/* Structure d'un arc*/
+struct Arc
+{
+    int sommet; // numero de sommet d'un arc adjacent au sommet initial
+    int valeur;
+    struct Arc* arc_suivant;
+};
+
+/* Alias de pointeur sur un Arc */
+typedef struct Arc* pArc;
+
+/* Structure d'un sommet*/
+struct Sommet
+{
+    struct Arc* arc;
+    int valeur;
+    char couleur;
+    int pred;
+};
+
+/* Alias de pointeur sur un Sommet */
+typedef struct Sommet* pSommet;
+
+/* Alias d'un Graphe */
+typedef struct Graphe
+{
+    int taille;
+    int orientation;
+    int ordre;
+    pSommet* pSommet;
+} Graphe;
+
+
 
 
 
