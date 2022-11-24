@@ -532,7 +532,8 @@ void affichage3d(city c, Camera3D camera, city *c_adresse) {
             j2 = (j) / 2;
             if (c.plateau[i2][j2].numero > 0) {
                 if (c.plateau[i2][j2].numero == 1) {
-                    affichage_route(c, i, j, i2, j2);
+                    //affichage_route(c, i, j, i2, j2);
+                    affichageNiveauMoinsUn(c,i,j,i2,j2);
                 } else {
                     if (c.plateau[i2][j2].numero == 9) {
                         DrawModel(c.tableau_element[c.plateau[i2][j2].numero].model,
@@ -692,3 +693,41 @@ void achat(city *c) {
         c->ece_flouz = c->ece_flouz - c->tableau_element[c->joueur1.element_choisie].prix;
     }
 }
+void affichageNiveauMoinsUn(city c,int i,int j,int i2,int j2) {
+    Vector3 cubePosition = (Vector3) {-2.55f + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
+                                      c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
+                                      -2 + (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z };
+    DrawCube(cubePosition, 2.0f, 0.5f, 1.8f, YELLOW);
+}
+
+/*
+void relierMaisonChateau(maison m,chateauEau eau,int var,int var1){
+    var =3;
+    var1 =5;
+    //initialiser mon tableau
+
+    int ch[5]= {1,2,3,4,5};
+    int ch1[5]= {5,6,7,8,9};
+
+    for(int i=0;i<5;i++) {
+        ch[i] = var + i;
+        //printf("%d",ch[i]);
+    }
+    for(int i=0;i<5;i++) {
+        ch1[i] = var1 + i;
+        //printf("%d",ch1[i]);
+    }
+    int chemin=0;
+    if (ch[0] < ch1[0]){
+        if (){
+            ch[0] = chemin;
+            printf("oui");
+        }
+
+    }
+    else {
+        ch1[0] = chemin;
+        printf("non");
+    }
+}
+*/

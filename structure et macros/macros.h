@@ -11,6 +11,11 @@
 #define positionFenetre 100
 #define nombreElement 10
 #define nombreTexture 8
+#define EAUMAX 5000
+#define ELECMAX 5000
+#define besoinMaison 10
+
+
 
 
 #define maison_x 24

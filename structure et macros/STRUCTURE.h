@@ -105,4 +105,22 @@ typedef struct Graphe
 } Graphe;
 
 
+
+
+
+typedef struct distance{
+    int distance;
+    int chateauEau;
+    struct distance* suivant;
+}distance;
+typedef struct maison{
+    struct distance * distance;
+    int nb_habitants;
+    int  position_x;
+    int  position_y;
+}maison;
+typedef struct ChateauEau{
+    int capacite;
+    struct maison * habitation;
+}chateauEau;
 #endif //ECE_CITY_3H_STRUCTURE_H

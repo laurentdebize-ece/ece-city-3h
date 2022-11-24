@@ -1,7 +1,16 @@
 #include "structure et macros/include.h"
 
-/*
-int main() {
+
+
+#include <stdio.h>
+#include "raylib.h"
+#include "rlgl.h"
+#include "raymath.h"
+#include "structure et macros/macros.h"
+#include "structure et macros/STRUCTURE.h"
+#include "menu.h"
+
+/*int main() {
     // Initialisation
     const int screenWidth = 1100;
     const int screenHeight = 800;
@@ -88,6 +97,7 @@ int main() {
 */
 
 
+
 int main() {
 
 
@@ -157,3 +167,61 @@ int main() {
     UnloadModel(c.model_route[1]);
     CloseWindow();
 }
+/*int main(){
+    const int screenWidth = 1200;
+    const int screenHeight = 700;
+    int a=0;
+
+    InitWindow(screenWidth, screenHeight, "ECE CITY");
+
+    SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
+    //--------------------------------------------------------------------------------------
+
+    // Main game loop
+    while (!WindowShouldClose())    // Detect window close button or ESC key
+    {
+        // Update
+        //----------------------------------------------------------------------------------
+        // TODO: Update your variables here
+        //----------------------------------------------------------------------------------
+
+        // Draw
+        //----------------------------------------------------------------------------------
+        BeginDrawing();
+        switch (a) {
+            case 0:
+                menu(&a);
+                break;
+            case 2:
+                ClearBackground(GetColor(0x052c46ff));
+                DrawText("Jeu capitaliste", 190, 200, 20, LIGHTGRAY);
+                break;
+            case 3:
+                ClearBackground(GetColor(0x052c46ff));
+                DrawText("Jeu comuniste", 190, 200, 20, LIGHTGRAY);
+                break;
+            case 4:
+                ClearBackground(GetColor(0x052c46ff));
+                DrawText("Sauvegarde", 190, 200, 20, LIGHTGRAY);
+                break;
+        }
+        //menu();
+
+
+        EndDrawing();
+        //----------------------------------------------------------------------------------
+    }
+
+    // De-Initialization
+    //--------------------------------------------------------------------------------------
+    CloseWindow();        // Close window and OpenGL context
+    //--------------------------------------------------------------------------------------
+
+    return 0;
+}*/
+/*
+int main(){
+    maison m;
+    int var,var1;
+    relierMaisonChateau(m,var,var1);
+}*/
