@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.23)
+cmake_minimum_required(VERSION 3.20.2)
 
-project(ece_city_3h C)
+project(ece_city_3h C )
 
 # Generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -24,7 +24,7 @@ endif()
 
 # Our Project
 
-add_executable(${PROJECT_NAME} main.c "structure et macros/STRUCTURE.h" "structure et macros/macros.h")
+add_executable(${PROJECT_NAME} main.c "structure et macros/STRUCTURE.h" "structure et macros/macros.h""menu.h""menu.c")
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)
 
