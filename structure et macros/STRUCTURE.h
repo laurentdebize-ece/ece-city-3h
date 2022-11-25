@@ -127,6 +127,7 @@ typedef struct ChateauEau{
     int capacite;
     int  position_x;
     int  position_y;
+    struct maison * habitation;
     struct  ChateauEau * chateauEau;
 }chateauEau;
 
