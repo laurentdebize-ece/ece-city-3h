@@ -140,7 +140,8 @@ int main() {
                     afficherToolBoxe3d(c, camera, &c);
                 } else {
                     c.joueur1.element_choisie = 0;
-                    creer_graphe(c);
+                    creer_graphe(c,&c);
+                    distributionEau(&c.chateauEau);
                 }
             }
         }

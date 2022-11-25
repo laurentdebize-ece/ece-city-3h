@@ -93,7 +93,7 @@ void calcul_nombre_chateau(chateauEau *ce, city c) {
 
 }
 
-Graphe *creer_graphe(city c) {
+void creer_graphe(city c,city *c_adresse) {
     Graphe *g = (Graphe *) malloc(sizeof(Graphe));
     g->ordre = 0;
     for (int i = 0; i < colones; i++) {
@@ -186,7 +186,7 @@ Graphe *creer_graphe(city c) {
         ch2 = ch2->chateauEau;
     }
 
-    return g;
+    c_adresse->chateauEau = ch;
 }
 
 File fileVide() {
@@ -388,45 +388,19 @@ void parcoursBFS(Graphe *graphe, int s0, city c, chateauEau *ch) {
     printf("a");
 }
 
-void initialisationEauChateau(chateauEau** listeCheateauEau) {
-    for(chateauEau* pChateau= *listeCheateauEau; pChateau != NULL; pChateau = pChateau->next){
-        pChateau->capacite = EAUMAX;
-    }
-}
-
-void initialisationEauMaison(chateauEau** listeCheateauEau){
-    if((*listeCheateauEau)->habitation->c.joueur1.element_choisie == 4){
-        // cabane
-        // (*listeCheateauEau)->habitation->c.joueur1.element_choisie
-        (*listeCheateauEau)->habitation->besoin = 10;
-    }
-    else if((*listeCheateauEau)->habitation->c.joueur1.element_choisie == 5){
-        // maison
-        (*listeCheateauEau)->habitation->besoin = 50;
-    }
-    else if((*listeCheateauEau)->habitation->c.joueur1.element_choisie == 6){
-        // immeuble
-        (*listeCheateauEau)->habitation->besoin = 100;
-    }
-    else if((*listeCheateauEau)->habitation->c.joueur1.element_choisie == 7){
-        // gratte-ciel
-        (*listeCheateauEau)->habitation->besoin = 1000;
-    }
-}
-
 void distributionEau(chateauEau** listeCheateauEau){
     if(*listeCheateauEau != NULL){
-        for(chateauEau* pChateau= *listeCheateauEau; pChateau != NULL; pChateau = pChateau->next){
-            for(struct maison* pMaison= (*listeCheateauEau)->habitation; pMaison != NULL; pMaison = pMaison->next){ // parcours du 1er ChateauEau
+        for(chateauEau* pChateau= *listeCheateauEau; pChateau != NULL; pChateau = pChateau->habitation){
+            for(struct maison* pMaison= (*listeCheateauEau)->habitation; pMaison != NULL; pMaison = pMaison->habitation){ // parcours du 1er ChateauEau
                 if((*listeCheateauEau)->capacite != 0){
-                    if(pMaison->besoin < (*listeCheateauEau)->capacite && pMaison->besoin != 0){
+                    if(pMaison->nb_habitants < (*listeCheateauEau)->capacite && pMaison->nb_habitants != 0){
                         /// faut relier la maison au chateau
-                        (*listeCheateauEau)->capacite -= pMaison->besoin;
-                        pMaison->besoin = 0;
+                        (*listeCheateauEau)->capacite -= pMaison->nb_habitants;
+                        pMaison->nb_habitants = 0;
                     }
-                    else if(pMaison->besoin > (*listeCheateauEau)->capacite){
+                    else if(pMaison->nb_habitants > (*listeCheateauEau)->capacite){
                         /// faut relier la maison au chateau (peut etre relie a plusieurs chateau)
-                        pMaison->besoin -= (*listeCheateauEau)->capacite;
+                        pMaison->nb_habitants -= (*listeCheateauEau)->capacite;
                         (*listeCheateauEau)->capacite = 0;
                     }
                 }
@@ -437,4 +411,5 @@ void distributionEau(chateauEau** listeCheateauEau){
         }
         //(*listeCheateauEau)->habitation[]
     }
+    printf("oui");
 }
