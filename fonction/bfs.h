@@ -13,5 +13,6 @@ File fileVide();
 int longueur(File F);
 void enfiler(File F, typage element);
 typage defiler(File F);
-void parcoursBFS(Graphe* graphe, int s0);
+void parcoursBFS(Graphe* graphe, int s0,city c , chateauEau* ch );
+void calcul_nombre_chateau(chateauEau* ce , city c);
 #endif //ECE_CITY_3H_BFS_H
