@@ -500,6 +500,8 @@ void poser_element(city *c, Camera3D camera, city *c_adresse) {
                 for (int i = 0; i <= c->tableau_element[c->joueur1.element_choisie].espacement_x - 1; i++) {
                     for (int j = 0; j <= c->tableau_element[c->joueur1.element_choisie].espacement_y - 1; j++) {
                         c_adresse->plateau[x + i][z + j].numero = -c->joueur1.element_choisie;
+                        c_adresse->plateau[x + i][z + j].reference_x = x;
+                        c_adresse->plateau[x + i][z + j].reference_y = z;
                     }
                 }
                 c_adresse->plateau[x][z].numero = c->joueur1.element_choisie;

@@ -4,6 +4,9 @@
 #include "macros.h"
 typedef struct case_element {
     int numero;//numero negatif si l'element n'est pas afficher ici mais touche comme meme cette case exemple maison: -5
+    int reference_x;
+    int reference_y;
+    int marquage;
     double temps;
 }c_element;
 typedef struct element{
@@ -114,13 +117,17 @@ typedef struct distance{
     struct distance* suivant;
 }distance;
 typedef struct maison{
-    struct distance * distance;
+    int distance;
     int nb_habitants;
     int  position_x;
     int  position_y;
+    struct maison * habitation;
 }maison;
 typedef struct ChateauEau{
     int capacite;
-    struct maison * habitation;
+    int  position_x;
+    int  position_y;
+    struct  ChateauEau * chateauEau;
 }chateauEau;
+
 #endif //ECE_CITY_3H_STRUCTURE_H
