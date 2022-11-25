@@ -118,17 +118,22 @@ typedef struct distance{
 }distance;
 typedef struct maison{
     int distance;
+    int besoin;
     int nb_habitants;
+    city c;
     int  position_x;
     int  position_y;
     struct maison * habitation;
+    struct maison* next;
 }maison;
+
 typedef struct ChateauEau{
     int capacite;
     int  position_x;
     int  position_y;
     struct maison * habitation;
     struct  ChateauEau * chateauEau;
+    struct ChateauEau* next;
 }chateauEau;
 
 #endif //ECE_CITY_3H_STRUCTURE_H

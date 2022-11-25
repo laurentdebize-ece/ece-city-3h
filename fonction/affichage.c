@@ -609,6 +609,14 @@ void affichage3d(city c, Camera3D camera, city *c_adresse) {
     sprintf(texte, "%d", c.nb_eau);
     DrawText(texte, 900, 25, 20, BLUE);
 
+    DrawRectangleLines(300,600,100,50,WHITE);
+    DrawText("0", 300+10, 600+10, 20, WHITE);
+    DrawRectangleLines(500,600,100,50,WHITE);
+    DrawText("-1", 500+10, 600+10, 20, WHITE);
+    DrawRectangleLines(700,600,100,50,WHITE);
+    DrawText("-2", 700+10, 600+10, 20, WHITE);
+
+
     EndDrawing();
 }
 

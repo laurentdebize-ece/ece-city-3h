@@ -123,7 +123,7 @@ Graphe *creer_graphe(city c) {
 
         }
     }
-    parcoursBFS(g, 0);
+    //parcoursBFS(g, 0);
     return g;
 }
 File fileVide() {
@@ -201,5 +201,56 @@ void parcoursBFS(Graphe* graphe, int s0){
             }
             pArc=pArc->arc_suivant;
         }
+    }
+}
+
+void initialisationEauChateau(chateauEau** listeCheateauEau) {
+    for(chateauEau* pChateau= *listeCheateauEau; pChateau != NULL; pChateau = pChateau->next){
+        pChateau->capacite = EAUMAX;
+    }
+}
+
+void initialisationEauMaison(chateauEau** listeCheateauEau){
+    if((*listeCheateauEau)->habitation->c.joueur1.element_choisie == 4){
+        // cabane
+        // (*listeCheateauEau)->habitation->c.joueur1.element_choisie
+        (*listeCheateauEau)->habitation->besoin = 10;
+    }
+    else if((*listeCheateauEau)->habitation->c.joueur1.element_choisie == 5){
+        // maison
+        (*listeCheateauEau)->habitation->besoin = 50;
+    }
+    else if((*listeCheateauEau)->habitation->c.joueur1.element_choisie == 6){
+        // immeuble
+        (*listeCheateauEau)->habitation->besoin = 100;
+    }
+    else if((*listeCheateauEau)->habitation->c.joueur1.element_choisie == 7){
+        // gratte-ciel
+        (*listeCheateauEau)->habitation->besoin = 1000;
+    }
+}
+
+void distributionEau(chateauEau** listeCheateauEau){
+    if(*listeCheateauEau != NULL){
+        for(chateauEau* pChateau= *listeCheateauEau; pChateau != NULL; pChateau = pChateau->next){
+            for(struct maison* pMaison= (*listeCheateauEau)->habitation; pMaison != NULL; pMaison = pMaison->next){ // parcours du 1er ChateauEau
+                if((*listeCheateauEau)->capacite != 0){
+                    if(pMaison->besoin < (*listeCheateauEau)->capacite && pMaison->besoin != 0){
+                        /// faut relier la maison au chateau
+                        (*listeCheateauEau)->capacite -= pMaison->besoin;
+                        pMaison->besoin = 0;
+                    }
+                    else if(pMaison->besoin > (*listeCheateauEau)->capacite){
+                        /// faut relier la maison au chateau (peut etre relie a plusieurs chateau)
+                        pMaison->besoin -= (*listeCheateauEau)->capacite;
+                        (*listeCheateauEau)->capacite = 0;
+                    }
+                }
+                else if((*listeCheateauEau)->capacite == 0){
+                    pMaison = NULL;
+                }
+            }
+        }
+        //(*listeCheateauEau)->habitation[]
     }
 }

@@ -10,6 +10,8 @@
 #include "structure et macros/STRUCTURE.h"
 #include "menu.h"
 
+void DrawRectanglelines(int i, int i1, int i2, int i3, Color color);
+
 /*int main() {
     // Initialisation
     const int screenWidth = 1100;
@@ -134,26 +136,24 @@ int main() {
     {
         if (GetMouseX() > 1060 && GetMouseX() < 1360 && GetMouseY() > 20 && GetMouseY() < 100) {
             if (IsMouseButtonPressed(1)) {
-                if (c.joueur1.element_choisie == 0){
-                    afficherToolBoxe3d(c,camera,&c);
-                }
-                else{
+                if (c.joueur1.element_choisie == 0) {
+                    afficherToolBoxe3d(c, camera, &c);
+                } else {
                     c.joueur1.element_choisie = 0;
                     creer_graphe(c);
                 }
             }
         }
-        evolution(c.plateau,&c);
+
+        evolution(c.plateau, &c);
         calcul(&c);
         UpdateCamera(&camera);
-        if(camera.position.y <0){
-            camera.position.y =0;
+        if (camera.position.y < 0) {
+            camera.position.y = 0;
         }
 
 
-
-
-        affichage3d(c,camera,&c);
+        affichage3d(c, camera, &c);
     }
     sauvegarde(c);
     for (int i = 0; i < 10; i++) {
@@ -167,6 +167,8 @@ int main() {
     UnloadModel(c.model_route[1]);
     CloseWindow();
 }
+
+
 /*int main(){
     const int screenWidth = 1200;
     const int screenHeight = 700;
