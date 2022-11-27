@@ -1,4 +1,3 @@
-
 #include "../structure et macros/include.h"
 
 void evolution(c_element tab[colones][ligne], city *c) {

@@ -1,7 +1,3 @@
-//
-// Created by leque on 03/11/2022.
-//
-
 #include "../structure et macros/include.h"
 #include "raymath.h"
 
@@ -40,6 +36,7 @@ element chargement_element(char *nomFichier){
     e.scale = scale;
     return e;
 }
+
 city chargement_total_element(){
     city c;
     int x=0;
@@ -118,6 +115,7 @@ city chargement_total_element(){
 
     return  c;
 }
+
 city chargement_base(city c){
     FILE *ifs = fopen("../FILE/element principaux", "r");
     if (!ifs) {
@@ -137,6 +135,7 @@ city chargement_base(city c){
     c.nb_eau = eau;
     return c;
 }
+
 city initialisation(){
     city c;
     c = chargement_total_element();

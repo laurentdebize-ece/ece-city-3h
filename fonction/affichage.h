@@ -33,7 +33,7 @@ void afficherSurLaSouris(city c,Color couleurMaison,int x,int y);
 
 
 void afficherEmplacementMaison(Color rond,Color rond1,Color rond2,Color rond3, int x,int y);
-void cliqueMenuGeneral(city* c,int x,int y,int a, Color *Toolboxes, Color *couleurMaison1, Color *couleurMaison, Color* rond,Color* rond1,Color* rond2,Color* rond3);
+void cliqueMenuGeneral(city* c,int x,int y,int a, Color *Toolboxes, Color *couleurMaison1, Color *couleurMaison, Color* rond,Color* rond1,Color* rond2,Color* rond3, Color noir, Color blanc);
 
 
 

@@ -1,7 +1,3 @@
-//
-// Created by leque on 23/11/2022.
-//
-
 #include "../structure et macros/include.h"
 
 void afficher_successeurs(pSommet *sommet, int num) {
@@ -424,21 +420,18 @@ void distributionEau(chateauEau *listeCheateauEau, city *c) {
                 if (pChateau->capacite != 0) {
                     if (c->plateau[pMaison->position_x][pMaison->position_y].marquage == 0) {
                         if (pMaison->nb_habitants <= pChateau->capacite) {
-                            /// faut relier la maison au chateau
                             pChateau->capacite -= pMaison->nb_habitants;
                             pMaison->numero_ch = pChateau->numero;
                             c->plateau[pMaison->position_x][pMaison->position_y].marquage = 1;
                             c->plateau[pMaison->position_x][pMaison->position_y].distance_eau = pMaison->distance;
                             pMaison->chateauEau_principal = pChateau;
                         } else if (pMaison->nb_habitants > pChateau->capacite) {
-                            /// faut relier la maison au chateau (peut etre relie a plusieurs chateau)
                             pMaison->nb_habitants -= pChateau->capacite;
                             pChateau->capacite = 0;
                         }
                     } else if (c->plateau[pMaison->position_x][pMaison->position_y].marquage == 1 &&
                                pMaison->distance < c->plateau[pMaison->position_x][pMaison->position_y].distance_eau) {
                         if (pMaison->nb_habitants <= pChateau->capacite) {
-                            /// faut relier la maison au chateau
                             pChateau->capacite -= pMaison->nb_habitants;
                             pMaison->numero_ch = pChateau->numero;
                             c->plateau[pMaison->position_x][pMaison->position_y].distance_eau = pMaison->distance;
@@ -466,7 +459,6 @@ void distributionEau(chateauEau *listeCheateauEau, city *c) {
                             pMaison = listeCheateauEau->habitation;
 
                         } else if (pMaison->nb_habitants > pChateau->capacite) {
-                            /// faut relier la maison au chateau (peut etre relie a plusieurs chateau)
                             pMaison->nb_habitants -= pChateau->capacite;
                             pChateau->capacite = 0;
 

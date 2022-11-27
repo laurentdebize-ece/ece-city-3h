@@ -3,17 +3,16 @@
 #include "menu.h"
 
 
-
 int main() {
+    // les dimensions de la fenetre
     const int screenWidth = 1200;
     const int screenHeight =700;
 
-
+    // on initialise notre fenetre
     InitWindow(screenWidth, screenHeight, "ECE CITY");
 
     city c = initialisation();
     //lire_sauvegarde(&c);
-    // Define the camera to look into our 3d world
     Camera3D camera = {0};
     camera.position = (Vector3) {30.0f, 30.0f, 30.0f}; // Camera position
     camera.target = (Vector3) {0.0f, 0.0f, 0.0f};      // Camera looking at point
@@ -25,10 +24,9 @@ int main() {
 
     //Material* tileMaterial = LoadMaterials("../model3d/WoodHouse.mtl", &compt);
 
-    SetCameraMode(camera, CAMERA_FREE); // Set a free camera mode
+    SetCameraMode(camera, CAMERA_FREE);
 
-    SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
+    SetTargetFPS(60);
 
     Color noir = BLANK;
     Color blanc = BLANK;
@@ -38,19 +36,21 @@ int main() {
     // Main game loop
     while (!WindowShouldClose())        // Detect window close button or ESC key
     {
-
+        // niveau 0
         if ( (GetMouseX() -100)*(GetMouseX()-100) + (GetMouseY() - 150)*(GetMouseY()  -150) < 50*50) {
             if (IsMouseButtonPressed(1)) {
                 couleur = BLANK;
                 couleur1=WHITE;
             }
         }
+        // niveau -1
         if((GetMouseX() -100)*(GetMouseX()-100) + (GetMouseY() - 300)*(GetMouseY()  -300) < 50*50){
             if (IsMouseButtonPressed(1)){
                 couleur =YELLOW;
                 couleur1 =YELLOW;
             }
         }
+        // niveau -2
         if((GetMouseX() -100)*(GetMouseX()-100) + (GetMouseY() - 450)*(GetMouseY()  -450) < 50*50){
             if (IsMouseButtonPressed(1)){
                 couleur =BLUE;
@@ -81,7 +81,6 @@ int main() {
             camera.position.y = 0;
         }
 
-        affichage3d(c,camera,&c,couleur,couleur1);
 
 
 
@@ -151,10 +150,4 @@ int main() {
     //--------------------------------------------------------------------------------------
 
     return 0;
-}*/
-/*
-int main(){
-    maison m;
-    int var,var1;
-    relierMaisonChateau(m,var,var1);
 }*/
