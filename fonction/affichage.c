@@ -507,10 +507,9 @@ void poser_element(city *c, Camera3D camera, city *c_adresse) {
 
 }
 
-void affichage3d(city c, Camera3D camera, city *c_adresse) {
+void affichage3d2(city c, Camera3D camera, city *c_adresse) {
     poser_element(&c, camera, c_adresse);
 
-    BeginDrawing();
 
     ClearBackground(SKYBLUE);
     BeginMode3D(camera);
@@ -605,7 +604,6 @@ void affichage3d(city c, Camera3D camera, city *c_adresse) {
     sprintf(texte, "%d", c.nb_eau);
     DrawText(texte, 900, 25, 20, BLUE);
 
-    EndDrawing();
 }
 
 void affichage_route(city c, int i, int j, int i2, int j2) {
@@ -706,3 +704,106 @@ void achat(city* c,Color noir, Color blanc){
         }
     }
 }
+
+/*
+ * void affichage3d(city c, Camera3D camera, city *c_adresse) {
+    poser_element(&c, camera, c_adresse);
+
+    BeginDrawing();
+
+    ClearBackground(SKYBLUE);
+    BeginMode3D(camera);
+    DrawGrid(46, 2);
+    for (int i = -colones - 1; i <= colones + 1; i += 2) {
+        for (int j = -ligne - 1; j <= ligne + 1; j += 2) {
+            DrawModel(c.tableau_element[0].model, (Vector3) {i, -0.1, j}, 1, WHITE);
+        }
+    }
+
+    int i2 = 0;
+    int j2 = 0;
+    for (int i = 0; i <= (colones - 1) * 2; i += 2) {
+        i2 = (i) / 2;
+        for (int j = 0; j <= (ligne - 1) * 2; j += 2) {
+            j2 = (j) / 2;
+            if (c.plateau[i2][j2].numero >0) {
+                if (c.plateau[i2][j2].numero == 1) {
+                    affichage_route(c, i, j, i2, j2);
+                } else {
+                    if (c.plateau[i2][j2].numero == 9) {
+                        DrawModel(c.tableau_element[c.plateau[i2][j2].numero].model,
+                                  (Vector3) {(float) 4 + (float) i +
+                                             c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
+                                             c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
+                                             (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z},
+                                  c.tableau_element[c.plateau[i2][j2].numero].scale, WHITE);
+                        DrawModel(c.tableau_element[c.plateau[i2][j2].numero].model,
+                                  (Vector3) {(float) 8 + (float) i +
+                                             c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
+                                             c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
+                                             (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z},
+                                  c.tableau_element[c.plateau[i2][j2].numero].scale, WHITE);
+                        DrawModel(c.tableau_element[c.plateau[i2][j2].numero].model,
+                                  (Vector3) {(float) 4 + (float) i +
+                                             c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
+                                             c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
+                                             4 + (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z},
+                                  c.tableau_element[c.plateau[i2][j2].numero].scale, WHITE);
+                        DrawModel(c.tableau_element[c.plateau[i2][j2].numero].model,
+                                  (Vector3) {(float) 8 + (float) i +
+                                             c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
+                                             c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
+                                             4 + (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z},
+                                  c.tableau_element[c.plateau[i2][j2].numero].scale, WHITE);
+                        DrawModel(c.tableau_element[c.plateau[i2][j2].numero].model,
+                                  (Vector3) {(float) i +
+                                             c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
+                                             c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
+                                             4 + (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z},
+                                  c.tableau_element[c.plateau[i2][j2].numero].scale, WHITE);
+                    }
+                    DrawModel(c.tableau_element[c.plateau[i2][j2].numero].model,
+                              (Vector3) {(float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
+                                         c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
+                                         (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z},
+                              c.tableau_element[c.plateau[i2][j2].numero].scale, WHITE);
+                }
+            }
+        }
+    }
+
+    EndMode3D();
+    DrawTexture(c.tableau_texture[0], 60, 20, WHITE);
+    DrawTexture(c.tableau_texture[1], 260, 20, WHITE);
+    DrawTexture(c.tableau_texture[2], 460, 20, WHITE);
+    DrawTexture(c.tableau_texture[3], 660, 20, WHITE);
+    DrawTexture(c.tableau_texture[4], 860, 20, WHITE);
+    if (c.joueur1.element_choisie == 0){
+        DrawTexture(c.tableau_texture[5], 1060, 5, WHITE);
+    }
+    else{
+        if (GetMouseX() > 1060 && GetMouseX() < 1360 && GetMouseY() > 20 && GetMouseY() < 100) {
+            DrawTexture(c.tableau_texture[7], 1060, 5, WHITE);
+        }
+        else{
+            DrawTexture(c.tableau_texture[6], 1060, 5, WHITE);
+        }
+    }
+
+
+    char texte[15] = {0};
+    double temps = GetTime() - c.temps;
+    sprintf(texte, "%.2lf",temps);
+    DrawText(texte, 100, 25, 20, BLUE);
+    sprintf(texte, "%d", c.ece_flouz);
+    DrawText(texte, 300, 25, 20, BLUE);
+    sprintf(texte, "%d", c.nb_habitant);
+    DrawText(texte, 500, 25, 20, BLUE);
+    sprintf(texte, "%d", c.nb_electricite);
+    DrawText(texte, 700, 25, 20, BLUE);
+    sprintf(texte, "%d", c.nb_eau);
+    DrawText(texte, 900, 25, 20, BLUE);
+
+    EndDrawing();
+}
+ */
