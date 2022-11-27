@@ -230,7 +230,7 @@ void afficherEmplacementMaison(Color rond, Color rond1, Color rond2, Color rond3
     DrawRectangleLines(x, y, espacement * 2, espacement * 2, rond3);
 }
 
-void cliqueMenuGeneral(city *c, int x, int y, int a, Color *Toolboxes, Color *couleurMaison1, Color *couleurMaison,
+/*void cliqueMenuGeneral(city *c, int x, int y, int a, Color *Toolboxes, Color *couleurMaison1, Color *couleurMaison,
                        Color *rond,
                        Color *rond1, Color *rond2, Color *rond3, Color noir, Color blanc) {
     x = GetMouseX();
@@ -356,7 +356,7 @@ void cliqueMenuGeneral(city *c, int x, int y, int a, Color *Toolboxes, Color *co
         *couleurMaison = BLANK;
     }
 
-}
+}*/
 
 void afficherToolBoxe3d(city c, Camera3D camera, city *c_adresse) {
     bool fin = false;
@@ -677,7 +677,7 @@ static void DrawText3D(Font font, const char *text, Vector3 position, float font
     }
 }
 
-void affichage3d(city c, Camera3D camera, city *c_adresse,Color couleur,Color couleur1) {
+void affichage3d(city c, Camera3D camera, city *c_adresse,Color couleur,Color couleur1,Color capacite) {
     poser_element(&c, camera, c_adresse);
 
 
@@ -749,7 +749,7 @@ void affichage3d(city c, Camera3D camera, city *c_adresse,Color couleur,Color co
         }
     }
 
-    afficherCapaciteCE(&c.chateauEau);
+    afficherCapaciteCE(&c.chateauEau,capacite);
 
     EndMode3D();
     DrawTexture(c.tableau_texture[0], 60, 20, WHITE);
@@ -785,7 +785,7 @@ void affichage3d(city c, Camera3D camera, city *c_adresse,Color couleur,Color co
     EndDrawing();
 }
 
-void affichage_route(city c, int i, int j, int i2, int j2,Color couleur1) {
+void affichage_route(city c, int i, int j, int i2, int j2,Color couleur1) { // Fonction qui permet d'afficher la route et qui prend en compte les virages et les croisements
     int compteur = 0;
     if (c.plateau[i2 + 1][j2].numero == 1) {
         compteur++;
@@ -868,7 +868,7 @@ void achat(city *c) {
         c->ece_flouz = c->ece_flouz - c->tableau_element[c->joueur1.element_choisie].prix;
     }
 }
-void affichageNiveauMoinsUn(city c,int i,int j,int i2,int j2,Color couleur) {
+void affichageNiveauMoinsUn(city c,int i,int j,int i2,int j2,Color couleur) { // Fonction qui permet de mettre une case bleu ou jaune à la place de la route
     if(c.plateau[i2][j2].passage_eau == 1){
         Vector3 cubePosition = (Vector3) {-2.55f + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
                                           c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
@@ -877,7 +877,7 @@ void affichageNiveauMoinsUn(city c,int i,int j,int i2,int j2,Color couleur) {
     }
 }
 
-void NiveauZeroUnDeux() {
+void NiveauZeroUnDeux() { // Fonction d'affichage des niveaux 0 -1 et -2 avec animation
 
     DrawCircleLines(100, 150, 50, WHITE);
     DrawText("0", 93, 135, 30, WHITE);
@@ -901,7 +901,7 @@ void NiveauZeroUnDeux() {
         DrawCircleLines(100, 450, 51, WHITE);
     }
 }
-void afficherCapaciteCE(chateauEau** listeChateauEau){
+void afficherCapaciteCE(chateauEau** listeChateauEau, Color capacite){
     if(*listeChateauEau != NULL){
         for(chateauEau* pChateau= *listeChateauEau; pChateau != NULL; pChateau = pChateau->chateauEau) {
 
@@ -912,7 +912,7 @@ void afficherCapaciteCE(chateauEau** listeChateauEau){
             rlRotatef(90.0f, 1.0f, 0.0f, 0.0f);
             Vector3 m = MeasureText3D(GetFontDefault(), texte, 10.0f, 0.5f, 0.0f);
             Vector3 pos = (Vector3){((float)pChateau->position_x*2 - colones) + 2, ((float)pChateau->position_y*2 - ligne)+2, -10.0f};
-            DrawText3D(GetFontDefault(), texte, pos, 10.0f, 0.5f, 0.0f, false, DARKBLUE);
+            DrawText3D(GetFontDefault(), texte, pos, 10.0f, 0.5f, 0.0f, false, capacite);
             rlPopMatrix();
         }
     }

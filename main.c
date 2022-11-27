@@ -9,52 +9,58 @@ int main() {
     const int screenHeight =700;
 
 
+
     InitWindow(screenWidth, screenHeight, "ECE CITY");
 
     city c = initialisation();
     //lire_sauvegarde(&c);
     // Define the camera to look into our 3d world
     Camera3D camera = {0};
-    camera.position = (Vector3) {30.0f, 30.0f, 30.0f}; // Camera position
-    camera.target = (Vector3) {0.0f, 0.0f, 0.0f};      // Camera looking at point
-    camera.up = (Vector3) {0.0f, 1.0f, 0.0f};          // Camera up vector (rotation towards target)
-    camera.fovy = 45.0f;                                // Camera field-of-view Y
-    camera.projection = CAMERA_PERSPECTIVE;                   // Camera mode type
-
+    camera.position = (Vector3) {30.0f, 30.0f, 30.0f};
+    camera.target = (Vector3) {0.0f, 0.0f, 0.0f};
+    camera.up = (Vector3) {0.0f, 1.0f, 0.0f};
+    camera.fovy = 45.0f;
+    camera.projection = CAMERA_PERSPECTIVE;
     Vector3 cubePosition = {1, 0, 1};
 
     //Material* tileMaterial = LoadMaterials("../model3d/WoodHouse.mtl", &compt);
 
-    SetCameraMode(camera, CAMERA_FREE); // Set a free camera mode
+    SetCameraMode(camera, CAMERA_FREE);
 
-    SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
+    SetTargetFPS(60);
 
+    // Initialisation des couleurs pour la route
     Color noir = BLANK;
     Color blanc = BLANK;
     Color couleur=BLANK;
     Color couleur1=WHITE;
+    Color capacite= BLANK;
 
     // Main game loop
-    while (!WindowShouldClose())        // Detect window close button or ESC key
+    while (!WindowShouldClose())
     {
 
         if ( (GetMouseX() -100)*(GetMouseX()-100) + (GetMouseY() - 150)*(GetMouseY()  -150) < 50*50) {
             if (IsMouseButtonPressed(1)) {
                 couleur = BLANK;
-                couleur1=WHITE;
+                couleur1=WHITE;                         //clique pour le niveau 0
+                capacite=BLANK;
             }
         }
         if((GetMouseX() -100)*(GetMouseX()-100) + (GetMouseY() - 300)*(GetMouseY()  -300) < 50*50){
             if (IsMouseButtonPressed(1)){
-                couleur =YELLOW;
-                couleur1 =YELLOW;
+                couleur =BLUE;
+                couleur1 =BLUE;                         //clique pour le niveau -1
+                capacite= DARKBLUE;
             }
         }
         if((GetMouseX() -100)*(GetMouseX()-100) + (GetMouseY() - 450)*(GetMouseY()  -450) < 50*50){
             if (IsMouseButtonPressed(1)){
-                couleur =BLUE;
-                couleur1 =BLUE;
+
+                couleur =YELLOW;
+                couleur1 =YELLOW;                       //clique pour le niveau -2
+                capacite=BLANK;
+
 
             }
         }
@@ -81,7 +87,7 @@ int main() {
             camera.position.y = 0;
         }
 
-        affichage3d(c,camera,&c,couleur,couleur1);
+        affichage3d(c,camera,&c,couleur,couleur1,capacite); // fonction principale du jeu pour l'affichage 3D
 
 
 
@@ -151,10 +157,4 @@ int main() {
     //--------------------------------------------------------------------------------------
 
     return 0;
-}*/
-/*
-int main(){
-    maison m;
-    int var,var1;
-    relierMaisonChateau(m,var,var1);
 }*/
