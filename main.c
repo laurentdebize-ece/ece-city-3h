@@ -3,13 +3,12 @@
 #include "menu.h"
 
 
-
 int main() {
+    // les dimensions de la fenetre
     const int screenWidth = 1200;
     const int screenHeight =700;
 
-
-
+    // on initialise notre fenetre
     InitWindow(screenWidth, screenHeight, "ECE CITY");
 
     city c = initialisation();
@@ -39,7 +38,7 @@ int main() {
     // Main game loop
     while (!WindowShouldClose())
     {
-
+        // niveau 0
         if ( (GetMouseX() -100)*(GetMouseX()-100) + (GetMouseY() - 150)*(GetMouseY()  -150) < 50*50) {
             if (IsMouseButtonPressed(1)) {
                 couleur = BLANK;
@@ -47,6 +46,7 @@ int main() {
                 capacite=BLANK;
             }
         }
+        // niveau -1
         if((GetMouseX() -100)*(GetMouseX()-100) + (GetMouseY() - 300)*(GetMouseY()  -300) < 50*50){
             if (IsMouseButtonPressed(1)){
                 couleur =BLUE;
@@ -54,6 +54,7 @@ int main() {
                 capacite= DARKBLUE;
             }
         }
+        // niveau -2
         if((GetMouseX() -100)*(GetMouseX()-100) + (GetMouseY() - 450)*(GetMouseY()  -450) < 50*50){
             if (IsMouseButtonPressed(1)){
 
