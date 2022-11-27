@@ -230,8 +230,10 @@ void afficherEmplacementMaison(Color rond, Color rond1, Color rond2, Color rond3
     DrawRectangleLines(x, y, espacement * 2, espacement * 2, rond3);
 }
 
-void cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *couleurMaison1, Color *couleurMaison, Color *rond,
-                  Color *rond1, Color *rond2, Color *rond3) {
+
+void cliqueMenuGeneral(city *c, int x, int y, int a, Color *Toolboxes, Color *couleurMaison1, Color *couleurMaison,
+                       Color *rond,
+                       Color *rond1, Color *rond2, Color *rond3, Color noir, Color blanc) {
     x = GetMouseX();
     y = GetMouseY();
 
@@ -267,7 +269,8 @@ void cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *co
         int j = 0;
         *couleurMaison = WHITE;
         *rond = BLACK;
-
+        blanc = WHITE;
+        noir = BLACK;
         DrawRectangleLines(x, y, espacement * 3, espacement * 3, *rond);
         c->plateau[i][j].numero = 0;
         DrawTexture(c->tableau_element[c->plateau[i][j].numero].texture, x, y, *couleurMaison);
@@ -279,7 +282,8 @@ void cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *co
         int j = 0;
         *rond1 = RED;
         *couleurMaison = WHITE;
-
+        blanc = WHITE;
+        noir = BLACK;
         DrawRectangleLines(x, y, espacement * 1, espacement * 1, *rond1);
         c->plateau[i][j].numero = 0;
         DrawTexture(c->tableau_element[c->plateau[i][j].numero].texture, x, y, *couleurMaison);
@@ -292,7 +296,8 @@ void cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *co
         int j = 0;
         *couleurMaison = WHITE;
         *rond2 = DARKBROWN;
-
+        blanc = WHITE;
+        noir = BLACK;
         DrawRectangleLines(x, y, espacement * 2, espacement * 2, *rond2);
         c->plateau[i][j].numero = 0;
         DrawTexture(c->tableau_element[c->plateau[i][j].numero].texture, x, y, *couleurMaison);
@@ -306,7 +311,8 @@ void cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *co
         int j = 0;
         *couleurMaison = WHITE;
         *rond3 = DARKBLUE;
-
+        blanc = WHITE;
+        noir = BLACK;
         DrawRectangleLines(x, y, espacement * 2, espacement * 2, *rond3);
         c->plateau[i][j].numero = 0;
         DrawTexture(c->tableau_element[c->plateau[i][j].numero].texture, x, y, *couleurMaison);
@@ -315,18 +321,19 @@ void cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *co
         a = 1;
     }
 
-    if((GetMouseX() - (1100 / 2 + 240)) * (GetMouseX() - (1100 / 2 + 240)) + (GetMouseY() - 580) * (GetMouseY() - 580) < 40 * 40 && IsMouseButtonDown(1)){
-        /*DrawText("Achat  ", 1100 / 2 + 95, 500, 20);
+    if ((GetMouseX() - (1100 / 2 + 240)) * (GetMouseX() - (1100 / 2 + 240)) +
+        (GetMouseY() - 580) * (GetMouseY() - 580) < 40 * 40 && IsMouseButtonDown(1)) {
+        DrawText("Achat  ", 1100 / 2 + 95, 500, 20, noir);
         noir = BLANK;
-        blanc= BLANK;*/
+        blanc = BLANK;
     }
 
 
-    if (c->tableau_element[c->joueur1.element_choisie].prix > c->ece_flouz){
-        /*DrawText("Vous ne pouvez pas acheter, ", 1100 / 2 + 95, 500, 20, noir);
+    if (c->tableau_element[c->joueur1.element_choisie].prix > c->ece_flouz) {
+        DrawText("Vous ne pouvez pas acheter, ", 1100 / 2 + 95, 500, 20, noir);
         DrawText("par manque de moyens.", 1100 / 2 + 95, 520, 20, noir);
         noir = BLANK;
-        blanc = BLANK;*/
+        blanc = BLANK;
     }
 
     if (clickPlateau(x, y) == 1 && c->joueur1.element_choisie != -1) {
@@ -452,7 +459,7 @@ void poser_element(city *c, Camera3D camera, city *c_adresse) {
     collision = GetRayCollisionBox(ray, (BoundingBox) {(Vector3) {-45, 0, -35}, (Vector3) {45, 0, 35}});
     int x = collision.point.x / 2 + 23;
     int z = collision.point.z / 2 + 18;
-    if(0 <= x && x <=45 && 0<=z && z<=33) {
+    if (0 <= x && x <= 45 && 0 <= z && z <= 33) {
         if (c->joueur1.element_choisie != 0) {
             c->plateau[x][z].numero = c->joueur1.element_choisie;
             if (IsMouseButtonPressed(1)) {
@@ -489,18 +496,185 @@ void poser_element(city *c, Camera3D camera, city *c_adresse) {
             if (clique_accepter) {
                 if (c->joueur1.element_choisie == 3) {
                     c_adresse->plateau[x][z].
-                            temps = GetTime() + 15;
+                            temps = (GetTime()-c->temps) + 15;
                 }
                 for (int i = 0; i <= c->tableau_element[c->joueur1.element_choisie].espacement_x - 1; i++) {
                     for (int j = 0; j <= c->tableau_element[c->joueur1.element_choisie].espacement_y - 1; j++) {
                         c_adresse->plateau[x + i][z + j].numero = -c->joueur1.element_choisie;
+                        c_adresse->plateau[x + i][z + j].reference_x = x;
+                        c_adresse->plateau[x + i][z + j].reference_y = z;
                     }
                 }
                 c_adresse->plateau[x][z].numero = c->joueur1.element_choisie;
+                achat(c_adresse);
             }
         }
     }
 
+}
+#define LETTER_BOUNDRY_SIZE     0.25f
+#define TEXT_MAX_LAYERS         32
+#define LETTER_BOUNDRY_COLOR    VIOLET
+static Vector3 MeasureText3D(Font font, const char* text, float fontSize, float fontSpacing, float lineSpacing)
+{
+    int len = TextLength(text);
+    int tempLen = 0;                // Used to count longer text line num chars
+    int lenCounter = 0;
+
+    float tempTextWidth = 0.0f;     // Used to count longer text line width
+
+    float scale = fontSize/(float)font.baseSize;
+    float textHeight = scale;
+    float textWidth = 0.0f;
+
+    int letter = 0;                 // Current character
+    int index = 0;                  // Index position in sprite font
+
+    for (int i = 0; i < len; i++)
+    {
+        lenCounter++;
+
+        int next = 0;
+        letter = GetCodepoint(&text[i], &next);
+        index = GetGlyphIndex(font, letter);
+
+        // NOTE: normally we exit the decoding sequence as soon as a bad byte is found (and return 0x3f)
+        // but we need to draw all of the bad bytes using the '?' symbol so to not skip any we set next = 1
+        if (letter == 0x3f) next = 1;
+        i += next - 1;
+
+        if (letter != '\n')
+        {
+            if (font.glyphs[index].advanceX != 0) textWidth += (font.glyphs[index].advanceX+fontSpacing)/(float)font.baseSize*scale;
+            else textWidth += (font.recs[index].width + font.glyphs[index].offsetX)/(float)font.baseSize*scale;
+        }
+        else
+        {
+            if (tempTextWidth < textWidth) tempTextWidth = textWidth;
+            lenCounter = 0;
+            textWidth = 0.0f;
+            textHeight += scale + lineSpacing/(float)font.baseSize*scale;
+        }
+
+        if (tempLen < lenCounter) tempLen = lenCounter;
+    }
+
+    if (tempTextWidth < textWidth) tempTextWidth = textWidth;
+
+    Vector3 vec = { 0 };
+    vec.x = tempTextWidth + (float)((tempLen - 1)*fontSpacing/(float)font.baseSize*scale); // Adds chars spacing to measure
+    vec.y = 0.25f;
+    vec.z = textHeight;
+
+    return vec;
+}
+static void DrawTextCodepoint3D(Font font, int codepoint, Vector3 position, float fontSize, bool backface, Color tint)
+{
+    // Character index position in sprite font
+    // NOTE: In case a codepoint is not available in the font, index returned points to '?'
+    int index = GetGlyphIndex(font, codepoint);
+    float scale = fontSize/(float)font.baseSize;
+
+    // Character destination rectangle on screen
+    // NOTE: We consider charsPadding on drawing
+    position.x += (float)(font.glyphs[index].offsetX - font.glyphPadding)/(float)font.baseSize*scale;
+    position.z += (float)(font.glyphs[index].offsetY - font.glyphPadding)/(float)font.baseSize*scale;
+
+    // Character source rectangle from font texture atlas
+    // NOTE: We consider chars padding when drawing, it could be required for outline/glow shader effects
+    Rectangle srcRec = { font.recs[index].x - (float)font.glyphPadding, font.recs[index].y - (float)font.glyphPadding,
+                         font.recs[index].width + 2.0f*font.glyphPadding, font.recs[index].height + 2.0f*font.glyphPadding };
+
+    float width = (float)(font.recs[index].width + 2.0f*font.glyphPadding)/(float)font.baseSize*scale;
+    float height = (float)(font.recs[index].height + 2.0f*font.glyphPadding)/(float)font.baseSize*scale;
+
+    if (font.texture.id > 0)
+    {
+        const float x = 0.0f;
+        const float y = 0.0f;
+        const float z = 0.0f;
+
+        // normalized texture coordinates of the glyph inside the font texture (0.0f -> 1.0f)
+        const float tx = srcRec.x/font.texture.width;
+        const float ty = srcRec.y/font.texture.height;
+        const float tw = (srcRec.x+srcRec.width)/font.texture.width;
+        const float th = (srcRec.y+srcRec.height)/font.texture.height;
+
+        if (false) DrawCubeWiresV((Vector3){ position.x + width/2, position.y, position.z + height/2}, (Vector3){ width, LETTER_BOUNDRY_SIZE, height }, LETTER_BOUNDRY_COLOR);
+
+        rlCheckRenderBatchLimit(4 + 4*backface);
+        rlSetTexture(font.texture.id);
+
+        rlPushMatrix();
+        rlTranslatef(position.x, position.y, position.z);
+
+        rlBegin(RL_QUADS);
+        rlColor4ub(tint.r, tint.g, tint.b, tint.a);
+
+        // Front Face
+        rlNormal3f(0.0f, 1.0f, 0.0f);                                   // Normal Pointing Up
+        rlTexCoord2f(tx, ty); rlVertex3f(x,         y, z);              // Top Left Of The Texture and Quad
+        rlTexCoord2f(tx, th); rlVertex3f(x,         y, z + height);     // Bottom Left Of The Texture and Quad
+        rlTexCoord2f(tw, th); rlVertex3f(x + width, y, z + height);     // Bottom Right Of The Texture and Quad
+        rlTexCoord2f(tw, ty); rlVertex3f(x + width, y, z);              // Top Right Of The Texture and Quad
+
+        if (backface)
+        {
+            // Back Face
+            rlNormal3f(0.0f, -1.0f, 0.0f);                              // Normal Pointing Down
+            rlTexCoord2f(tx, ty); rlVertex3f(x,         y, z);          // Top Right Of The Texture and Quad
+            rlTexCoord2f(tw, ty); rlVertex3f(x + width, y, z);          // Top Left Of The Texture and Quad
+            rlTexCoord2f(tw, th); rlVertex3f(x + width, y, z + height); // Bottom Left Of The Texture and Quad
+            rlTexCoord2f(tx, th); rlVertex3f(x,         y, z + height); // Bottom Right Of The Texture and Quad
+        }
+        rlEnd();
+        rlPopMatrix();
+
+        rlSetTexture(0);
+    }
+}
+
+// Draw a 2D text in 3D space
+static void DrawText3D(Font font, const char *text, Vector3 position, float fontSize, float fontSpacing, float lineSpacing, bool backface, Color tint)
+{
+    int length = TextLength(text);          // Total length in bytes of the text, scanned by codepoints in loop
+
+    float textOffsetY = 0.0f;               // Offset between lines (on line break '\n')
+    float textOffsetX = 0.0f;               // Offset X to next character to draw
+
+    float scale = fontSize/(float)font.baseSize;
+
+    for (int i = 0; i < length;)
+    {
+        // Get next codepoint from byte string and glyph index in font
+        int codepointByteCount = 0;
+        int codepoint = GetCodepoint(&text[i], &codepointByteCount);
+        int index = GetGlyphIndex(font, codepoint);
+
+        // NOTE: Normally we exit the decoding sequence as soon as a bad byte is found (and return 0x3f)
+        // but we need to draw all of the bad bytes using the '?' symbol moving one byte
+        if (codepoint == 0x3f) codepointByteCount = 1;
+
+        if (codepoint == '\n')
+        {
+            // NOTE: Fixed line spacing of 1.5 line-height
+            // TODO: Support custom line spacing defined by user
+            textOffsetY += scale + lineSpacing/(float)font.baseSize*scale;
+            textOffsetX = 0.0f;
+        }
+        else
+        {
+            if ((codepoint != ' ') && (codepoint != '\t'))
+            {
+                DrawTextCodepoint3D(font, codepoint, (Vector3){ position.x + textOffsetX, position.y, position.z + textOffsetY }, fontSize, backface, tint);
+            }
+
+            if (font.glyphs[index].advanceX == 0) textOffsetX += (float)(font.recs[index].width + fontSpacing)/(float)font.baseSize*scale;
+            else textOffsetX += (float)(font.glyphs[index].advanceX + fontSpacing)/(float)font.baseSize*scale;
+        }
+
+        i += codepointByteCount;   // Move text bytes counter to next codepoint
+    }
 }
 
 void affichage3d(city c, Camera3D camera, city *c_adresse,Color couleur,Color couleur1) {
@@ -528,7 +702,7 @@ void affichage3d(city c, Camera3D camera, city *c_adresse,Color couleur,Color co
         for (int j = 0; j <= (ligne - 1) * 2; j += 2) {
             j2 = (j) / 2;
 
-            if (c.plateau[i2][j2].numero >0) {
+            if (c.plateau[i2][j2].numero > 0) {
                 if (c.plateau[i2][j2].numero == 1) {
                     affichageNiveauMoinsUn(c, i, j, i2, j2, couleur);
                     affichage_route(c, i, j, i2, j2,couleur1);
@@ -574,21 +748,25 @@ void affichage3d(city c, Camera3D camera, city *c_adresse,Color couleur,Color co
             }
         }
     }
-
+    rlPushMatrix();
+    rlRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+    char * opt = "All the text displayed here is in 3D";
+    Vector3 m = MeasureText3D(GetFontDefault(), opt, 10.0f, 0.5f, 0.0f);
+    Vector3 pos = (Vector3){-m.x/2.0f, 2.f, -20.0f};
+    DrawText3D(GetFontDefault(), opt, pos, 10.0f, 0.5f, 0.0f, false, DARKBLUE);
+    rlPopMatrix();
     EndMode3D();
     DrawTexture(c.tableau_texture[0], 60, 20, WHITE);
     DrawTexture(c.tableau_texture[1], 260, 20, WHITE);
     DrawTexture(c.tableau_texture[2], 460, 20, WHITE);
     DrawTexture(c.tableau_texture[3], 660, 20, WHITE);
     DrawTexture(c.tableau_texture[4], 860, 20, WHITE);
-    if (c.joueur1.element_choisie == 0){
+    if (c.joueur1.element_choisie == 0) {
         DrawTexture(c.tableau_texture[5], 1060, 5, WHITE);
-    }
-    else{
+    } else {
         if (GetMouseX() > 1060 && GetMouseX() < 1360 && GetMouseY() > 20 && GetMouseY() < 100) {
             DrawTexture(c.tableau_texture[7], 1060, 5, WHITE);
-        }
-        else{
+        } else {
             DrawTexture(c.tableau_texture[6], 1060, 5, WHITE);
         }
     }
@@ -596,7 +774,7 @@ void affichage3d(city c, Camera3D camera, city *c_adresse,Color couleur,Color co
 
     char texte[15] = {0};
     double temps = GetTime() - c.temps;
-    sprintf(texte, "%.2lf",temps);
+    sprintf(texte, "%.2lf", temps);
     DrawText(texte, 100, 25, 20, BLUE);
     sprintf(texte, "%d", c.ece_flouz);
     DrawText(texte, 300, 25, 20, BLUE);
@@ -630,7 +808,7 @@ void affichage_route(city c, int i, int j, int i2, int j2,Color couleur1) {
                   (Vector3) {-2.55f + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
                              c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
                              -2 + (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z},
-                  c.tableau_element[c.plateau[i2][j2].numero].scale, couleur1);
+                  c.tableau_element[c.plateau[i2][j2].numero].scale, WHITE);
     } else if (c.plateau[i2 + 1][j2].numero == 1 && c.plateau[i2][j2 + 1].numero == 1) {
         DrawModelEx(c.model_route[1],
                     (Vector3) {-0.48f + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
@@ -689,24 +867,9 @@ void affichage_route(city c, int i, int j, int i2, int j2,Color couleur1) {
     }
 }
 
-
-void affichageCercleAchat(Color noir, Color blanc){
-    DrawText("Voulez-vous acheter? ", 1100 / 2 + 95, 520, 20, noir);
-
-    DrawCircle(1100 / 2 + 140, 580, 40, noir);
-    DrawText("OUI ", 1100 / 2 + 120, 570, 20, blanc);
-
-    DrawCircle(1100 / 2 + 240, 580, 40, noir);
-    DrawText("NON ", 1100 / 2 + 220, 570, 20, blanc);
-}
-
-void achat(city* c,Color noir, Color blanc){
-    affichageCercleAchat(noir, blanc);
-
-    if ((GetMouseX() - (1100 / 2 + 140)) * (GetMouseX() - (1100 / 2 + 140)) + (GetMouseY() - 580) * (GetMouseY() - 580) < 40 * 40 && IsMouseButtonPressed(1)){
-        if (c->tableau_element[c->joueur1.element_choisie].prix <= c->ece_flouz) {
-            c->ece_flouz = c->ece_flouz - c->tableau_element[c->joueur1.element_choisie].prix;
-        }
+void achat(city *c) {
+    if (c->tableau_element[c->joueur1.element_choisie].prix <= c->ece_flouz) {
+        c->ece_flouz = c->ece_flouz - c->tableau_element[c->joueur1.element_choisie].prix;
     }
 }
 void affichageNiveauMoinsUn(city c,int i,int j,int i2,int j2,Color couleur) {

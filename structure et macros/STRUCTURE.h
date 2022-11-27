@@ -2,53 +2,6 @@
 #define ECE_CITY_3H_STRUCTURE_H
 #include "raylib.h"
 #include "macros.h"
-typedef struct case_element {
-    int numero;//numero negatif si l'element n'est pas afficher ici mais touche comme meme cette case exemple maison: -5
-    double temps;
-}c_element;
-typedef struct element{
-    Texture2D texture;///remplacer par image plus tard
-
-    Model model;
-    float decalage_x;
-    float decalage_y;
-    float decalage_z;
-    float scale;
-
-    int nb_habitants;// 0 si pas habitant
-    int prix;// -1 si pas achetable
-    int espacement_x;
-    int espacement_y;
-}element;
-
-typedef struct joueur {
-    int element_choisie;
-}joueur;
-
-typedef struct voiture {
-    int x;
-    int y;
-    Model model;
-}voiture;
-typedef struct ece_city{///ajouter compteur temps
-    c_element plateau[colones][ligne];//45 colonnes sur 35 lignes
-    element tableau_element[nombreElement];
-    Texture2D tableau_texture[nombreTexture];
-    Model model_route[3];
-    voiture v[10];
-    joueur joueur1;
-    double temps;
-    int etage;//tool boxe =1
-    int ece_flouz;
-    int nb_habitant;
-    int nb_electricite;
-    int nb_eau;
-    bool mode;
-}city;
-
-
-
-
 
 /////////////////////    BFS    /////////////////////////////////
 
@@ -85,6 +38,9 @@ struct Sommet
 {
     struct Arc* arc;
     int valeur;
+    int x;
+    int y;
+
     char couleur;
     int pred;
 };
@@ -102,26 +58,80 @@ typedef struct Graphe
 } Graphe;
 
 
-
-
-
-typedef struct distance{
-    int distance;
-    int chateauEau;
-    struct distance* suivant;
-}distance;
 typedef struct maison{
-    struct distance * distance;
+    int distance;
+    int numero_ch;
     int nb_habitants;
+    int besoin_eau;
     int  position_x;
     int  position_y;
-    struct chateauEau *chateauEau;
-}maison;
-typedef struct chateauEau{
-    int capacite;
+    struct  ChateauEau * chateauEau_principal;
     struct maison * habitation;
-    struct chateauEau* chateauEau;
+}maison;
 
+typedef struct ChateauEau{
+    int capacite;
+    int  position_x;
+    int  position_y;
+    int numero;
+    struct maison * habitation;
+    struct  ChateauEau * chateauEau;
+    struct ChateauEau* next;
 }chateauEau;
-#endif //ECE_CITY_3H_STRUCTURE_H
 
+///////////////////////////////////////////////
+typedef struct case_element {
+    int numero;//numero negatif si l'element n'est pas afficher ici mais touche comme meme cette case exemple maison: -5
+    int reference_x;
+    int reference_y;
+    int marquage;
+    int distance_eau;
+    double temps;
+}c_element;
+typedef struct element{
+    Texture2D texture;///remplacer par image plus tard
+
+    Model model;
+    float decalage_x;
+    float decalage_y;
+    float decalage_z;
+    float scale;
+
+    int nb_habitants;// 0 si pas habitant
+    int prix;// -1 si pas achetable
+    int espacement_x;
+    int espacement_y;
+}element;
+
+typedef struct joueur {
+    int element_choisie;
+}joueur;
+
+typedef struct voiture {
+    int x;
+    int y;
+    Model model;
+}voiture;
+typedef struct ece_city{///ajouter compteur temps
+    c_element plateau[colones][ligne];//45 colonnes sur 35 lignes
+    element tableau_element[nombreElement];
+    Texture2D tableau_texture[nombreTexture];
+    Model model_route[3];
+    voiture v[10];
+    joueur joueur1;
+    chateauEau * chateauEau;
+    double temps;
+    int etage;//tool boxe =1
+    int ece_flouz;
+    int nb_habitant;
+    int nb_electricite;
+    int nb_eau;
+    bool mode;
+}city;
+
+
+
+
+
+
+#endif //ECE_CITY_3H_STRUCTURE_H

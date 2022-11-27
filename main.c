@@ -10,6 +10,9 @@
 #include "structure et macros/STRUCTURE.h"
 #include "menu.h"
 
+
+void DrawRectanglelines(int i, int i1, int i2, int i3, Color color);
+
 /*int main() {
     // Initialisation
     const int screenWidth = 1100;
@@ -91,15 +94,14 @@
 
     CloseWindow();
     return 0;
-}*/
+}
 
 ///////////////////////////////////////////////////////////////3D///////////////////////////////////////////////////////
-
+*/
 
 
 
 int main() {
-
 
 
     const int screenWidth = 1200;
@@ -158,21 +160,23 @@ int main() {
 
         if (GetMouseX() > 1060 && GetMouseX() < 1360 && GetMouseY() > 20 && GetMouseY() < 100) {
             if (IsMouseButtonPressed(1)) {
-                if (c.joueur1.element_choisie == 0){
-                    afficherToolBoxe3d(c,camera,&c);
-                }
-                else{
+                if (c.joueur1.element_choisie == 0) {
+                    afficherToolBoxe3d(c, camera, &c);
+                } else {
                     c.joueur1.element_choisie = 0;
 
                 }
             }
         }
-        evolution(c.plateau,&c);
+
+        evolution(c.plateau, &c);
         calcul(&c);
-        achat(&c, noir, blanc);
+        creer_graphe(c,&c);
+        distributionEau(c.chateauEau,&c);
+        distributionElectricite(&c);
         UpdateCamera(&camera);
-        if(camera.position.y <0){
-            camera.position.y =0;
+        if (camera.position.y < 0) {
+            camera.position.y = 0;
         }
 
         affichage3d(c,camera,&c,couleur,couleur1);
@@ -245,15 +249,9 @@ int main() {
 
     return 0;
 }*/
-
-
-
-
-
-
-
-
-
-
-
-
+/*
+int main(){
+    maison m;
+    int var,var1;
+    relierMaisonChateau(m,var,var1);
+}*/
