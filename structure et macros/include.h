@@ -26,5 +26,6 @@
 #include "../fonction/calcul.h"
 #include "../fonction/sauvegarde.h"
 #include "../fonction/bfs.h"
+#include "../fonction/partie.h"
 
 #endif //ECE_CITY_3H_INCLUDE_H
