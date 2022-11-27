@@ -504,10 +504,12 @@ void achat(city *c) {
 }
 
 void affichageNiveauMoinsUn(city c,int i,int j,int i2,int j2,Color couleur) {
-    Vector3 cubePosition = (Vector3) {-2.55f + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
-                                      c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
-                                      -2 + (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z };
-    DrawCube(cubePosition, 2.0f, 0.5f, 2.0f, couleur);
+    if(c.plateau[i2][j2].passage_eau == 1){
+        Vector3 cubePosition = (Vector3) {-2.55f + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
+                                          c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
+                                          -2 + (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z };
+        DrawCube(cubePosition, 2.0f, 0.5f, 2.0f, couleur);
+    }
 }
 
 void NiveauZeroUnDeux() {

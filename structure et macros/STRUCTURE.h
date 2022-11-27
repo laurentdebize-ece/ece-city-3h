@@ -86,6 +86,8 @@ typedef struct case_element {
     int reference_y;
     int marquage;
     int distance_eau;
+    int passage_eau;
+    int passage_elect;
     double temps;
 }c_element;
 typedef struct element{

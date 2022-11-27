@@ -13,8 +13,9 @@ File fileVide();
 int longueur(File F);
 void enfiler(File F, typage element);
 typage defiler(File F);
-void parcoursBFS(Graphe* graphe, int s0,city c , chateauEau* ch );
+void parcoursBFS(Graphe* graphe, int s0,city c , chateauEau* ch,city *c_adresse );
 void calcul_nombre_chateau(chateauEau* ce , city c);
 void distributionEau(chateauEau* listeCheateauEau,city* c );
 void distributionElectricite(city *c);
+void chemin_eau(city* c ,int preds[1000],int s0, Graphe * g );
 #endif //ECE_CITY_3H_BFS_H

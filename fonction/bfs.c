@@ -181,7 +181,7 @@ void creer_graphe(city c, city *c_adresse) {
             }
         }
         ch2->habitation = NULL;
-        parcoursBFS(g, s0, c, ch2);
+        parcoursBFS(g, s0, c, ch2,c_adresse);
         ch2 = ch2->chateauEau;
     }
 
@@ -235,8 +235,14 @@ typage defiler(File F) {
     return (element);
 }
 
-
-void parcoursBFS(Graphe *graphe, int s0, city c, chateauEau *ch) {
+void chemin_eau(city* c ,int preds[1000],int s0, Graphe * g ){
+    while (preds[s0] != -1){
+        c->plateau[g->pSommet[s0]->x][g->pSommet[s0]->y].passage_eau = 1;
+        s0 = preds[s0];
+    }
+    c->plateau[g->pSommet[s0]->x][g->pSommet[s0]->y].passage_eau = 1;
+}
+void parcoursBFS(Graphe *graphe, int s0, city c, chateauEau *ch,city *c_adresse) {
     int taille = graphe->taille;
     int preds[graphe->ordre];
     int distance[graphe->ordre];
@@ -255,6 +261,7 @@ void parcoursBFS(Graphe *graphe, int s0, city c, chateauEau *ch) {
         for (int j = 0; j < ligne; j++) {
             if (c.plateau[i][j].numero > 2 && c.plateau[i][j].numero < 8) {
                 c.plateau[i][j].marquage = 0;
+                c.plateau[i][j].passage_eau = 0;
             }
         }
     }
@@ -273,6 +280,12 @@ void parcoursBFS(Graphe *graphe, int s0, city c, chateauEau *ch) {
                     &&
                     c.plateau[c.plateau[graphe->pSommet[num2]->x + 1][graphe->pSommet[num2]->y].reference_x][c.plateau[
                             graphe->pSommet[num2]->x + 1][graphe->pSommet[num2]->y].reference_y].marquage == 0) {
+                    int s = num2;
+                    while (preds[s] != -1){
+                        c_adresse->plateau[graphe->pSommet[s]->x][graphe->pSommet[s]->y].passage_eau = 1;
+                        s = preds[s];
+                    }
+                    c_adresse->plateau[graphe->pSommet[s]->x][graphe->pSommet[s]->y].passage_eau = 1;
                     if (ch->habitation == NULL) {
                         ch->habitation = (maison *) malloc(sizeof(maison));
                         ch->habitation->habitation = NULL;
@@ -305,6 +318,12 @@ void parcoursBFS(Graphe *graphe, int s0, city c, chateauEau *ch) {
                     abs(c.plateau[graphe->pSommet[num2]->x - 1][graphe->pSommet[num2]->y].numero) < 8 &&
                     c.plateau[c.plateau[graphe->pSommet[num2]->x - 1][graphe->pSommet[num2]->y].reference_x][c.plateau[
                             graphe->pSommet[num2]->x - 1][graphe->pSommet[num2]->y].reference_y].marquage == 0) {
+                    int s = num2;
+                    while (preds[s] != -1){
+                        c_adresse->plateau[graphe->pSommet[s]->x][graphe->pSommet[s]->y].passage_eau = 1;
+                        s = preds[s];
+                    }
+                    c_adresse->plateau[graphe->pSommet[s]->x][graphe->pSommet[s]->y].passage_eau = 1;
                     if (ch->habitation == NULL) {
                         ch->habitation = (maison *) malloc(sizeof(maison));
                         ch->habitation->habitation = NULL;
@@ -336,6 +355,12 @@ void parcoursBFS(Graphe *graphe, int s0, city c, chateauEau *ch) {
                     abs(c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y + 1].numero) < 8 &&
                     c.plateau[c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y + 1].reference_x][c.plateau[
                             graphe->pSommet[num2]->x][graphe->pSommet[num2]->y + 1].reference_y].marquage == 0) {
+                    int s = num2;
+                    while (preds[s] != -1){
+                        c_adresse->plateau[graphe->pSommet[s]->x][graphe->pSommet[s]->y].passage_eau = 1;
+                        s = preds[s];
+                    }
+                    c_adresse->plateau[graphe->pSommet[s]->x][graphe->pSommet[s]->y].passage_eau = 1;
                     if (ch->habitation == NULL) {
                         ch->habitation = (maison *) malloc(sizeof(maison));
                         ch->habitation->habitation = NULL;
@@ -369,6 +394,12 @@ void parcoursBFS(Graphe *graphe, int s0, city c, chateauEau *ch) {
                     c.plateau[c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y - 1].reference_x][
                             c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y - 1].reference_y].marquage ==
                     0) {
+                    int s = num2;
+                    while (preds[s] != -1){
+                        c_adresse->plateau[graphe->pSommet[s]->x][graphe->pSommet[s]->y].passage_eau = 1;
+                        s = preds[s];
+                    }
+                    c_adresse->plateau[graphe->pSommet[s]->x][graphe->pSommet[s]->y].passage_eau = 1;
                     if (ch->habitation == NULL) {
                         ch->habitation = (maison *) malloc(sizeof(maison));
                         ch->habitation->habitation = NULL;
