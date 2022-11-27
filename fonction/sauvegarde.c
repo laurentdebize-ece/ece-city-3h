@@ -1,8 +1,5 @@
-//
-// Created by leque on 22/11/2022.
-//
-
 #include "../structure et macros/include.h"
+
 void sauvegarde(city c){
     FILE* sauvegarde = NULL;
 
@@ -23,6 +20,7 @@ void sauvegarde(city c){
     fprintf(sauvegarde, "%f\n", temps);
     fclose(sauvegarde);
 }
+
 void lire_sauvegarde(city* c){
     FILE* sauvegarde = NULL;
     sauvegarde = fopen("sauvegarde.txt", "r");

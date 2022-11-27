@@ -1,7 +1,3 @@
-//
-// Created by leque on 03/11/2022.
-//
-
 #include "../structure et macros/include.h"
 #include "raymath.h"
 
@@ -40,6 +36,7 @@ element chargement_element(char *nomFichier){
     e.scale = scale;
     return e;
 }
+
 city chargement_total_element(){
     city c;
     int x=0;
@@ -59,6 +56,8 @@ city chargement_total_element(){
     c.tableau_element[1].model = LoadModel("../model3d/route.glb");
     c.model_route[0] = LoadModel("../model3d/route4.glb");
     c.model_route[1] = LoadModel("../model3d/route2.glb");
+
+
 
     ///////////////////////ruine/////////////////////////////
     c.tableau_element[2] = chargement_element("../FILE/element/ruine");
@@ -116,6 +115,7 @@ city chargement_total_element(){
 
     return  c;
 }
+
 city chargement_base(city c){
     FILE *ifs = fopen("../FILE/element principaux", "r");
     if (!ifs) {
@@ -135,6 +135,7 @@ city chargement_base(city c){
     c.nb_eau = eau;
     return c;
 }
+
 city initialisation(){
     city c;
     c = chargement_total_element();
@@ -142,6 +143,7 @@ city initialisation(){
         for (int j = 0; j < ligne; j++) {
             c.plateau[i][j].numero = 0;
             c.plateau[i][j].temps = 0;
+            c.plateau[i][j].passage_eau = 0;
         }
     }
     c.joueur1.element_choisie = 0;

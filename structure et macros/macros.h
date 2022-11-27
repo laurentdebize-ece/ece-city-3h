@@ -11,9 +11,13 @@
 #define positionFenetre 100
 #define nombreElement 10
 #define nombreTexture 8
+#define EAUMAX 5000
+
+#define LETTER_BOUNDRY_SIZE     0.25f
+#define TEXT_MAX_LAYERS         32
+#define LETTER_BOUNDRY_COLOR    VIOLET
 
 
-#define maison_x 24
-#define maison_z 22
+
 
 #endif //ECE_CITY_3H_MACROS_H
