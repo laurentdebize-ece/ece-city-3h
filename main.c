@@ -8,12 +8,16 @@ int main() {
     const int screenWidth = 1200;
     const int screenHeight =700;
 
+
+
     // on initialise notre fenetre
     InitWindow(screenWidth, screenHeight, "ECE CITY");
 
     city c = initialisation();
     //lire_sauvegarde(&c);
-    // Define the camera to look into our 3d world
+
+
+
     Camera3D camera = {0};
     camera.position = (Vector3) {30.0f, 30.0f, 30.0f};
     camera.target = (Vector3) {0.0f, 0.0f, 0.0f};
@@ -35,10 +39,9 @@ int main() {
     Color couleur1=WHITE;
     Color capacite= BLANK;
 
-    // Main game loop
+    // affichage de la fenetre tant que l'on a pas appuyé sur la croix
     while (!WindowShouldClose())
     {
-        // niveau 0
         if ( (GetMouseX() -100)*(GetMouseX()-100) + (GetMouseY() - 150)*(GetMouseY()  -150) < 50*50) {
             if (IsMouseButtonPressed(1)) {
                 couleur = BLANK;
@@ -46,7 +49,7 @@ int main() {
                 capacite=BLANK;
             }
         }
-        // niveau -1
+
         if((GetMouseX() -100)*(GetMouseX()-100) + (GetMouseY() - 300)*(GetMouseY()  -300) < 50*50){
             if (IsMouseButtonPressed(1)){
                 couleur =BLUE;
@@ -54,7 +57,7 @@ int main() {
                 capacite= DARKBLUE;
             }
         }
-        // niveau -2
+
         if((GetMouseX() -100)*(GetMouseX()-100) + (GetMouseY() - 450)*(GetMouseY()  -450) < 50*50){
             if (IsMouseButtonPressed(1)){
 
@@ -65,7 +68,7 @@ int main() {
 
             }
         }
-
+        // clique pour la boite à outil
         if (GetMouseX() > 1060 && GetMouseX() < 1360 && GetMouseY() > 20 && GetMouseY() < 100) {
             if (IsMouseButtonPressed(1)) {
                 if (c.joueur1.element_choisie == 0) {
@@ -76,19 +79,24 @@ int main() {
                 }
             }
         }
-        //afficherCapaciteCE(&c.chateauEau);
 
-        evolution(c.plateau, &c);
-        calcul(&c);
-        creer_graphe(c,&c);
-        distributionEau(c.chateauEau,&c);
-        distributionElectricite(&c);
-        UpdateCamera(&camera);
+        //afficherCapaciteCE(&c.chateauEau);
+        if (c.mode==2) {
+            evolution(c.plateau, &c);
+        }
+        if (c.mode==1) {
+            evolution(c.plateau, &c);
+            calcul(&c);
+            creer_graphe(c, &c);
+            distributionEau(c.chateauEau, &c);
+            distributionElectricite(&c);
+            UpdateCamera(&camera);
+        }
         if (camera.position.y < 0) {
             camera.position.y = 0;
         }
-
-        affichage3d(c,camera,&c,couleur,couleur1,capacite); // fonction principale du jeu pour l'affichage 3D
+        // fonction principale du jeu pour l'affichage 3D
+        affichage3d(c,camera,&c,couleur,couleur1,capacite);
 
 
 
