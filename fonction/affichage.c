@@ -742,10 +742,13 @@ void affichage3d(city c, Camera3D camera, city *c_adresse) {
             }
         }
     }
+    rlPushMatrix();
+    rlRotatef(90.0f, 1.0f, 0.0f, 0.0f);
     char * opt = "All the text displayed here is in 3D";
     Vector3 m = MeasureText3D(GetFontDefault(), opt, 10.0f, 0.5f, 0.0f);
-    Vector3 pos = (Vector3){-m.x/2.0f, 0.01f, 2.0f};
+    Vector3 pos = (Vector3){-m.x/2.0f, 2.f, -20.0f};
     DrawText3D(GetFontDefault(), opt, pos, 10.0f, 0.5f, 0.0f, false, DARKBLUE);
+    rlPopMatrix();
     EndMode3D();
     DrawTexture(c.tableau_texture[0], 60, 20, WHITE);
     DrawTexture(c.tableau_texture[1], 260, 20, WHITE);
