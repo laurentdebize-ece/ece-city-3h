@@ -144,6 +144,7 @@ city initialisation(){
         for (int j = 0; j < ligne; j++) {
             c.plateau[i][j].numero = 0;
             c.plateau[i][j].temps = 0;
+            c.plateau[i][j].passage_eau = 0;
         }
     }
     c.joueur1.element_choisie = 0;
