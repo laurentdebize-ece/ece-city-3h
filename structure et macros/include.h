@@ -11,6 +11,8 @@
 #include "raylib.h"
 #include "rlgl.h"
 
+#include <stddef.h>
+#include <math.h>
 
 #include "macros.h"
 #include "STRUCTURE.h"

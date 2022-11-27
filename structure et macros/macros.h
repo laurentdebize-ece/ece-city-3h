@@ -12,13 +12,8 @@
 #define nombreElement 10
 #define nombreTexture 8
 #define EAUMAX 5000
-#define ELECMAX 5000
-#define besoinMaison 10
 
 
 
-
-#define maison_x 24
-#define maison_z 22
 
 #endif //ECE_CITY_3H_MACROS_H

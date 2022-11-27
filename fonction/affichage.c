@@ -676,6 +676,8 @@ static void DrawText3D(Font font, const char *text, Vector3 position, float font
         i += codepointByteCount;   // Move text bytes counter to next codepoint
     }
 }
+
+
 void affichage3d(city c, Camera3D camera, city *c_adresse) {
     poser_element(&c, camera, c_adresse);
 
@@ -683,6 +685,8 @@ void affichage3d(city c, Camera3D camera, city *c_adresse) {
 
     ClearBackground(SKYBLUE);
     BeginMode3D(camera);
+//    afficherCapaciteCE(&c.chateauEau);
+
     DrawGrid(46, 2);
     for (int i = -colones - 1; i <= colones + 1; i += 2) {
         for (int j = -ligne - 1; j <= ligne + 1; j += 2) {
@@ -742,13 +746,9 @@ void affichage3d(city c, Camera3D camera, city *c_adresse) {
             }
         }
     }
-    rlPushMatrix();
-    rlRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-    char * opt = "All the text displayed here is in 3D";
-    Vector3 m = MeasureText3D(GetFontDefault(), opt, 10.0f, 0.5f, 0.0f);
-    Vector3 pos = (Vector3){-m.x/2.0f, 2.f, -20.0f};
-    DrawText3D(GetFontDefault(), opt, pos, 10.0f, 0.5f, 0.0f, false, DARKBLUE);
-    rlPopMatrix();
+
+    afficherCapaciteCE(&c.chateauEau);
+
     EndMode3D();
     DrawTexture(c.tableau_texture[0], 60, 20, WHITE);
     DrawTexture(c.tableau_texture[1], 260, 20, WHITE);
@@ -880,34 +880,22 @@ void affichageNiveauMoinsUn(city c,int i,int j,int i2,int j2) {
     DrawCube(cubePosition, 2.0f, 0.5f, 1.8f, YELLOW);
 }
 
-/*
-void relierMaisonChateau(maison m,chateauEau eau,int var,int var1){
-    var =3;
-    var1 =5;
-    //initialiser mon tableau
 
-    int ch[5]= {1,2,3,4,5};
-    int ch1[5]= {5,6,7,8,9};
 
-    for(int i=0;i<5;i++) {
-        ch[i] = var + i;
-        //printf("%d",ch[i]);
-    }
-    for(int i=0;i<5;i++) {
-        ch1[i] = var1 + i;
-        //printf("%d",ch1[i]);
-    }
-    int chemin=0;
-    if (ch[0] < ch1[0]){
-        if (){
-            ch[0] = chemin;
-            printf("oui");
-        }
 
-    }
-    else {
-        ch1[0] = chemin;
-        printf("non");
+void afficherCapaciteCE(chateauEau** listeChateauEau){
+    if(*listeChateauEau != NULL){
+        for(chateauEau* pChateau= *listeChateauEau; pChateau != NULL; pChateau = pChateau->chateauEau) {
+
+            char texte[20] = {0};
+            sprintf(texte, "%d/%d", pChateau->capacite, EAUMAX);
+
+            rlPushMatrix();
+            rlRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+            Vector3 m = MeasureText3D(GetFontDefault(), texte, 10.0f, 0.5f, 0.0f);
+            Vector3 pos = (Vector3){((float)pChateau->position_x*2 - colones) + 2, ((float)pChateau->position_y*2 - ligne)+2, -10.0f};
+            DrawText3D(GetFontDefault(), texte, pos, 10.0f, 0.5f, 0.0f, false, DARKBLUE);
+            rlPopMatrix();
+       }
     }
 }
-*/
