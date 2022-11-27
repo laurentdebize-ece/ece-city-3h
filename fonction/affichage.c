@@ -514,6 +514,60 @@ void poser_element(city *c, Camera3D camera, city *c_adresse) {
 #define LETTER_BOUNDRY_SIZE     0.25f
 #define TEXT_MAX_LAYERS         32
 #define LETTER_BOUNDRY_COLOR    VIOLET
+static Vector3 MeasureText3D(Font font, const char* text, float fontSize, float fontSpacing, float lineSpacing)
+{
+    int len = TextLength(text);
+    int tempLen = 0;                // Used to count longer text line num chars
+    int lenCounter = 0;
+
+    float tempTextWidth = 0.0f;     // Used to count longer text line width
+
+    float scale = fontSize/(float)font.baseSize;
+    float textHeight = scale;
+    float textWidth = 0.0f;
+
+    int letter = 0;                 // Current character
+    int index = 0;                  // Index position in sprite font
+
+    for (int i = 0; i < len; i++)
+    {
+        lenCounter++;
+
+        int next = 0;
+        letter = GetCodepoint(&text[i], &next);
+        index = GetGlyphIndex(font, letter);
+
+        // NOTE: normally we exit the decoding sequence as soon as a bad byte is found (and return 0x3f)
+        // but we need to draw all of the bad bytes using the '?' symbol so to not skip any we set next = 1
+        if (letter == 0x3f) next = 1;
+        i += next - 1;
+
+        if (letter != '\n')
+        {
+            if (font.glyphs[index].advanceX != 0) textWidth += (font.glyphs[index].advanceX+fontSpacing)/(float)font.baseSize*scale;
+            else textWidth += (font.recs[index].width + font.glyphs[index].offsetX)/(float)font.baseSize*scale;
+        }
+        else
+        {
+            if (tempTextWidth < textWidth) tempTextWidth = textWidth;
+            lenCounter = 0;
+            textWidth = 0.0f;
+            textHeight += scale + lineSpacing/(float)font.baseSize*scale;
+        }
+
+        if (tempLen < lenCounter) tempLen = lenCounter;
+    }
+
+    if (tempTextWidth < textWidth) tempTextWidth = textWidth;
+
+    Vector3 vec = { 0 };
+    vec.x = tempTextWidth + (float)((tempLen - 1)*fontSpacing/(float)font.baseSize*scale); // Adds chars spacing to measure
+    vec.y = 0.25f;
+    vec.z = textHeight;
+
+    return vec;
+}
+
 static void DrawTextCodepoint3D(Font font, int codepoint, Vector3 position, float fontSize, bool backface, Color tint)
 {
     // Character index position in sprite font
@@ -688,7 +742,10 @@ void affichage3d(city c, Camera3D camera, city *c_adresse) {
             }
         }
     }
-
+    char * opt = "All the text displayed here is in 3D";
+    Vector3 m = MeasureText3D(GetFontDefault(), opt, 10.0f, 0.5f, 0.0f);
+    Vector3 pos = (Vector3){-m.x/2.0f, 0.01f, 2.0f};
+    DrawText3D(GetFontDefault(), opt, pos, 10.0f, 0.5f, 0.0f, false, DARKBLUE);
     EndMode3D();
     DrawTexture(c.tableau_texture[0], 60, 20, WHITE);
     DrawTexture(c.tableau_texture[1], 260, 20, WHITE);
@@ -726,7 +783,7 @@ void affichage3d(city c, Camera3D camera, city *c_adresse) {
     DrawRectangleLines(700,600,100,50,WHITE);
     DrawText("-2", 700+10, 600+10, 20, WHITE);
 
-    DrawText3D(GetFontDefault(),"TESTE",(Vector3){2.0f, 0.01f, 2.0f},10.0f, 0.5f, 0.0f,false,DARKBLUE);
+
     EndDrawing();
 }
 
