@@ -15,6 +15,10 @@
 #define ELECMAX 5000
 #define besoinMaison 10
 
+#define LETTER_BOUNDRY_SIZE     0.25f
+#define TEXT_MAX_LAYERS         32
+#define LETTER_BOUNDRY_COLOR    VIOLET
+
 
 
 

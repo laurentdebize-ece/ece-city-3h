@@ -91,14 +91,15 @@
 
     CloseWindow();
     return 0;
-}
+}*/
 
 ///////////////////////////////////////////////////////////////3D///////////////////////////////////////////////////////
-*/
+
 
 
 
 int main() {
+
 
 
     const int screenWidth = 1200;
@@ -128,10 +129,33 @@ int main() {
 
     Color noir = BLANK;
     Color blanc = BLANK;
+    Color couleur=BLANK;
+    Color couleur1=WHITE;
 
     // Main game loop
     while (!WindowShouldClose())        // Detect window close button or ESC key
     {
+
+        if ( (GetMouseX() -100)*(GetMouseX()-100) + (GetMouseY() - 150)*(GetMouseY()  -150) < 50*50) {
+            if (IsMouseButtonPressed(1)) {
+                couleur = BLANK;
+                couleur1=WHITE;
+            }
+        }
+        if((GetMouseX() -100)*(GetMouseX()-100) + (GetMouseY() - 300)*(GetMouseY()  -300) < 50*50){
+            if (IsMouseButtonPressed(1)){
+                couleur =YELLOW;
+                couleur1 =YELLOW;
+            }
+        }
+        if((GetMouseX() -100)*(GetMouseX()-100) + (GetMouseY() - 450)*(GetMouseY()  -450) < 50*50){
+            if (IsMouseButtonPressed(1)){
+                couleur =BLUE;
+                couleur1 =BLUE;
+
+            }
+        }
+
         if (GetMouseX() > 1060 && GetMouseX() < 1360 && GetMouseY() > 20 && GetMouseY() < 100) {
             if (IsMouseButtonPressed(1)) {
                 if (c.joueur1.element_choisie == 0){
@@ -139,8 +163,8 @@ int main() {
                 }
                 else{
                     c.joueur1.element_choisie = 0;
-                }
 
+                }
             }
         }
         evolution(c.plateau,&c);
@@ -151,10 +175,11 @@ int main() {
             camera.position.y =0;
         }
 
+        affichage3d(c,camera,&c,couleur,couleur1);
 
 
 
-        affichage3d(c,camera,&c);
+
     }
     sauvegarde(c);
     for (int i = 0; i < 10; i++) {
@@ -220,9 +245,15 @@ int main() {
 
     return 0;
 }*/
-/*
-int main(){
-    maison m;
-    int var,var1;
-    relierMaisonChateau(m,var,var1);
-}*/
+
+
+
+
+
+
+
+
+
+
+
+

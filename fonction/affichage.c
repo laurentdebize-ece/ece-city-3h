@@ -231,7 +231,7 @@ void afficherEmplacementMaison(Color rond, Color rond1, Color rond2, Color rond3
 }
 
 void cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *couleurMaison1, Color *couleurMaison, Color *rond,
-                  Color *rond1, Color *rond2, Color *rond3, Color noir, Color blanc) {
+                  Color *rond1, Color *rond2, Color *rond3) {
     x = GetMouseX();
     y = GetMouseY();
 
@@ -267,8 +267,7 @@ void cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *co
         int j = 0;
         *couleurMaison = WHITE;
         *rond = BLACK;
-        blanc = WHITE;
-        noir = BLACK;
+
         DrawRectangleLines(x, y, espacement * 3, espacement * 3, *rond);
         c->plateau[i][j].numero = 0;
         DrawTexture(c->tableau_element[c->plateau[i][j].numero].texture, x, y, *couleurMaison);
@@ -280,8 +279,7 @@ void cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *co
         int j = 0;
         *rond1 = RED;
         *couleurMaison = WHITE;
-        blanc = WHITE;
-        noir = BLACK;
+
         DrawRectangleLines(x, y, espacement * 1, espacement * 1, *rond1);
         c->plateau[i][j].numero = 0;
         DrawTexture(c->tableau_element[c->plateau[i][j].numero].texture, x, y, *couleurMaison);
@@ -294,8 +292,7 @@ void cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *co
         int j = 0;
         *couleurMaison = WHITE;
         *rond2 = DARKBROWN;
-        blanc = WHITE;
-        noir = BLACK;
+
         DrawRectangleLines(x, y, espacement * 2, espacement * 2, *rond2);
         c->plateau[i][j].numero = 0;
         DrawTexture(c->tableau_element[c->plateau[i][j].numero].texture, x, y, *couleurMaison);
@@ -309,8 +306,7 @@ void cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *co
         int j = 0;
         *couleurMaison = WHITE;
         *rond3 = DARKBLUE;
-        blanc = WHITE;
-        noir = BLACK;
+
         DrawRectangleLines(x, y, espacement * 2, espacement * 2, *rond3);
         c->plateau[i][j].numero = 0;
         DrawTexture(c->tableau_element[c->plateau[i][j].numero].texture, x, y, *couleurMaison);
@@ -320,17 +316,17 @@ void cliqueMenuGeneral(city* c, int x, int y, int a, Color *Toolboxes, Color *co
     }
 
     if((GetMouseX() - (1100 / 2 + 240)) * (GetMouseX() - (1100 / 2 + 240)) + (GetMouseY() - 580) * (GetMouseY() - 580) < 40 * 40 && IsMouseButtonDown(1)){
-        DrawText("Achat  ", 1100 / 2 + 95, 500, 20, noir);
+        /*DrawText("Achat  ", 1100 / 2 + 95, 500, 20);
         noir = BLANK;
-        blanc= BLANK;
+        blanc= BLANK;*/
     }
 
 
     if (c->tableau_element[c->joueur1.element_choisie].prix > c->ece_flouz){
-        DrawText("Vous ne pouvez pas acheter, ", 1100 / 2 + 95, 500, 20, noir);
+        /*DrawText("Vous ne pouvez pas acheter, ", 1100 / 2 + 95, 500, 20, noir);
         DrawText("par manque de moyens.", 1100 / 2 + 95, 520, 20, noir);
         noir = BLANK;
-        blanc = BLANK;
+        blanc = BLANK;*/
     }
 
     if (clickPlateau(x, y) == 1 && c->joueur1.element_choisie != -1) {
@@ -507,12 +503,14 @@ void poser_element(city *c, Camera3D camera, city *c_adresse) {
 
 }
 
-void affichage3d(city c, Camera3D camera, city *c_adresse) {
+void affichage3d(city c, Camera3D camera, city *c_adresse,Color couleur,Color couleur1) {
     poser_element(&c, camera, c_adresse);
 
-    BeginDrawing();
 
+
+    BeginDrawing();
     ClearBackground(SKYBLUE);
+
     BeginMode3D(camera);
     DrawGrid(46, 2);
     for (int i = -colones - 1; i <= colones + 1; i += 2) {
@@ -521,16 +519,19 @@ void affichage3d(city c, Camera3D camera, city *c_adresse) {
         }
     }
 
+    int x= GetMouseX();
+    int y=GetMouseY();
     int i2 = 0;
     int j2 = 0;
     for (int i = 0; i <= (colones - 1) * 2; i += 2) {
         i2 = (i) / 2;
         for (int j = 0; j <= (ligne - 1) * 2; j += 2) {
             j2 = (j) / 2;
+
             if (c.plateau[i2][j2].numero >0) {
                 if (c.plateau[i2][j2].numero == 1) {
-                    //affichage_route(c, i, j, i2, j2);
-                    affichageNiveauMoinsUn(c,i,j,i2,j2);
+                    affichageNiveauMoinsUn(c, i, j, i2, j2, couleur);
+                    affichage_route(c, i, j, i2, j2,couleur1);
                 } else {
                     if (c.plateau[i2][j2].numero == 9) {
                         DrawModel(c.tableau_element[c.plateau[i2][j2].numero].model,
@@ -606,10 +607,11 @@ void affichage3d(city c, Camera3D camera, city *c_adresse) {
     sprintf(texte, "%d", c.nb_eau);
     DrawText(texte, 900, 25, 20, BLUE);
 
+    NiveauZeroUnDeux();
     EndDrawing();
 }
 
-void affichage_route(city c, int i, int j, int i2, int j2) {
+void affichage_route(city c, int i, int j, int i2, int j2,Color couleur1) {
     int compteur = 0;
     if (c.plateau[i2 + 1][j2].numero == 1) {
         compteur++;
@@ -628,7 +630,7 @@ void affichage_route(city c, int i, int j, int i2, int j2) {
                   (Vector3) {-2.55f + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
                              c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
                              -2 + (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z},
-                  c.tableau_element[c.plateau[i2][j2].numero].scale, WHITE);
+                  c.tableau_element[c.plateau[i2][j2].numero].scale, couleur1);
     } else if (c.plateau[i2 + 1][j2].numero == 1 && c.plateau[i2][j2 + 1].numero == 1) {
         DrawModelEx(c.model_route[1],
                     (Vector3) {-0.48f + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
@@ -637,7 +639,7 @@ void affichage_route(city c, int i, int j, int i2, int j2) {
                     (Vector3) {0, 0, 0},
                     0,
                     (Vector3) {0.25f, 0.25f, 0.25f},
-                    WHITE);
+                    couleur1);
     } else if (c.plateau[i2 + 1][j2].numero == 1 && c.plateau[i2][j2 - 1].numero == 1) {
         DrawModelEx(c.model_route[1],
                     (Vector3) {-2.5f + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
@@ -646,7 +648,7 @@ void affichage_route(city c, int i, int j, int i2, int j2) {
                     (Vector3) {0, 1, 0},
                     90,
                     (Vector3) {0.25f, 0.25f, 0.25f},
-                    WHITE);
+                    couleur1);
     } else if (c.plateau[i2 - 1][j2].numero == 1 && c.plateau[i2][j2 - 1].numero == 1) {
         DrawModelEx(c.model_route[1],
                     (Vector3) {-4.62f + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
@@ -655,7 +657,7 @@ void affichage_route(city c, int i, int j, int i2, int j2) {
                     (Vector3) {0, 1, 0},
                     180,
                     (Vector3) {0.25f, 0.25f, 0.25f},
-                    WHITE);
+                    couleur1);
 
     } else if (c.plateau[i2 - 1][j2].numero == 1 && c.plateau[i2][j2 + 1].numero == 1) {
         DrawModelEx(c.model_route[1],
@@ -665,14 +667,14 @@ void affichage_route(city c, int i, int j, int i2, int j2) {
                     (Vector3) {0, 1, 0},
                     -90,
                     (Vector3) {0.25f, 0.25f, 0.25f},
-                    WHITE);
+                    couleur1);
 
     } else if (c.plateau[i2 + 1][j2].numero == 1 || c.plateau[i2 - 1][j2].numero == 1) {
         DrawModel(c.tableau_element[c.plateau[i2][j2].numero].model,
                   (Vector3) {(float) -2 + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
                              c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
                              -2 + (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z},
-                  c.tableau_element[c.plateau[i2][j2].numero].scale, WHITE);
+                  c.tableau_element[c.plateau[i2][j2].numero].scale, couleur1);
     } else {
         DrawModelEx(c.tableau_element[c.plateau[i2][j2].numero].model,
                     (Vector3) {-2.55f + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
@@ -683,7 +685,7 @@ void affichage_route(city c, int i, int j, int i2, int j2) {
                     (Vector3) {c.tableau_element[c.plateau[i2][j2].numero].scale,
                                c.tableau_element[c.plateau[i2][j2].numero].scale,
                                c.tableau_element[c.plateau[i2][j2].numero].scale},
-                    WHITE);
+                    couleur1);
     }
 }
 
@@ -707,41 +709,44 @@ void achat(city* c,Color noir, Color blanc){
         }
     }
 }
-void affichageNiveauMoinsUn(city c,int i,int j,int i2,int j2) {
+void affichageNiveauMoinsUn(city c,int i,int j,int i2,int j2,Color couleur) {
     Vector3 cubePosition = (Vector3) {-2.55f + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
                                       c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
                                       -2 + (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z };
-    DrawCube(cubePosition, 2.0f, 0.5f, 1.8f, YELLOW);
+    DrawCube(cubePosition, 2.0f, 0.5f, 2.0f, couleur);
 }
 
-/*
-void relierMaisonChateau(maison m,chateauEau eau,int var,int var1){
-    var =3;
-    var1 =5;
-    //initialiser mon tableau
+void NiveauZeroUnDeux(){
 
-    int ch[5]= {1,2,3,4,5};
-    int ch1[5]= {5,6,7,8,9};
+    DrawCircleLines(100,150,50,WHITE);
+    DrawText("0", 93, 135 , 30,WHITE);
+    DrawCircleLines(100,300,50,WHITE);
+    DrawText("-1", 85, 285, 30,WHITE);
+    DrawCircleLines(100,450,50,WHITE);
+    DrawText("-2", 85, 435, 30,WHITE);
 
-    for(int i=0;i<5;i++) {
-        ch[i] = var + i;
-        //printf("%d",ch[i]);
-    }
-    for(int i=0;i<5;i++) {
-        ch1[i] = var1 + i;
-        //printf("%d",ch1[i]);
-    }
-    int chemin=0;
-    if (ch[0] < ch1[0]){
-        if (){
-            ch[0] = chemin;
-            printf("oui");
-        }
+    int x = GetMouseX();
+    int y = GetMouseY();
+
+
+    if ( (x -100)*(x-100) + (y - 150)*(y -150) < 50*50){
+        DrawCircleLines(100,150,51,WHITE);
 
     }
-    else {
-        ch1[0] = chemin;
-        printf("non");
+    if ((x-100)*(x-100) + (y - 300)*(y -300) <50*50 ){
+        DrawCircleLines(100,300,51,WHITE);
+
     }
+    if ((x-100)*(x-100) + (y - 450)*(y -450) <50*50 ){
+        DrawCircleLines(100,450,51,WHITE);
+    }
+
+
 }
-*/
+
+
+
+
+
+
+

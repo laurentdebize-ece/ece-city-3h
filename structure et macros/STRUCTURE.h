@@ -115,9 +115,13 @@ typedef struct maison{
     int nb_habitants;
     int  position_x;
     int  position_y;
+    struct chateauEau *chateauEau;
 }maison;
-typedef struct ChateauEau{
+typedef struct chateauEau{
     int capacite;
     struct maison * habitation;
+    struct chateauEau* chateauEau;
+
 }chateauEau;
 #endif //ECE_CITY_3H_STRUCTURE_H
+
