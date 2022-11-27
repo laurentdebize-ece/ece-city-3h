@@ -406,7 +406,7 @@ void parcoursBFS(Graphe *graphe, int s0, city c, chateauEau *ch) {
         }
 
     }
-    printf("a");
+
 }
 
 void distributionEau(chateauEau *listeCheateauEau, city *c) {
@@ -442,8 +442,8 @@ void distributionEau(chateauEau *listeCheateauEau, city *c) {
                             pChateau->capacite -= pMaison->nb_habitants;
                             pMaison->numero_ch = pChateau->numero;
                             c->plateau[pMaison->position_x][pMaison->position_y].distance_eau = pMaison->distance;
-                            chateauEau *chateauEau1= listeCheateauEau;
-                            maison *pMaison2=(maison *) malloc(sizeof(maison));
+                            chateauEau *chateauEau1 = listeCheateauEau;
+                            maison *pMaison2 = (maison *) malloc(sizeof(maison));
                             pMaison2->habitation = chateauEau1->habitation;
                             while ((pMaison->position_x != pMaison2->habitation->position_x ||
                                     pMaison->position_y != pMaison2->habitation->position_y)) {
@@ -473,8 +473,8 @@ void distributionEau(chateauEau *listeCheateauEau, city *c) {
                         }
 
                     } else {
-                        chateauEau *chateauEau1= listeCheateauEau;
-                        maison *pMaison2=(maison *) malloc(sizeof(maison));
+                        chateauEau *chateauEau1 = listeCheateauEau;
+                        maison *pMaison2 = (maison *) malloc(sizeof(maison));
                         pMaison2->habitation = chateauEau1->habitation;
                         while ((pMaison->position_x != pMaison2->habitation->position_x ||
                                 pMaison->position_y != pMaison2->habitation->position_y)) {
@@ -495,29 +495,58 @@ void distributionEau(chateauEau *listeCheateauEau, city *c) {
             }
         }
     }
+    for (int i = 0; i < colones; i++) {
+        for (int j = 0; j < ligne; j++) {
+            if (c->plateau[i][j].marquage == 0) {
+                if (c->plateau[i][j].numero == 4) {
+                    c->plateau[i][j].numero = 2;
+                } else if (c->plateau[i][j].numero == 3) {
+                    c->plateau[i][j].temps = 0;
+                } else if (c->plateau[i][j].numero > 4 && c->plateau[i][j].numero < 8) {
+                    c->plateau[i][j].numero--;
+                }
 
-    printf("oui");
+            }
+            if (c->plateau[i][j].marquage == 1) {
+                if (c->plateau[i][j].numero == 3 && c->plateau[i][j].temps == 0) {
+                    if (c->nb_electricite > c->nb_habitant ) {
+                        c->plateau[i][j].temps = (GetTime() - c->temps) + 15;
+                    }
+                }
+
+            }
+        }
+    }
 }
-void distributionElectricite(city *c){
+
+
+
+void distributionElectricite(city *c) {
     int i2 = 4;
-    while(c->nb_electricite < c->nb_habitant){
+    while (c->nb_electricite < c->nb_habitant) {
         int nb_element = 0;
         for (int i = 0; i < colones; i++) {
             for (int j = 0; j < ligne; j++) {
-                if(c->plateau[i][j].numero == i2 ){
-                    nb_element++;
-                    if(i2==4){
-                        c->plateau[i][j].numero = 2;
+                if (c->plateau[i][j].numero == i2) {
+                    if (i2 != 3) {
+                        nb_element++;
                     }
-                    else{
+                    if (i2 == 4) {
+                        c->plateau[i][j].numero = 2;
+                    } else if (i2 == 3) {
+                        c->plateau[i][j].temps = 0;
+                    } else {
+
                         c->plateau[i][j].numero--;
+
                     }
                     c->nb_habitant -= c->tableau_element[i2].nb_habitants;
                 }
             }
         }
-        if(nb_element == 0){
+        if (nb_element == 0) {
             i2++;
         }
     }
+
 }

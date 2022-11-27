@@ -9,7 +9,9 @@ void calcul(city * c){
 
     for (int i = 0; i < colones; i++) {
         for (int j = 0; j < ligne; j++) {
-            c->nb_habitant += c->tableau_element[c->plateau[i][j].numero].nb_habitants;
+            if(c->plateau[i][j].numero > 3 && c->plateau[i][j].numero < 8){
+                c->nb_habitant += c->tableau_element[c->plateau[i][j].numero].nb_habitants;
+            }
             if(c->plateau[i][j].numero == 8){
                 c->nb_electricite += 5000;
             }

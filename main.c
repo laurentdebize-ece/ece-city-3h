@@ -141,15 +141,15 @@ int main() {
                     afficherToolBoxe3d(c, camera, &c);
                 } else {
                     c.joueur1.element_choisie = 0;
-                    creer_graphe(c,&c);
-                    distributionEau(c.chateauEau,&c);
-                    distributionElectricite(&c);
+
                 }
             }
         }
 
         evolution(c.plateau, &c);
         calcul(&c);
+        creer_graphe(c,&c);
+        distributionEau(c.chateauEau,&c);
         distributionElectricite(&c);
         UpdateCamera(&camera);
         if (camera.position.y < 0) {
