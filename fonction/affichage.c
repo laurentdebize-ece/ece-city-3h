@@ -230,7 +230,6 @@ void afficherEmplacementMaison(Color rond, Color rond1, Color rond2, Color rond3
     DrawRectangleLines(x, y, espacement * 2, espacement * 2, rond3);
 }
 
-
 void cliqueMenuGeneral(city *c, int x, int y, int a, Color *Toolboxes, Color *couleurMaison1, Color *couleurMaison,
                        Color *rond,
                        Color *rond1, Color *rond2, Color *rond3, Color noir, Color blanc) {
@@ -568,6 +567,7 @@ static Vector3 MeasureText3D(Font font, const char* text, float fontSize, float 
 
     return vec;
 }
+
 static void DrawTextCodepoint3D(Font font, int codepoint, Vector3 position, float fontSize, bool backface, Color tint)
 {
     // Character index position in sprite font
@@ -748,13 +748,9 @@ void affichage3d(city c, Camera3D camera, city *c_adresse,Color couleur,Color co
             }
         }
     }
-    rlPushMatrix();
-    rlRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-    char * opt = "All the text displayed here is in 3D";
-    Vector3 m = MeasureText3D(GetFontDefault(), opt, 10.0f, 0.5f, 0.0f);
-    Vector3 pos = (Vector3){-m.x/2.0f, 2.f, -20.0f};
-    DrawText3D(GetFontDefault(), opt, pos, 10.0f, 0.5f, 0.0f, false, DARKBLUE);
-    rlPopMatrix();
+
+    afficherCapaciteCE(&c.chateauEau);
+
     EndMode3D();
     DrawTexture(c.tableau_texture[0], 60, 20, WHITE);
     DrawTexture(c.tableau_texture[1], 260, 20, WHITE);
@@ -879,32 +875,45 @@ void affichageNiveauMoinsUn(city c,int i,int j,int i2,int j2,Color couleur) {
     DrawCube(cubePosition, 2.0f, 0.5f, 2.0f, couleur);
 }
 
-void NiveauZeroUnDeux(){
+void NiveauZeroUnDeux() {
 
-    DrawCircleLines(100,150,50,WHITE);
-    DrawText("0", 93, 135 , 30,WHITE);
-    DrawCircleLines(100,300,50,WHITE);
-    DrawText("-1", 85, 285, 30,WHITE);
-    DrawCircleLines(100,450,50,WHITE);
-    DrawText("-2", 85, 435, 30,WHITE);
+    DrawCircleLines(100, 150, 50, WHITE);
+    DrawText("0", 93, 135, 30, WHITE);
+    DrawCircleLines(100, 300, 50, WHITE);
+    DrawText("-1", 85, 285, 30, WHITE);
+    DrawCircleLines(100, 450, 50, WHITE);
+    DrawText("-2", 85, 435, 30, WHITE);
 
     int x = GetMouseX();
     int y = GetMouseY();
 
 
-    if ( (x -100)*(x-100) + (y - 150)*(y -150) < 50*50){
-        DrawCircleLines(100,150,51,WHITE);
+    if ((x - 100) * (x - 100) + (y - 150) * (y - 150) < 50 * 50) {
+        DrawCircleLines(100, 150, 51, WHITE);
+    }
+    if ((x - 100) * (x - 100) + (y - 300) * (y - 300) < 50 * 50) {
+        DrawCircleLines(100, 300, 51, WHITE);
 
     }
-    if ((x-100)*(x-100) + (y - 300)*(y -300) <50*50 ){
-        DrawCircleLines(100,300,51,WHITE);
-
+    if ((x - 100) * (x - 100) + (y - 450) * (y - 450) < 50 * 50) {
+        DrawCircleLines(100, 450, 51, WHITE);
     }
-    if ((x-100)*(x-100) + (y - 450)*(y -450) <50*50 ){
-        DrawCircleLines(100,450,51,WHITE);
+}
+void afficherCapaciteCE(chateauEau** listeChateauEau){
+    if(*listeChateauEau != NULL){
+        for(chateauEau* pChateau= *listeChateauEau; pChateau != NULL; pChateau = pChateau->chateauEau) {
+
+            char texte[20] = {0};
+            sprintf(texte, "%d/%d", pChateau->capacite, EAUMAX);
+
+            rlPushMatrix();
+            rlRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+            Vector3 m = MeasureText3D(GetFontDefault(), texte, 10.0f, 0.5f, 0.0f);
+            Vector3 pos = (Vector3){((float)pChateau->position_x*2 - colones) + 2, ((float)pChateau->position_y*2 - ligne)+2, -10.0f};
+            DrawText3D(GetFontDefault(), texte, pos, 10.0f, 0.5f, 0.0f, false, DARKBLUE);
+            rlPopMatrix();
+        }
     }
-
-
 }
 
 

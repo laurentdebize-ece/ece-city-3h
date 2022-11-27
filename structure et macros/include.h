@@ -13,6 +13,8 @@
 #include <stddef.h>
 #include <math.h>
 
+#include <stddef.h>
+#include <math.h>
 
 #include "macros.h"
 #include "STRUCTURE.h"

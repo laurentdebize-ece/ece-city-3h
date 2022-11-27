@@ -42,5 +42,12 @@ void cliqueMenuGeneral(city* c,int x,int y,int a, Color *Toolboxes, Color *coule
 void NiveauZeroUnDeux();
 
 
+void afficherCapaciteCE(chateauEau** listeChateauEau);
+
+
+static void DrawTextCodepoint3D(Font font, int codepoint, Vector3 position, float fontSize, bool backface, Color tint);
+static Vector3 MeasureText3D(Font font, const char* text, float fontSize, float fontSpacing, float lineSpacing);
+static void DrawText3D(Font font, const char *text, Vector3 position, float fontSize, float fontSpacing, float lineSpacing, bool backface, Color tint);
+
 
 #endif //ECE_CITY_3H_AFFICHAGE_H
