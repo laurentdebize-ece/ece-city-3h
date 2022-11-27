@@ -16,6 +16,7 @@ void evolution(c_element tab[colones][ligne], city *c) {
                     tab[i][j].numero= numero;
                 }
                 tab[i][j].temps = (GetTime()-c->temps) + 15;
+
             }
         }
     }

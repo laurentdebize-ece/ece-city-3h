@@ -498,3 +498,26 @@ void distributionEau(chateauEau *listeCheateauEau, city *c) {
 
     printf("oui");
 }
+void distributionElectricite(city *c){
+    int i2 = 4;
+    while(c->nb_electricite < c->nb_habitant){
+        int nb_element = 0;
+        for (int i = 0; i < colones; i++) {
+            for (int j = 0; j < ligne; j++) {
+                if(c->plateau[i][j].numero == i2 ){
+                    nb_element++;
+                    if(i2==4){
+                        c->plateau[i][j].numero = 2;
+                    }
+                    else{
+                        c->plateau[i][j].numero--;
+                    }
+                    c->nb_habitant -= c->tableau_element[i2].nb_habitants;
+                }
+            }
+        }
+        if(nb_element == 0){
+            i2++;
+        }
+    }
+}

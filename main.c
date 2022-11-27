@@ -10,6 +10,7 @@
 #include "structure et macros/STRUCTURE.h"
 #include "menu.h"
 
+
 void DrawRectanglelines(int i, int i1, int i2, int i3, Color color);
 
 /*int main() {
@@ -142,12 +143,14 @@ int main() {
                     c.joueur1.element_choisie = 0;
                     creer_graphe(c,&c);
                     distributionEau(c.chateauEau,&c);
+                    distributionElectricite(&c);
                 }
             }
         }
 
         evolution(c.plateau, &c);
         calcul(&c);
+        distributionElectricite(&c);
         UpdateCamera(&camera);
         if (camera.position.y < 0) {
             camera.position.y = 0;
