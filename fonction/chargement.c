@@ -102,13 +102,6 @@ city chargement_total_element(){
     c.tableau_element[9].model = LoadModel("../model3d/chateau-deau.glb");
     c.tableau_element[9].model.transform = MatrixRotateX(PI/2);
 
-    //////////////////////eau///////////////////////////////
-    //c.tableau_element[10]=
-    //c.tableau_element[10].texture= DrawRectangleLines(x,y,15,15,BLUE);
-
-    ////////////////////elec////////////////////////////////
-    //c.tableau_element[10]=
-    //c.tableau_element[11].texture= DrawRectangleLines(x,y,15,15,YELLOW);
 
     return  c;
 }

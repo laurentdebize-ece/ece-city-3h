@@ -9,6 +9,7 @@ void afficherToolBoxe3d(city c, Camera3D camera, city *c_adresse) {
     Color color = WHITE;
     Texture2D fleche = LoadTexture("../image/fleche.png");
     Texture2D piece = LoadTexture("../image/piece.png");
+    // Positionnement de la caméra
     camera.target = (Vector3) {0.0f, 0.0f, 0.0f};
     camera.up = (Vector3) {0.0f, 1.0f, 0.0f};
     camera.position = (Vector3) {30.0f, 30.0f, 30.0f};
@@ -21,11 +22,12 @@ void afficherToolBoxe3d(city c, Camera3D camera, city *c_adresse) {
         if (WindowShouldClose()) {
             fin = true;
         }
+        //Animation en vert quand notre souris est sur la case
         if (GetMouseX() > 500 && GetMouseX() < 700 && GetMouseY() > 600 && GetMouseY() < 650) {
             color = GREEN;
         }
 
-
+        // Permet d'accéder aux images sur la droite en cliquant sur la flèche
         if (IsMouseButtonPressed(1)) {
             if (GetMouseX() > 1000 && GetMouseX() < 1159 && GetMouseY() > 250 && GetMouseY() < 409) {
                 switch (element) {
@@ -46,6 +48,7 @@ void afficherToolBoxe3d(city c, Camera3D camera, city *c_adresse) {
                 }
 
             }
+            // Permet d'accéder aux images sur la gauche en cliquant sur la flèche
             if (GetMouseX() > 49 && GetMouseX() < 200 && GetMouseY() > 250 && GetMouseY() < 409) {
                 switch (element) {
                     case 1 :
@@ -65,6 +68,7 @@ void afficherToolBoxe3d(city c, Camera3D camera, city *c_adresse) {
                 }
 
             }
+
             if (GetMouseX() > 500 && GetMouseX() < 700 && GetMouseY() > 600 && GetMouseY() < 650) {
                 c_adresse->joueur1.element_choisie = element;
                 fin = true;
@@ -77,8 +81,10 @@ void afficherToolBoxe3d(city c, Camera3D camera, city *c_adresse) {
         DrawModel(c.tableau_element[element].model,
                   (Vector3) {0, 0, 0},
                   c.tableau_element[element].scale, WHITE);
+        // On peut bouger la caméra avec la souris
         camera.position = (Vector3) {30.0f * cos(i * (2 * PI / 1000)), 30.0f, 30.0f * sin(i * (2 * PI / 1000))};
         EndMode3D();
+        // affichage de toutes les données sur l'affichage du plateau comme le temps, l'argent, le nombre de personne, l'électricité et l'eau
         DrawTexture(fleche, 1000, 250, WHITE);
         DrawRectangleRounded((Rectangle) {500, 600, 200, 50}, 5, 5, color);
         DrawTexture(piece, 655, 605, WHITE);
@@ -98,6 +104,7 @@ void poser_element(city *c, Camera3D camera, city *c_adresse) {
     bool clique_accepter = false;
 
     ray = GetMouseRay(GetMousePosition(), camera);
+    // Détecter le clique sur la map en fonction du nombre de ligne et du nombre de colonne et de la position de notre souris
     collision = GetRayCollisionBox(ray, (BoundingBox) {(Vector3) {-45, 0, -35}, (Vector3) {45, 0, 35}});
     int x = collision.point.x / 2 + 23;
     int z = collision.point.z / 2 + 18;
@@ -105,6 +112,7 @@ void poser_element(city *c, Camera3D camera, city *c_adresse) {
         if (c->joueur1.element_choisie != 0) {
             c->plateau[x][z].numero = c->joueur1.element_choisie;
             if (IsMouseButtonPressed(1)) {
+                // poser tous les éléments sauf la route
                 if (c->joueur1.element_choisie != 1) {
                     for (int i = 0; i <= c_adresse->tableau_element[c->joueur1.element_choisie].espacement_x - 1; i++) {
                         for (int j = 0;
@@ -122,9 +130,11 @@ void poser_element(city *c, Camera3D camera, city *c_adresse) {
                             }
                         }
                     }
-                } else {
+                }// Poser la route sur le plateau
+                else {
                     clique_accepter = true;
                 }
+                // Actualiser le plateau avec la route qui est posé à l'endroit où l'on a cliqué
                 for (int i = 0; i <= c->tableau_element[c->joueur1.element_choisie].espacement_x - 1; i++) {
                     for (int j = 0; j <= c->tableau_element[c->joueur1.element_choisie].espacement_y - 1; j++) {
                         if (c_adresse->plateau[x + i][z + j].numero != 0) {
@@ -134,12 +144,13 @@ void poser_element(city *c, Camera3D camera, city *c_adresse) {
                     }
                 }
             }
-
+            // Lancement du Timer toutes les 15 secondes à l'endroit où l'on a cliqué
             if (clique_accepter) {
                 if (c->joueur1.element_choisie == 3) {
                     c_adresse->plateau[x][z].
                             temps = (GetTime()-c->temps) + 15;
                 }
+                // Actualiser le plateau avec les différents constructions qui évoluent à l'endroit où l'on a cliqué
                 for (int i = 0; i <= c->tableau_element[c->joueur1.element_choisie].espacement_x - 1; i++) {
                     for (int j = 0; j <= c->tableau_element[c->joueur1.element_choisie].espacement_y - 1; j++) {
                         c_adresse->plateau[x + i][z + j].numero = -c->joueur1.element_choisie;
@@ -148,6 +159,7 @@ void poser_element(city *c, Camera3D camera, city *c_adresse) {
                     }
                 }
                 c_adresse->plateau[x][z].numero = c->joueur1.element_choisie;
+                // Fonction qui soustrait le cout du batiment à l'argent possédé
                 achat(c_adresse);
             }
         }
@@ -308,13 +320,17 @@ static void DrawText3D(Font font, const char *text, Vector3 position, float font
     }
 }
 
-void affichage3d(city c, Camera3D camera, city *c_adresse,Color couleur,Color couleur1) {
+void affichage3d(city c, Camera3D camera, city *c_adresse,Color couleur,Color couleur1,Color capacite) {
     poser_element(&c, camera, c_adresse);
 
+
+
     BeginDrawing();
+    // mettre le l'arrière plan en bleu
     ClearBackground(SKYBLUE);
 
     BeginMode3D(camera);
+    // Afficher la Grille
     DrawGrid(46, 2);
     for (int i = -colones - 1; i <= colones + 1; i += 2) {
         for (int j = -ligne - 1; j <= ligne + 1; j += 2) {
@@ -333,9 +349,12 @@ void affichage3d(city c, Camera3D camera, city *c_adresse,Color couleur,Color co
 
             if (c.plateau[i2][j2].numero > 0) {
                 if (c.plateau[i2][j2].numero == 1) {
-                    affichageNiveauMoinsUn(c, i, j, i2, j2, couleur);
+                    // afficher la route
                     affichage_route(c, i, j, i2, j2,couleur1);
+                    // afficher le niveau -1 et -2 en remplacant le route par du bleu ou du jaune
+                    affichageNiveauMoinsUn(c, i, j, i2, j2, couleur);
                 } else {
+                    // afficher le chateau d'eau en 6 fois car sinon on ne respecterai pas la taille demandé pour un chateau d'eau dans le cahier des charges
                     if (c.plateau[i2][j2].numero == 9) {
                         DrawModel(c.tableau_element[c.plateau[i2][j2].numero].model,
                                   (Vector3) {(float) 4 + (float) i +
@@ -377,8 +396,8 @@ void affichage3d(city c, Camera3D camera, city *c_adresse,Color couleur,Color co
             }
         }
     }
-
-    afficherCapaciteCE(&c.chateauEau);
+    //afficher la capacité pour chaque chateau d'eau
+    afficherCapaciteCE(&c.chateauEau,capacite);
 
     EndMode3D();
     DrawTexture(c.tableau_texture[0], 60, 20, WHITE);
@@ -396,7 +415,7 @@ void affichage3d(city c, Camera3D camera, city *c_adresse,Color couleur,Color co
         }
     }
 
-
+    //afficher les noms des éléments sur le premier affichage
     char texte[15] = {0};
     double temps = GetTime() - c.temps;
     sprintf(texte, "%.2lf", temps);
@@ -413,8 +432,8 @@ void affichage3d(city c, Camera3D camera, city *c_adresse,Color couleur,Color co
     NiveauZeroUnDeux();
     EndDrawing();
 }
-
-void affichage_route(city c, int i, int j, int i2, int j2,Color couleur1) {
+// affichage de la route avec toute les possibilités ( ligne droite, tourner vers la gauche, tourner vers la gauche, carrefour
+void affichage_route(city c, int i, int j, int i2, int j2,Color couleur1) { // Fonction qui permet d'afficher la route et qui prend en compte les virages et les croisements
     int compteur = 0;
     if (c.plateau[i2 + 1][j2].numero == 1) {
         compteur++;
@@ -428,12 +447,13 @@ void affichage_route(city c, int i, int j, int i2, int j2,Color couleur1) {
     if (c.plateau[i2][j2 - 1].numero == 1) {
         compteur++;
     }
+    // En fonction de la position des routes précédentes la route s'affiche différemment
     if (compteur >= 3) {
         DrawModel(c.model_route[0],
                   (Vector3) {-2.55f + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
                              c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
                              -2 + (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z},
-                  c.tableau_element[c.plateau[i2][j2].numero].scale, WHITE);
+                  c.tableau_element[c.plateau[i2][j2].numero].scale,WHITE);
     } else if (c.plateau[i2 + 1][j2].numero == 1 && c.plateau[i2][j2 + 1].numero == 1) {
         DrawModelEx(c.model_route[1],
                     (Vector3) {-0.48f + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
@@ -442,7 +462,7 @@ void affichage_route(city c, int i, int j, int i2, int j2,Color couleur1) {
                     (Vector3) {0, 0, 0},
                     0,
                     (Vector3) {0.25f, 0.25f, 0.25f},
-                    couleur1);
+                    WHITE);
     } else if (c.plateau[i2 + 1][j2].numero == 1 && c.plateau[i2][j2 - 1].numero == 1) {
         DrawModelEx(c.model_route[1],
                     (Vector3) {-2.5f + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
@@ -451,7 +471,7 @@ void affichage_route(city c, int i, int j, int i2, int j2,Color couleur1) {
                     (Vector3) {0, 1, 0},
                     90,
                     (Vector3) {0.25f, 0.25f, 0.25f},
-                    couleur1);
+                    WHITE);
     } else if (c.plateau[i2 - 1][j2].numero == 1 && c.plateau[i2][j2 - 1].numero == 1) {
         DrawModelEx(c.model_route[1],
                     (Vector3) {-4.62f + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
@@ -460,7 +480,7 @@ void affichage_route(city c, int i, int j, int i2, int j2,Color couleur1) {
                     (Vector3) {0, 1, 0},
                     180,
                     (Vector3) {0.25f, 0.25f, 0.25f},
-                    couleur1);
+                    WHITE);
 
     } else if (c.plateau[i2 - 1][j2].numero == 1 && c.plateau[i2][j2 + 1].numero == 1) {
         DrawModelEx(c.model_route[1],
@@ -470,14 +490,14 @@ void affichage_route(city c, int i, int j, int i2, int j2,Color couleur1) {
                     (Vector3) {0, 1, 0},
                     -90,
                     (Vector3) {0.25f, 0.25f, 0.25f},
-                    couleur1);
+                    WHITE);
 
     } else if (c.plateau[i2 + 1][j2].numero == 1 || c.plateau[i2 - 1][j2].numero == 1) {
         DrawModel(c.tableau_element[c.plateau[i2][j2].numero].model,
                   (Vector3) {(float) -2 + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
                              c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
                              -2 + (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z},
-                  c.tableau_element[c.plateau[i2][j2].numero].scale, couleur1);
+                  c.tableau_element[c.plateau[i2][j2].numero].scale, WHITE);
     } else {
         DrawModelEx(c.tableau_element[c.plateau[i2][j2].numero].model,
                     (Vector3) {-2.55f + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
@@ -488,7 +508,7 @@ void affichage_route(city c, int i, int j, int i2, int j2,Color couleur1) {
                     (Vector3) {c.tableau_element[c.plateau[i2][j2].numero].scale,
                                c.tableau_element[c.plateau[i2][j2].numero].scale,
                                c.tableau_element[c.plateau[i2][j2].numero].scale},
-                    couleur1);
+                    WHITE);
     }
 }
 
@@ -500,7 +520,7 @@ void achat(city *c) {
     }
 }
 
-void affichageNiveauMoinsUn(city c,int i,int j,int i2,int j2,Color couleur) {
+void affichageNiveauMoinsUn(city c,int i,int j,int i2,int j2,Color couleur) { // Fonction qui permet de mettre une case bleu ou jaune à la place de la route
     // si la distribution d'eau passe par la case (route)
     if(c.plateau[i2][j2].passage_eau == 1){
         // on affiche la case de la route en jaune
@@ -511,8 +531,8 @@ void affichageNiveauMoinsUn(city c,int i,int j,int i2,int j2,Color couleur) {
     }
 }
 
-void NiveauZeroUnDeux() {
-    // on dessine des cercles pour le niveau 0, -1 et -2
+void NiveauZeroUnDeux() { // Fonction d'affichage des niveaux 0 -1 et -2 avec animation
+
     DrawCircleLines(100, 150, 50, WHITE);
     DrawText("0", 93, 135, 30, WHITE);
     DrawCircleLines(100, 300, 50, WHITE);
@@ -538,7 +558,7 @@ void NiveauZeroUnDeux() {
     }
 }
 
-void afficherCapaciteCE(chateauEau** listeChateauEau){
+void afficherCapaciteCE(chateauEau** listeChateauEau, Color capacite){
     // si la liste chainee des chateaux d'eau n'est pas nulle
     if(*listeChateauEau != NULL){
         // on parcourt chaque maillon de la liste (chateau d'eau)
@@ -552,7 +572,7 @@ void afficherCapaciteCE(chateauEau** listeChateauEau){
             rlRotatef(90.0f, 1.0f, 0.0f, 0.0f); // on tourne le texte pour qu'il s'affiche droit
             Vector3 m = MeasureText3D(GetFontDefault(), texte, 10.0f, 0.5f, 0.0f); // permet de centrer le texte
             Vector3 pos = (Vector3){((float)pChateau->position_x*2 - colones) + 2, ((float)pChateau->position_y*2 - ligne)+2, -10.0f};
-            DrawText3D(GetFontDefault(), texte, pos, 10.0f, 0.5f, 0.0f, false, DARKBLUE);
+            DrawText3D(GetFontDefault(), texte, pos, 10.0f, 0.5f, 0.0f, false, capacite);
             rlPopMatrix();
         }
     }
