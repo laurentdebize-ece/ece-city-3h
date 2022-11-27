@@ -128,7 +128,7 @@ typedef struct ece_city{///ajouter compteur temps
     int nb_habitant;
     int nb_electricite;
     int nb_eau;
-    bool mode;
+    int mode;
 }city;
 
 

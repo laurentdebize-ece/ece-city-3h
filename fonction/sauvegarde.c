@@ -21,7 +21,8 @@ void sauvegarde(city c){
     fclose(sauvegarde);
 }
 
-void lire_sauvegarde(city* c){
+void lire_sauvegarde(city* c,int * t){
+
     FILE* sauvegarde = NULL;
     sauvegarde = fopen("sauvegarde.txt", "r");
     for (int i = 0 ; i < colones; i++){

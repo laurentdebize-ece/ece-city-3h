@@ -5,9 +5,9 @@
 #ifndef ECE_CITY_3H_MENU_H
 #define ECE_CITY_3H_MENU_H
 
-#include "structure et macros/include.h"
+#include "../structure et macros/include.h"
 
-void menu(int* a);
+void menu(city* c);
 void troisD();
 int menu1();
 #endif //ECE_CITY_3H_MENU_H

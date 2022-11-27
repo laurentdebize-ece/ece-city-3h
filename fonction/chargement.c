@@ -7,16 +7,16 @@ element chargement_element(char *nomFichier){
         printf("Erreur de lecture fichier\n");
         exit(-1);
     }
-  /*  char chemin[255]={NULL};
-    char caractere;
-    int i =0;
-    while(caractere!= '\n'){
-        fscanf(ifs, "%c", &caractere);
-        chemin[i] = caractere;
-        i++;
-    }*/
+    /*  char chemin[255]={NULL};
+      char caractere;
+      int i =0;
+      while(caractere!= '\n'){
+          fscanf(ifs, "%c", &caractere);
+          chemin[i] = caractere;
+          i++;
+      }*/
     element e;
-   // e.texture = LoadTexture(chemin);
+    // e.texture = LoadTexture(chemin);
     int nb_hab,x,y,prix;float d_x,d_y,d_z,scale;
     fscanf(ifs, "%d", &prix);
     fscanf(ifs, "%d", &nb_hab);
@@ -99,7 +99,7 @@ city chargement_total_element(){
     c.tableau_element[8].texture = LoadTexture("../image/centrale-electrique.png");
     c.tableau_element[8].model = LoadModel("../model3d/centrale.glb");
 
-     ///////////////////////chateau d'eau/////////////////////////////
+    ///////////////////////chateau d'eau/////////////////////////////
     c.tableau_element[9]=chargement_element("../FILE/element/chateau d'eau");
     c.tableau_element[9].texture = LoadTexture("../image/chateau-deau.png");
     c.tableau_element[9].model = LoadModel("../model3d/chateau-deau.glb");

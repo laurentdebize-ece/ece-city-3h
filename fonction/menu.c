@@ -11,7 +11,7 @@
 
 #include <time.h>
 #include "raylib.h"
-#include "structure et macros/include.h"
+#include "../structure et macros/include.h"
 
 //------------------------------------------------------------------------------------
 // Program main entry point
@@ -33,7 +33,7 @@ static void *LoadDataThread(void *arg);     // Loading data thread function decl
 static int dataProgress = 0;                // Data progress accumulator
 
 
-void menu(int* a)
+void menu(city *c)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
@@ -186,8 +186,9 @@ void menu(int* a)
                 DrawTextEx(font, "Mode Capitaliste", fontPosition2, 40, 7, ORANGE);
                 DrawTextEx(font, "Mode Capitaliste", fontPosition2, 40, 7, RAYWHITE);
                 DrawRectangle(0,630,t,70,ORANGE);
+
                 if(t>1200){
-                    *a = 2;
+                    c->mode = 2;
                     fin=true;
                 }
                 break;
@@ -201,21 +202,25 @@ void menu(int* a)
                 DrawTextEx(font, "Mode Comuniste", fontPosition2, 40, 7, RAYWHITE);
                 DrawRectangle(0,630,t,70,ORANGE);
                 if(t>1200){
-                    *a = 3;
+                    c->mode = 3;
                     fin=true;
                 }
                 break;
             case 4:
+                lire_sauvegarde(c,&t);
                 ClearBackground(GetColor(0x052c46ff));
                 DrawTextureEx(background, (Vector2) {scrollingBack, -55}, 0.0f, 2.0f, WHITE);
                 DrawTextureEx(background, (Vector2) {background.width * 2 + scrollingBack, -55}, 0.0f, 2.0f, WHITE);
                 t=t+5;
+
                 DrawTextEx(font, "Sauvegarde", fontPosition2, 40, 7, WHITE);
                 DrawRectangle(0,630,t,70,ORANGE);
+
                 if(t>1200){
-                    *a = 4;
+                    c->mode = 4;
                     fin=true;
                 }
+
                 break;
             case 5:
                 ClearBackground(GetColor(0x052c46ff));

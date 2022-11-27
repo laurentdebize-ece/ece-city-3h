@@ -8,5 +8,5 @@
 #include "../structure et macros/STRUCTURE.h"
 
 void sauvegarde(city c);
-void lire_sauvegarde(city* c);
+void lire_sauvegarde(city* c,int * t);
 #endif //ECE_CITY_3H_SAUVEGARDE_H

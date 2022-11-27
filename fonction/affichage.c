@@ -312,8 +312,6 @@ static void DrawText3D(Font font, const char *text, Vector3 position, float font
 void affichage3d(city c, Camera3D camera, city *c_adresse,Color couleur,Color couleur1,Color capacite) {
     poser_element(&c, camera, c_adresse);
 
-
-
     BeginDrawing();
     ClearBackground(SKYBLUE);
 
