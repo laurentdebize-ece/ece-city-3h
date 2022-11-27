@@ -3,12 +3,15 @@
 //
 #include <stdio.h>
 #include "raylib.h"
-#include "pthread.h"                        // POSIX style threads management
+#include "pthread.h"// POSIX style threads management
+#include "rlgl.h"
 #include <stdatomic.h>
+
 #include "menu.h"// C11 atomic data types
 
 #include <time.h>
 #include "raylib.h"
+#include "structure et macros/include.h"
 
 //------------------------------------------------------------------------------------
 // Program main entry point
@@ -38,6 +41,7 @@ void menu(int* a)
     const int screenHeight = 700;//450
     int x1=0;
     int t=0;
+    int b=0;
     bool fin=false;
     bool clig=true;
     int timer=0;
@@ -48,20 +52,22 @@ void menu(int* a)
     Vector2 fontPosition2 = { 430, 102 };
     Vector2 fontPosition3 = { 250, 102 };
     Vector2 fontPosition4 = {488,500};
+    Vector2 fontPosition5 = {15,t};
 
     //InitWindow(screenWidth, screenHeight, "ECE CITY");
     InitAudioDevice();
 
     // NOTE: Be careful, background width must be equal or bigger than screen width
-    // if not, texture should be draw more than two times for scrolling effect
-    Texture2D background = LoadTexture("C:/Users/quent/OneDrive/Documents/Bureau/textures_background_scrolling.png");
-    Texture2D bouton1 = LoadTexture("C:/Users/quent/OneDrive/Documents/Bureau/START-removebg-preview.png");
-    Texture2D restart = LoadTexture("C:/Users/quent/OneDrive/Documents/Bureau/START__1_-removebg-preview (1).png");
-    Texture2D Trump = LoadTexture("C:/Users/quent/OneDrive/Documents/Bureau/donald-trump-png-7 (2).png");
-    Texture2D simCity = LoadTexture("C:/Users/quent/OneDrive/Documents/Bureau/147-1475237_home-simcity-logo-png (1) (1) (1).png");
-    Texture2D Poutine = LoadTexture("C:/Users/quent/OneDrive/Documents/Bureau/vladimir_putin_PNG42 (1).png");
+    // if not, texture should be draw more than two times for scrolling effect//(../image/
+    Texture2D background = LoadTexture("../image/textures_background_scrolling.png");
+    Texture2D bouton1 = LoadTexture("../image/START-removebg-preview.png");
+    Texture2D restart = LoadTexture("../image/START__1_-removebg-preview (1).png");
+    Texture2D Trump = LoadTexture("../image/donald-trump-png-7 (2).png");
+    Texture2D simCity = LoadTexture("../image/147-1475237_home-simcity-logo-png (1) (1) (1).png");
+    Texture2D Poutine = LoadTexture("../image/vladimir_putin_PNG42 (1).png");
     Font font = LoadFont("C:/Windows/Fonts/8514oem.fon");
-    Music music = LoadMusicStream("C:/Users/quent/OneDrive/Documents/Bureau/GAZO - CELINE 3x.mp3");
+    Music music = LoadMusicStream("C:/Users/quent/OneDrive/Documents/Bureau/SimCity BuildIt Soundtrack - Tutorial Music.mp3");
+    Texture2D ps5= LoadTexture("../image/800px-PlayStation_Studios_logo.svg (1) (1).png");
 
     float scrollingBack = 0.0f;
     float scrollingMid = 0.0f;
@@ -115,8 +121,9 @@ void menu(int* a)
             DrawTextureEx(background, (Vector2) {background.width * 2 + scrollingBack, -55}, 0.0f, 2.0f, WHITE);
             DrawTexture(bouton1, 310, 85, WHITE);
             DrawTexture(restart,320,175,WHITE);
+            DrawTexture(ps5,500,570,WHITE);
             //DrawRectangleLines(418,275,300,70,WHITE);
-            //DrawRectangleLines(400,375,320,70,WHITE);
+            //DrawRectangleLines(500,570,100,110,WHITE);
             if (clickR(x1,y1,418,300,275,70) == 1 ){
                     affichage =1;
             }
@@ -124,6 +131,10 @@ void menu(int* a)
             if (clickR(x1,y1,400,320,375,70)==1){
                 affichage = 4;
             }
+            if (clickR(x1,y1,500,100,570,110)==1){
+                    affichage = 5;
+            }
+
 
 
 
@@ -205,8 +216,23 @@ void menu(int* a)
                     *a = 4;
                     fin=true;
                 }
-
-
+                break;
+            case 5:
+                ClearBackground(GetColor(0x052c46ff));
+                DrawTextureEx(background, (Vector2) {scrollingBack, -55}, 0.0f, 2.0f, WHITE);
+                DrawTextureEx(background, (Vector2) {background.width * 2 + scrollingBack, -55}, 0.0f, 2.0f, WHITE);
+                t=t+1;
+                if(t>700){
+                    t=0;
+                }
+                fontPosition5 = (Vector2){15,t};
+                DrawTextEx(font, "Dans le mode comuniste, une construction n evolue pas \n"
+                                 "si les ressources (eau+electricité)\n"
+                                 "nécessaires à sa croissance ne sont pas disponibles \n"
+                                 "Dans le mode Capitaliste, une construction passe \n"
+                                 "systématiquement au stade supérieur,\n"
+                                 "que lesressources (eau+électricité) soient disponibles ou pas.", fontPosition5, 20, 10, WHITE);
+                break;
         }
         EndDrawing();
         //----------------------------------------------------------------------------------
@@ -217,6 +243,15 @@ void menu(int* a)
     UnloadTexture(background);
     UnloadMusicStream(music);
     UnloadTexture(bouton1);// Unload background texture
+    UnloadTexture(background);
+    UnloadTexture(simCity);
+    UnloadTexture(background);
+    UnloadTexture(Trump);
+    UnloadTexture(Poutine);
+    UnloadFont(font);
+    UnloadTexture(bouton1);
+    UnloadTexture(background);
+    UnloadTexture(restart);
     CloseAudioDevice();
     // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
