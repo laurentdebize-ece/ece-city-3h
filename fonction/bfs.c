@@ -93,7 +93,7 @@ void calcul_nombre_chateau(chateauEau *ce, city c) {
 
 }
 
-void creer_graphe(city c,city *c_adresse) {
+void creer_graphe(city c, city *c_adresse) {
     Graphe *g = (Graphe *) malloc(sizeof(Graphe));
     g->ordre = 0;
     for (int i = 0; i < colones; i++) {
@@ -156,7 +156,10 @@ void creer_graphe(city c,city *c_adresse) {
     struct ChateauEau *ch2 = ch;
     int s0_x, s0_y = -1;
     int s0;
+    int nb_ch = 0;
     while (ch2 != NULL) {
+        nb_ch++;
+        ch2->numero = nb_ch;
         for (int i = 0; i <= c.tableau_element[8].espacement_x - 1; i++) {
             for (int j = 0; j <= c.tableau_element[8].espacement_y - 1; j++) {
                 if (c.plateau[ch2->position_x + i][ch2->position_y - 1].numero == 1) {
@@ -182,7 +185,7 @@ void creer_graphe(city c,city *c_adresse) {
             }
         }
         ch2->habitation = NULL;
-        parcoursBFS(g, s0,c,ch2);
+        parcoursBFS(g, s0, c, ch2);
         ch2 = ch2->chateauEau;
     }
 
@@ -251,6 +254,7 @@ void parcoursBFS(Graphe *graphe, int s0, city c, chateauEau *ch) {
     File file = fileVide();
     enfiler(file, s0);
     graphe->pSommet[s0]->couleur = 1;
+    distance[s0] = 0;
     for (int i = 0; i < colones; i++) {
         for (int j = 0; j < ligne; j++) {
             if (c.plateau[i][j].numero > 2 && c.plateau[i][j].numero < 8) {
@@ -270,14 +274,17 @@ void parcoursBFS(Graphe *graphe, int s0, city c, chateauEau *ch) {
                 distance[num2] = distance[num] + 1;
                 if (abs(c.plateau[graphe->pSommet[num2]->x + 1][graphe->pSommet[num2]->y].numero) > 3 &&
                     abs(c.plateau[graphe->pSommet[num2]->x + 1][graphe->pSommet[num2]->y].numero) < 8
-                    && c.plateau[c.plateau[graphe->pSommet[num2]->x + 1][graphe->pSommet[num2]->y].reference_x][c.plateau[
-                        graphe->pSommet[num2]->x + 1][graphe->pSommet[num2]->y].reference_y].marquage == 0) {
+                    &&
+                    c.plateau[c.plateau[graphe->pSommet[num2]->x + 1][graphe->pSommet[num2]->y].reference_x][c.plateau[
+                            graphe->pSommet[num2]->x + 1][graphe->pSommet[num2]->y].reference_y].marquage == 0) {
                     if (ch->habitation == NULL) {
                         ch->habitation = (maison *) malloc(sizeof(maison));
                         ch->habitation->habitation = NULL;
                         ch->habitation->distance = distance[num2];
-                        ch->habitation->position_x = graphe->pSommet[num2]->x;
-                        ch->habitation->position_y = graphe->pSommet[num2]->y;
+                        ch->habitation->position_x = c.plateau[graphe->pSommet[num2]->x +
+                                                               1][graphe->pSommet[num2]->y].reference_x;
+                        ch->habitation->position_y = c.plateau[graphe->pSommet[num2]->x +
+                                                               1][graphe->pSommet[num2]->y].reference_y;
                         int nb = abs(c.plateau[graphe->pSommet[num2]->x + 1][graphe->pSommet[num2]->y].numero);
                         ch->habitation->nb_habitants = c.tableau_element[nb].nb_habitants;
                     } else {
@@ -286,15 +293,16 @@ void parcoursBFS(Graphe *graphe, int s0, city c, chateauEau *ch) {
                             m = m->habitation;
                         }
                         m->habitation = (maison *) malloc(sizeof(maison));
-                        m = m ->habitation;
+                        m = m->habitation;
                         m->habitation = NULL;
                         m->distance = distance[num2];
-                        m->position_x = graphe->pSommet[num2]->x;
-                        m->position_y = graphe->pSommet[num2]->y;
-                        m->nb_habitants = c.tableau_element[abs(c.plateau[graphe->pSommet[num2]->x + 1][graphe->pSommet[num2]->y].numero)].nb_habitants;
+                        m->position_x = c.plateau[graphe->pSommet[num2]->x + 1][graphe->pSommet[num2]->y].reference_x;
+                        m->position_y = c.plateau[graphe->pSommet[num2]->x + 1][graphe->pSommet[num2]->y].reference_y;
+                        m->nb_habitants = c.tableau_element[abs(
+                                c.plateau[graphe->pSommet[num2]->x + 1][graphe->pSommet[num2]->y].numero)].nb_habitants;
                     }
-                    c.plateau[c.plateau[graphe->pSommet[num2]->x+1][graphe->pSommet[num2]->y ].reference_x][
-                            c.plateau[graphe->pSommet[num2]->x+1][graphe->pSommet[num2]->y].reference_y ].marquage = 1;
+                    c.plateau[c.plateau[graphe->pSommet[num2]->x + 1][graphe->pSommet[num2]->y].reference_x][
+                            c.plateau[graphe->pSommet[num2]->x + 1][graphe->pSommet[num2]->y].reference_y].marquage = 1;
 
                 }
                 if (abs(c.plateau[graphe->pSommet[num2]->x - 1][graphe->pSommet[num2]->y].numero) > 2 &&
@@ -305,24 +313,28 @@ void parcoursBFS(Graphe *graphe, int s0, city c, chateauEau *ch) {
                         ch->habitation = (maison *) malloc(sizeof(maison));
                         ch->habitation->habitation = NULL;
                         ch->habitation->distance = distance[num2];
-                        ch->habitation->position_x = graphe->pSommet[num2]->x;
-                        ch->habitation->position_y = graphe->pSommet[num2]->y;
-                        ch->habitation->nb_habitants = c.tableau_element[abs(c.plateau[graphe->pSommet[num2]->x - 1][graphe->pSommet[num2]->y].numero)].nb_habitants;
+                        ch->habitation->position_x = c.plateau[graphe->pSommet[num2]->x -
+                                                               1][graphe->pSommet[num2]->y].reference_x;
+                        ch->habitation->position_y = c.plateau[graphe->pSommet[num2]->x -
+                                                               1][graphe->pSommet[num2]->y].reference_y;
+                        ch->habitation->nb_habitants = c.tableau_element[abs(
+                                c.plateau[graphe->pSommet[num2]->x - 1][graphe->pSommet[num2]->y].numero)].nb_habitants;
                     } else {
                         maison *m = ch->habitation;
                         while (m->habitation != NULL) {
                             m = m->habitation;
                         }
                         m->habitation = (maison *) malloc(sizeof(maison));
-                        m = m ->habitation;
+                        m = m->habitation;
                         m->habitation = NULL;
                         m->distance = distance[num2];
-                        m->position_x = graphe->pSommet[num2]->x;
-                        m->position_y = graphe->pSommet[num2]->y;
-                        m->nb_habitants = c.tableau_element[abs(c.plateau[graphe->pSommet[num2]->x - 1][graphe->pSommet[num2]->y].numero)].nb_habitants;
+                        m->position_x = c.plateau[graphe->pSommet[num2]->x - 1][graphe->pSommet[num2]->y].reference_x;
+                        m->position_y = c.plateau[graphe->pSommet[num2]->x - 1][graphe->pSommet[num2]->y].reference_y;
+                        m->nb_habitants = c.tableau_element[abs(
+                                c.plateau[graphe->pSommet[num2]->x - 1][graphe->pSommet[num2]->y].numero)].nb_habitants;
                     }
-                    c.plateau[c.plateau[graphe->pSommet[num2]->x-1][graphe->pSommet[num2]->y ].reference_x][
-                            c.plateau[graphe->pSommet[num2]->x-1][graphe->pSommet[num2]->y].reference_y ].marquage = 1;
+                    c.plateau[c.plateau[graphe->pSommet[num2]->x - 1][graphe->pSommet[num2]->y].reference_x][
+                            c.plateau[graphe->pSommet[num2]->x - 1][graphe->pSommet[num2]->y].reference_y].marquage = 1;
                 }
                 if (abs(c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y + 1].numero) > 2 &&
                     abs(c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y + 1].numero) < 8 &&
@@ -332,52 +344,61 @@ void parcoursBFS(Graphe *graphe, int s0, city c, chateauEau *ch) {
                         ch->habitation = (maison *) malloc(sizeof(maison));
                         ch->habitation->habitation = NULL;
                         ch->habitation->distance = distance[num2];
-                        ch->habitation->position_x = graphe->pSommet[num2]->x;
-                        ch->habitation->position_y = graphe->pSommet[num2]->y;
-                        ch->habitation->nb_habitants = c.tableau_element[abs(c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y+1].numero)].nb_habitants;
+                        ch->habitation->position_x = c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y +
+                                                                                         1].reference_x;
+                        ch->habitation->position_y = c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y +
+                                                                                         1].reference_y;
+                        ch->habitation->nb_habitants = c.tableau_element[abs(
+                                c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y + 1].numero)].nb_habitants;
                     } else {
                         maison *m = ch->habitation;
                         while (m->habitation != NULL) {
                             m = m->habitation;
                         }
                         m->habitation = (maison *) malloc(sizeof(maison));
-                        m = m ->habitation;
+                        m = m->habitation;
                         m->habitation = NULL;
                         m->distance = distance[num2];
-                        m->position_x = graphe->pSommet[num2]->x;
-                        m->position_y = graphe->pSommet[num2]->y;
-                        m->nb_habitants = c.tableau_element[abs(c.plateau[graphe->pSommet[num2]->x ][graphe->pSommet[num2]->y+1].numero)].nb_habitants;
+                        m->position_x = c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y + 1].reference_x;
+                        m->position_y = c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y + 1].reference_y;
+                        m->nb_habitants = c.tableau_element[abs(
+                                c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y + 1].numero)].nb_habitants;
                     }
                     c.plateau[c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y + 1].reference_x][
-                            c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y+1].reference_y ].marquage = 1;
+                            c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y + 1].reference_y].marquage = 1;
 
                 }
                 if (abs(c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y - 1].numero) > 2 &&
                     abs(c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y - 1].numero) < 8 &&
-                    c.plateau[c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y-1 ].reference_x][
-                            c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y-1].reference_y].marquage == 0) {
+                    c.plateau[c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y - 1].reference_x][
+                            c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y - 1].reference_y].marquage ==
+                    0) {
                     if (ch->habitation == NULL) {
                         ch->habitation = (maison *) malloc(sizeof(maison));
                         ch->habitation->habitation = NULL;
                         ch->habitation->distance = distance[num2];
-                        ch->habitation->position_x = graphe->pSommet[num2]->x;
-                        ch->habitation->position_y = graphe->pSommet[num2]->y;
-                        ch->habitation->nb_habitants = c.tableau_element[abs(c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y-1].numero)].nb_habitants;
+                        ch->habitation->position_x = c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y -
+                                                                                         1].reference_x;
+                        ch->habitation->position_y = c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y -
+                                                                                         1].reference_y;
+                        ch->habitation->nb_habitants = c.tableau_element[abs(
+                                c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y - 1].numero)].nb_habitants;
                     } else {
                         maison *m = ch->habitation;
                         while (m->habitation != NULL) {
                             m = m->habitation;
                         }
                         m->habitation = (maison *) malloc(sizeof(maison));
-                        m = m ->habitation;
+                        m = m->habitation;
                         m->habitation = NULL;
                         m->distance = distance[num2];
-                        m->position_x = graphe->pSommet[num2]->x;
-                        m->position_y = graphe->pSommet[num2]->y;
-                        m->nb_habitants = c.tableau_element[abs(c.plateau[graphe->pSommet[num2]->x ][graphe->pSommet[num2]->y-1].numero)].nb_habitants;
+                        m->position_x = c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y - 1].reference_x;
+                        m->position_y = c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y - 1].reference_y;
+                        m->nb_habitants = c.tableau_element[abs(
+                                c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y - 1].numero)].nb_habitants;
                     }
                     c.plateau[c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y - 1].reference_x][
-                            c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y-1].reference_y ].marquage = 1;
+                            c.plateau[graphe->pSommet[num2]->x][graphe->pSommet[num2]->y - 1].reference_y].marquage = 1;
 
                 }
             }
@@ -388,28 +409,92 @@ void parcoursBFS(Graphe *graphe, int s0, city c, chateauEau *ch) {
     printf("a");
 }
 
-void distributionEau(chateauEau** listeCheateauEau){
-    if(*listeCheateauEau != NULL){
-        for(chateauEau* pChateau= *listeCheateauEau; pChateau != NULL; pChateau = pChateau->habitation){
-            for(struct maison* pMaison= (*listeCheateauEau)->habitation; pMaison != NULL; pMaison = pMaison->habitation){ // parcours du 1er ChateauEau
-                if((*listeCheateauEau)->capacite != 0){
-                    if(pMaison->nb_habitants < (*listeCheateauEau)->capacite && pMaison->nb_habitants != 0){
-                        /// faut relier la maison au chateau
-                        (*listeCheateauEau)->capacite -= pMaison->nb_habitants;
-                        pMaison->nb_habitants = 0;
+void distributionEau(chateauEau *listeCheateauEau, city *c) {
+    for (int i = 0; i < colones; i++) {
+        for (int j = 0; j < ligne; j++) {
+            c->plateau[i][j].marquage = 0;
+        }
+    }
+
+    if (listeCheateauEau != NULL) {
+
+        for (chateauEau *pChateau = listeCheateauEau; pChateau != NULL; pChateau = pChateau->chateauEau) {
+            struct maison *pMaison = pChateau->habitation;
+            for (; pMaison != NULL; pMaison = pMaison->habitation) { // parcours du 1er ChateauEau
+                if (pChateau->capacite != 0) {
+                    if (c->plateau[pMaison->position_x][pMaison->position_y].marquage == 0) {
+                        if (pMaison->nb_habitants <= pChateau->capacite) {
+                            /// faut relier la maison au chateau
+                            pChateau->capacite -= pMaison->nb_habitants;
+                            pMaison->numero_ch = pChateau->numero;
+                            c->plateau[pMaison->position_x][pMaison->position_y].marquage = 1;
+                            c->plateau[pMaison->position_x][pMaison->position_y].distance_eau = pMaison->distance;
+                            pMaison->chateauEau_principal = pChateau;
+                        } else if (pMaison->nb_habitants > pChateau->capacite) {
+                            /// faut relier la maison au chateau (peut etre relie a plusieurs chateau)
+                            pMaison->nb_habitants -= pChateau->capacite;
+                            pChateau->capacite = 0;
+                        }
+                    } else if (c->plateau[pMaison->position_x][pMaison->position_y].marquage == 1 &&
+                               pMaison->distance < c->plateau[pMaison->position_x][pMaison->position_y].distance_eau) {
+                        if (pMaison->nb_habitants <= pChateau->capacite) {
+                            /// faut relier la maison au chateau
+                            pChateau->capacite -= pMaison->nb_habitants;
+                            pMaison->numero_ch = pChateau->numero;
+                            c->plateau[pMaison->position_x][pMaison->position_y].distance_eau = pMaison->distance;
+                            chateauEau *chateauEau1= listeCheateauEau;
+                            maison *pMaison2=(maison *) malloc(sizeof(maison));
+                            pMaison2->habitation = chateauEau1->habitation;
+                            while ((pMaison->position_x != pMaison2->habitation->position_x ||
+                                    pMaison->position_y != pMaison2->habitation->position_y)) {
+                                pMaison2 = pMaison2->habitation;
+                                if (pMaison2 == NULL) {
+                                    chateauEau1 = chateauEau1->chateauEau;
+                                    pMaison2->habitation = chateauEau1->habitation;
+                                }
+                            }
+                            if (pMaison2->habitation->habitation == NULL) {
+                                pMaison2->habitation = NULL;
+                            } else {
+                                pMaison2->habitation = pMaison2->habitation->habitation;
+
+                            }
+
+                            chateauEau1->capacite += pMaison->nb_habitants;
+                            pMaison->chateauEau_principal = pChateau;
+                            pChateau = listeCheateauEau;
+                            pMaison = listeCheateauEau->habitation;
+
+                        } else if (pMaison->nb_habitants > pChateau->capacite) {
+                            /// faut relier la maison au chateau (peut etre relie a plusieurs chateau)
+                            pMaison->nb_habitants -= pChateau->capacite;
+                            pChateau->capacite = 0;
+
+                        }
+
+                    } else {
+                        chateauEau *chateauEau1= listeCheateauEau;
+                        maison *pMaison2=(maison *) malloc(sizeof(maison));
+                        pMaison2->habitation = chateauEau1->habitation;
+                        while ((pMaison->position_x != pMaison2->habitation->position_x ||
+                                pMaison->position_y != pMaison2->habitation->position_y)) {
+                            pMaison2 = pMaison2->habitation;
+                            if (pMaison2->habitation == NULL) {
+                                chateauEau1 = chateauEau1->chateauEau;
+                                pMaison2->habitation = chateauEau1->habitation;
+                            }
+                        }
+                        if (pMaison2->habitation->habitation == NULL) {
+                            pMaison2->habitation = NULL;
+                        } else {
+                            pMaison2->habitation = pMaison2->habitation->habitation;
+
+                        }
                     }
-                    else if(pMaison->nb_habitants > (*listeCheateauEau)->capacite){
-                        /// faut relier la maison au chateau (peut etre relie a plusieurs chateau)
-                        pMaison->nb_habitants -= (*listeCheateauEau)->capacite;
-                        (*listeCheateauEau)->capacite = 0;
-                    }
-                }
-                else if((*listeCheateauEau)->capacite == 0){
-                    pMaison = NULL;
                 }
             }
         }
-        //(*listeCheateauEau)->habitation[]
     }
+
     printf("oui");
 }

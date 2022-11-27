@@ -141,7 +141,7 @@ int main() {
                 } else {
                     c.joueur1.element_choisie = 0;
                     creer_graphe(c,&c);
-                    distributionEau(&c.chateauEau);
+                    distributionEau(c.chateauEau,&c);
                 }
             }
         }

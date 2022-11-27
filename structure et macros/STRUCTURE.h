@@ -60,17 +60,20 @@ typedef struct Graphe
 
 typedef struct maison{
     int distance;
+    int numero_ch;
     int nb_habitants;
+    int besoin_eau;
     int  position_x;
     int  position_y;
+    struct  ChateauEau * chateauEau_principal;
     struct maison * habitation;
-    struct maison* next;
 }maison;
 
 typedef struct ChateauEau{
     int capacite;
     int  position_x;
     int  position_y;
+    int numero;
     struct maison * habitation;
     struct  ChateauEau * chateauEau;
     struct ChateauEau* next;
@@ -82,6 +85,7 @@ typedef struct case_element {
     int reference_x;
     int reference_y;
     int marquage;
+    int distance_eau;
     double temps;
 }c_element;
 typedef struct element{
