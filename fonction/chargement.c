@@ -7,16 +7,11 @@ element chargement_element(char *nomFichier){
         printf("Erreur de lecture fichier\n");
         exit(-1);
     }
-  /*  char chemin[255]={NULL};
-    char caractere;
-    int i =0;
-    while(caractere!= '\n'){
-        fscanf(ifs, "%c", &caractere);
-        chemin[i] = caractere;
-        i++;
-    }*/
+
     element e;
    // e.texture = LoadTexture(chemin);
+
+   // on lie les informations du fichier texte
     int nb_hab,x,y,prix;float d_x,d_y,d_z,scale;
     fscanf(ifs, "%d", &prix);
     fscanf(ifs, "%d", &nb_hab);
@@ -26,6 +21,8 @@ element chargement_element(char *nomFichier){
     fscanf(ifs, "%f", &d_y);
     fscanf(ifs, "%f", &d_z);
     fscanf(ifs, "%f", &scale);
+
+    // on les stocke dans les variables de notre structure element
     e.nb_habitants = nb_hab;
     e.espacement_x = x;
     e.espacement_y = y;
@@ -122,12 +119,15 @@ city chargement_base(city c){
         printf("Erreur de lecture fichier\n");
         exit(-1);
     }
+    // on stocke dans des variables ce qu'on lie du fichier texte
     int flouz , etage ,hab, elect, eau;
     fscanf(ifs, "%d", &flouz);
     fscanf(ifs, "%d", &etage);
     fscanf(ifs, "%d", &hab);
     fscanf(ifs, "%d", &elect);
     fscanf(ifs, "%d", &eau);
+
+    //on ajoute ces valeurs aux variables de notre structure city
     c.ece_flouz = flouz;
     c.etage = etage;
     c.nb_habitant = hab;
@@ -138,6 +138,8 @@ city chargement_base(city c){
 
 city initialisation(){
     city c;
+
+    // on charge tous les elements de notre fichier texte
     c = chargement_total_element();
     for (int i = 0; i <colones; i++) {
         for (int j = 0; j < ligne; j++) {
@@ -147,8 +149,11 @@ city initialisation(){
         }
     }
     c.joueur1.element_choisie = 0;
+
+    // on charge les données de base de notre fichier texte : l'argent, le nombre d'habitant....
     c = chargement_base(c);
 
+    // on met les textures de nos images
     c.tableau_texture[0] = LoadTexture("../image/horloge.png");
     c.tableau_texture[1] = LoadTexture("../image/monnaie.png");
     c.tableau_texture[2] = LoadTexture("../image/habitant.png");
@@ -157,9 +162,13 @@ city initialisation(){
     c.tableau_texture[5] = LoadTexture("../image/+.png");
     c.tableau_texture[6] = LoadTexture("../image/poubelle fermer.png");
     c.tableau_texture[7] = LoadTexture("../image/poubelle ouvert.png");
+
+    // finalement pas utilisé
     for (int i =0;i< 10 ;i++){
         c.v[i].model = LoadModel("../model3d/voiture.glb");
     }
+
+    // chronomètre
     c.temps = GetTime();
 
 

@@ -155,7 +155,6 @@ void poser_element(city *c, Camera3D camera, city *c_adresse) {
 
 }
 
-
 static Vector3 MeasureText3D(Font font, const char* text, float fontSize, float fontSpacing, float lineSpacing)
 {
     // fonction du site raylib permettant de mesurer la longueur du texte 3D, afin de la centrer
@@ -311,8 +310,6 @@ static void DrawText3D(Font font, const char *text, Vector3 position, float font
 
 void affichage3d(city c, Camera3D camera, city *c_adresse,Color couleur,Color couleur1) {
     poser_element(&c, camera, c_adresse);
-
-
 
     BeginDrawing();
     ClearBackground(SKYBLUE);
@@ -504,7 +501,9 @@ void achat(city *c) {
 }
 
 void affichageNiveauMoinsUn(city c,int i,int j,int i2,int j2,Color couleur) {
+    // si la distribution d'eau passe par la case (route)
     if(c.plateau[i2][j2].passage_eau == 1){
+        // on affiche la case de la route en jaune
         Vector3 cubePosition = (Vector3) {-2.55f + (float) i + c.tableau_element[c.plateau[i2][j2].numero].decalage_x,
                                           c.tableau_element[c.plateau[i2][j2].numero].decalage_y,
                                           -2 + (float) j + c.tableau_element[c.plateau[i2][j2].numero].decalage_z };
